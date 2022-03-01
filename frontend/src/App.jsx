@@ -13,6 +13,7 @@ import Switch from './components/UI/Switch';
 import { blueGrey } from '@mui/material/colors';
 import Item from './pages/Item';
 import 'swiper/css/bundle';
+import CollectionAdmin from './pages/CollectionAdmin';
 
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
@@ -65,6 +66,7 @@ export default function ToggleColorMode() {
               <Nav mode={<ToggleMode />} />
               <Routes>
                 <Route path='/' element={<Collection />} />
+                <Route path='/admin' element={<CollectionAdmin />} />
                 <Route path='/about' element={<About />} />
                 <Route path='/contact' element={<Contact />} />
                 <Route path='/login' element={<Login />} />
