@@ -1,5 +1,5 @@
 import { useFormik } from 'formik';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import * as yup from 'yup';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
@@ -26,6 +26,15 @@ const validationSchema = yup.object({
 });
 
 const Register = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    password2: '',
+  });
+
+  const { name, email, password, password2 } = formData;
+
   const [values, setValues] = useState({
     name: '',
     email: '',
