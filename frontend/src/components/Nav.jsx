@@ -8,15 +8,14 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
 
-const pages = ['About', 'Contact'];
+const pages = ['About', 'Contact', 'Register', 'Login'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-const ResponsiveAppBar = () => {
+const ResponsiveAppBar = (props) => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -36,17 +35,28 @@ const ResponsiveAppBar = () => {
   };
 
   return (
-    <AppBar position='static'>
-      <Container maxWidth='xl'>
+    <AppBar
+      position='static'
+      color='transparent'
+      elevation={0}
+      sx={{ borderBottom: 2 }}
+    >
+      <Container maxWidth='xl' sx={{ bg: 'text.primary' }}>
         <Toolbar disableGutters>
-          <Typography
-            variant='h6'
-            noWrap
-            component='div'
-            sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
-          >
-            <Link to='/'>SNEAKERS</Link>
-          </Typography>
+          <Link to={'/'} style={{ textDecoration: 'none' }}>
+            <Typography
+              variant='h6'
+              noWrap
+              component='h1'
+              sx={{
+                color: 'text.primary',
+                mr: 2,
+                display: { xs: 'none', md: 'flex' },
+              }}
+            >
+              SNEAKERS
+            </Typography>
+          </Link>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
@@ -55,7 +65,6 @@ const ResponsiveAppBar = () => {
               aria-controls='menu-appbar'
               aria-haspopup='true'
               onClick={handleOpenNavMenu}
-              color='inherit'
             >
               <MenuIcon />
             </IconButton>
@@ -87,24 +96,30 @@ const ResponsiveAppBar = () => {
           <Typography
             variant='h6'
             noWrap
-            component='div'
-            sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
+            component='h1'
+            sx={{
+              color: 'text.primary',
+              flexGrow: 1,
+              display: { xs: 'flex', md: 'none' },
+            }}
           >
-            LOGO
+            SNEAKERS
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
-              <Link key={page} to={page.toLocaleLowerCase()}>
-                <Button
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
-                >
+              <Link
+                to={page.toLocaleLowerCase()}
+                key={page}
+                style={{ textDecoration: 'none' }}
+              >
+                <Typography margin={2} sx={{ color: 'text.primary' }}>
                   {page}
-                </Button>
+                </Typography>
               </Link>
             ))}
           </Box>
 
+          {props.mode}
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title='Open settings'>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
