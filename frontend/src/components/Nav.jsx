@@ -11,6 +11,7 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
+import luffy from '../luffy.jpg';
 
 const pages = ['About', 'Contact', 'Register', 'Login'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -123,7 +124,7 @@ const ResponsiveAppBar = (props) => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title='Open settings'>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt='Monkey D. Luffy' src='/src/luffy.jpg' />
+                <Avatar alt='Monkey D. Luffy' src={luffy} />
               </IconButton>
             </Tooltip>
             <Menu
