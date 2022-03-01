@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Routes, Route } from 'react-router-dom';
@@ -50,33 +51,35 @@ export default function ToggleColorMode() {
   );
 
   return (
-    <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
-        <Box
-          sx={{
-            backgroundColor: 'background.main',
-            minHeight: '100vh',
-          }}
-        >
-          <Grid container justifyContent='center'>
-            <Container
-              maxWidth='xl'
-              // sx={{ bgcolor: 'primary' }}
-            >
-              <Nav mode={<ToggleMode />} />
-              <Routes>
-                <Route path='/' element={<Collection />} />
-                <Route path='/admin' element={<CollectionAdmin />} />
-                <Route path='/about' element={<About />} />
-                <Route path='/contact' element={<Contact />} />
-                <Route path='/login' element={<Login />} />
-                <Route path='/register' element={<Register />} />
-                <Route path='/:itemId' element={<Item />} />
-              </Routes>
-            </Container>
-          </Grid>
-        </Box>
-      </ThemeProvider>
-    </ColorModeContext.Provider>
+    <Router>
+      <ColorModeContext.Provider value={colorMode}>
+        <ThemeProvider theme={theme}>
+          <Box
+            sx={{
+              backgroundColor: 'background.main',
+              minHeight: '100vh',
+            }}
+          >
+            <Grid container justifyContent='center'>
+              <Container
+                maxWidth='xl'
+                // sx={{ bgcolor: 'primary' }}
+              >
+                <Nav mode={<ToggleMode />} />
+                <Routes>
+                  <Route path='/' element={<Collection />} />
+                  <Route path='/admin' element={<CollectionAdmin />} />
+                  <Route path='/about' element={<About />} />
+                  <Route path='/contact' element={<Contact />} />
+                  <Route path='/login' element={<Login />} />
+                  <Route path='/register' element={<Register />} />
+                  <Route path='/:itemId' element={<Item />} />
+                </Routes>
+              </Container>
+            </Grid>
+          </Box>
+        </ThemeProvider>
+      </ColorModeContext.Provider>
+    </Router>
   );
 }

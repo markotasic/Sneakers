@@ -1,5 +1,7 @@
 import { useFormik } from 'formik';
 import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
@@ -9,6 +11,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import TextField from '@mui/material/TextField';
 import { Paper, Grid, Typography } from '@mui/material';
+import { register, reset } from '../features/auth/authSlice';
 
 const validationSchema = yup.object({
   name: yup.string('Enter your name').required('Name is required'),
@@ -26,14 +29,24 @@ const validationSchema = yup.object({
 });
 
 const Register = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    password2: '',
-  });
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const { name, email, password, password2 } = formData;
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
+
+  useEffect(() => {
+    if (isError) {
+      console.log(message);
+    }
+
+    if (isSuccess || user) {
+      navigate('/');
+    }
+
+    dispatch(reset());
+  }, [user, isError, isSuccess, message, navigate, dispatch]);
 
   const [values, setValues] = useState({
     name: '',
@@ -53,20 +66,7 @@ const Register = () => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      const registerUser = async () => {
-        await fetch('http://localhost:5000/api/users', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            name: values.name,
-            email: values.email,
-            password: values.password,
-          }),
-        });
-      };
-      registerUser();
+      dispatch(register(values));
     },
   });
 
