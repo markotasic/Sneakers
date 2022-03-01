@@ -1,5 +1,4 @@
 import * as React from 'react';
-import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Routes, Route } from 'react-router-dom';
