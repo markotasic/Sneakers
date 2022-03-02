@@ -13,7 +13,10 @@ import Switch from './components/UI/Switch';
 import { blueGrey } from '@mui/material/colors';
 import Item from './pages/Item';
 import 'swiper/css/bundle';
-import CollectionAdmin from './pages/CollectionAdmin';
+import CollectionAdmin from './pages/admin/CollectionAdmin';
+import EditProduct from './pages/admin/EditProduct';
+import AddProduct from './pages/admin/AddProduct';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
@@ -50,33 +53,38 @@ export default function ToggleColorMode() {
   );
 
   return (
-    <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
-        <Box
-          sx={{
-            backgroundColor: 'background.main',
-            minHeight: '100vh',
-          }}
-        >
-          <Grid container justifyContent='center'>
-            <Container
-              maxWidth='xl'
-              // sx={{ bgcolor: 'primary' }}
-            >
-              <Nav mode={<ToggleMode />} />
-              <Routes>
-                <Route path='/' element={<Collection />} />
-                <Route path='/admin' element={<CollectionAdmin />} />
-                <Route path='/about' element={<About />} />
-                <Route path='/contact' element={<Contact />} />
-                <Route path='/login' element={<Login />} />
-                <Route path='/register' element={<Register />} />
-                <Route path='/:itemId' element={<Item />} />
-              </Routes>
-            </Container>
-          </Grid>
-        </Box>
-      </ThemeProvider>
-    </ColorModeContext.Provider>
+    <Router>
+      <ColorModeContext.Provider value={colorMode}>
+        <ThemeProvider theme={theme}>
+          <Box
+            sx={{
+              backgroundColor: 'background.main',
+              minHeight: '100vh',
+            }}
+          >
+            <Grid container justifyContent='center'>
+              <Container
+                maxWidth='xl'
+                // sx={{ bgcolor: 'primary' }}
+              >
+                <Nav mode={<ToggleMode />} />
+
+                <Routes>
+                  <Route path='/' element={<Collection />} />
+                  <Route path='/about' element={<About />} />
+                  <Route path='/contact' element={<Contact />} />
+                  <Route path='/login' element={<Login />} />
+                  <Route path='/register' element={<Register />} />
+                  <Route path='/:itemId' element={<Item />} />
+                  <Route path='/admin' element={<CollectionAdmin />} />
+                  <Route path='/admin/:itemId' element={<EditProduct />} />
+                  <Route path='/admin/add' element={<AddProduct />} />
+                </Routes>
+              </Container>
+            </Grid>
+          </Box>
+        </ThemeProvider>
+      </ColorModeContext.Provider>
+    </Router>
   );
 }

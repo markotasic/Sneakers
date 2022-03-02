@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -8,13 +8,27 @@ import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 import 'swiper/css/effect-coverflow';
+import { styled } from '@mui/system';
 
 import './styles.css';
 
 // import required modules
 import { FreeMode, Navigation, Thumbs, EffectCoverflow } from 'swiper';
 
-export default function App() {
+const Image = styled('img')({
+  // width: 'fit-content',
+  maxHeight: '500px',
+  objectFit: 'cover',
+  borderRadius: '5px',
+});
+
+const ThumbImage = styled('img')({
+  height: '100px',
+  objectFit: 'cover',
+  borderRadius: '5px',
+});
+
+export default function App(props) {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
   return (
@@ -31,47 +45,20 @@ export default function App() {
           modifier: 1,
           slideShadows: true,
         }}
-        loop={true}
+        centeredSlides={true}
         spaceBetween={10}
         navigation={true}
         thumbs={{ swiper: thumbsSwiper }}
         modules={[FreeMode, Navigation, Thumbs, EffectCoverflow]}
-        className='mySwiper2'
       >
-        <SwiperSlide>
-          <img src='https://swiperjs.com/demos/images/nature-1.jpg' />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src='https://swiperjs.com/demos/images/nature-2.jpg' />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src='https://swiperjs.com/demos/images/nature-3.jpg' />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src='https://swiperjs.com/demos/images/nature-4.jpg' />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src='https://swiperjs.com/demos/images/nature-5.jpg' />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src='https://swiperjs.com/demos/images/nature-6.jpg' />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src='https://swiperjs.com/demos/images/nature-7.jpg' />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src='https://swiperjs.com/demos/images/nature-8.jpg' />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src='https://swiperjs.com/demos/images/nature-9.jpg' />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src='https://swiperjs.com/demos/images/nature-10.jpg' />
-        </SwiperSlide>
+        {props.item.images.map((img) => (
+          <SwiperSlide key={Math.random()}>
+            <Image src={img} alt={props.item.name} />
+          </SwiperSlide>
+        ))}
       </Swiper>
       <Swiper
         onSwiper={setThumbsSwiper}
-        loop={true}
         spaceBetween={30}
         slidesPerView={4}
         freeMode={true}
@@ -79,36 +66,11 @@ export default function App() {
         modules={[FreeMode, Navigation, Thumbs]}
         className='mySwiper'
       >
-        <SwiperSlide>
-          <img src='https://swiperjs.com/demos/images/nature-1.jpg' />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src='https://swiperjs.com/demos/images/nature-2.jpg' />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src='https://swiperjs.com/demos/images/nature-3.jpg' />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src='https://swiperjs.com/demos/images/nature-4.jpg' />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src='https://swiperjs.com/demos/images/nature-5.jpg' />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src='https://swiperjs.com/demos/images/nature-6.jpg' />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src='https://swiperjs.com/demos/images/nature-7.jpg' />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src='https://swiperjs.com/demos/images/nature-8.jpg' />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src='https://swiperjs.com/demos/images/nature-9.jpg' />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src='https://swiperjs.com/demos/images/nature-10.jpg' />
-        </SwiperSlide>
+        {props.item.images.map((img) => (
+          <SwiperSlide key={Math.random()}>
+            <ThumbImage src={img} alt={props.item.name} />
+          </SwiperSlide>
+        ))}
       </Swiper>
     </div>
   );

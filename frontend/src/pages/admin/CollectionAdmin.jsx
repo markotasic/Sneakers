@@ -6,22 +6,22 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import Slider from '../components/UI/Slider';
+import Slider from '../../components/UI/Slider';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
-import Accordion from '../components/UI/Accordion';
-import Select from '../components/UI/Select';
+import Accordion from '../../components/UI/Accordion';
+import Select from '../../components/UI/Select';
 import { Container } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-import AirForce1 from '../images/air-force-1.jpg';
-import AirMax from '../images/air max.jpg';
-import Future from '../images/back from the future.jpg';
-import Adapt from '../images/adapt.jpg';
-import AirForce1v2 from '../images/air-force-1v2.png';
-import AirForce1v3 from '../images/air-force-1v3.jpg';
-import AirForce1v4 from '../images/air-force-1v4.jpg';
+import AirForce1 from '../../images/air-force-1.jpg';
+import AirMax from '../../images/air max.jpg';
+import Future from '../../images/back from the future.jpg';
+import Adapt from '../../images/adapt.jpg';
+import AirForce1v2 from '../../images/air-force-1v2.png';
+import AirForce1v3 from '../../images/air-force-1v3.jpg';
+import AirForce1v4 from '../../images/air-force-1v4.jpg';
 
 const DUMMY_ITEMS = [
   {
@@ -94,16 +94,21 @@ const Collection = () => {
             alignItems: 'center',
           }}
         >
-          <Typography variant='h4' component='h2' color='text.primary'>
-            Men's Sneakers
-          </Typography>
+          <Box>
+            <Typography variant='h4' component='h2' color='text.primary'>
+              Manage Products
+            </Typography>
+            <Link to='/admin/add'>
+              <Button variant='contained'>Add Product</Button>
+            </Link>
+          </Box>
           <Select />
         </Box>
         <Grid container spacing={2}>
           {DUMMY_ITEMS.map((item) => (
             <Grid item xs={3} key={Math.random()}>
               <Card>
-                <Link to={`/${item.id}`}>
+                <Link to={`/admin/${item.id}`}>
                   <CardMedia
                     component='img'
                     height='140'
@@ -123,8 +128,10 @@ const Collection = () => {
                   </CardContent>
                 </Link>
                 <CardActions>
-                  <Button size='small'>Add To Cart</Button>
-                  <Button size='small'>Learn More</Button>
+                  <Link to={`/admin/${item.id}`}>
+                    <Button size='small'>Edit</Button>
+                  </Link>
+                  <Button size='small'>Delete</Button>
                 </CardActions>
               </Card>
             </Grid>
