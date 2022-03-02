@@ -1,49 +1,44 @@
-const registerUser = async (values) => {
-  const response = await fetch('http://localhost:5000/api/users', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      name: values.name,
-      email: values.email,
-      password: values.password,
-    }),
-  });
+import axios from 'axios';
 
-  const data = await response.json();
+const API_URL = '/api/users/';
 
-  if (data) {
-    localStorage.setItem('user', JSON.stringify(data));
+// Register user
+const register = async (userData) => {
+  const response = await axios.post(
+    'http://localhost:5000/api/users',
+    userData
+  );
+
+  if (response.data) {
+    localStorage.setItem('user', JSON.stringify(response.data));
   }
 
-  return data;
+  return response.data;
 };
 
-const loginUser = async (loginValues) => {
-  const response = await fetch('http://localhost:5000/api/users/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      email: loginValues.email,
-      password: loginValues.password,
-    }),
-  });
+// Login user
+const login = async (userData) => {
+  const response = await axios.post(
+    'http://localhost:5000/api/users/login',
+    userData
+  );
 
-  const data = await response.json();
-
-  if (data) {
-    localStorage.setItem('user', JSON.stringify(data));
+  if (response.data) {
+    localStorage.setItem('user', JSON.stringify(response.data));
   }
 
-  return data;
+  return response.data;
+};
+
+// Logout user
+const logout = () => {
+  localStorage.removeItem('user');
 };
 
 const authService = {
-  registerUser,
-  loginUser,
+  register,
+  logout,
+  login,
 };
 
 export default authService;

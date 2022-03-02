@@ -34,15 +34,10 @@ const Login = () => {
   );
 
   useEffect(() => {
-    if (isError) {
-      console.log(message);
-    }
-
     if (isSuccess || user) {
       navigate('/');
+      return;
     }
-
-    dispatch(reset());
   }, [user, isError, isSuccess, message, navigate, dispatch]);
 
   const formik = useFormik({
@@ -79,6 +74,13 @@ const Login = () => {
             <Typography margin={2} variant='h4' component='h2'>
               Login
             </Typography>
+
+            {isError && (
+              <Typography margin={2} variant='h4' component='h5'>
+                {message}
+              </Typography>
+            )}
+
             <FormControl sx={{ m: 2 }}>
               <TextField
                 id='email'

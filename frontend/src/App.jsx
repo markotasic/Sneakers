@@ -17,6 +17,8 @@ import 'swiper/css/bundle';
 import CollectionAdmin from './pages/admin/CollectionAdmin';
 import EditProduct from './pages/admin/EditProduct';
 import AddProduct from './pages/admin/AddProduct';
+import { useDispatch } from 'react-redux';
+import { logout } from './features/auth/authSlice';
 
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
@@ -25,7 +27,9 @@ function ToggleMode() {
   return <Switch onClick={colorMode.toggleColorMode} />;
 }
 
-export default function ToggleColorMode() {
+const App = () => {
+  const dispatch = useDispatch();
+  const logoutUser = () => dispatch(logout());
   const [mode, setMode] = React.useState('light');
   const colorMode = React.useMemo(
     () => ({
@@ -67,7 +71,7 @@ export default function ToggleColorMode() {
                 maxWidth='xl'
                 // sx={{ bgcolor: 'primary' }}
               >
-                <Nav mode={<ToggleMode />} />
+                <Nav mode={<ToggleMode />} logout={logoutUser} />
 
                 <Routes>
                   <Route path='/' element={<Collection />} />
@@ -87,4 +91,6 @@ export default function ToggleColorMode() {
       </ColorModeContext.Provider>
     </Router>
   );
-}
+};
+
+export default App;

@@ -10,7 +10,7 @@ import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import luffy from '../luffy.jpg';
 
 const pages = ['About', 'Contact', 'Register', 'Login'];
@@ -33,6 +33,12 @@ const ResponsiveAppBar = (props) => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const navigate = useNavigate();
+  const logoutUser = async () => {
+    await props.logout();
+    navigate('/login');
   };
 
   return (
@@ -148,6 +154,9 @@ const ResponsiveAppBar = (props) => {
                   <Typography textAlign='center'>{setting}</Typography>
                 </MenuItem>
               ))}
+              <MenuItem onClick={logoutUser}>
+                <Typography textAlign='center'>Logout</Typography>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>
