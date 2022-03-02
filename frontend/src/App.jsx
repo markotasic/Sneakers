@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Routes, Route } from 'react-router-dom';
@@ -16,7 +17,6 @@ import 'swiper/css/bundle';
 import CollectionAdmin from './pages/admin/CollectionAdmin';
 import EditProduct from './pages/admin/EditProduct';
 import AddProduct from './pages/admin/AddProduct';
-import { BrowserRouter as Router } from 'react-router-dom';
 
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
