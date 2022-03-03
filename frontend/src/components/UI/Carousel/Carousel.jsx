@@ -61,8 +61,6 @@ export default function App(props) {
         onSwiper={setThumbsSwiper}
         spaceBetween={30}
         slidesPerView={4}
-        freeMode={true}
-        watchSlidesProgress={true}
         modules={[FreeMode, Navigation, Thumbs]}
         className='mySwiper'
       >
