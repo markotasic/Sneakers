@@ -11,7 +11,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import TextField from '@mui/material/TextField';
 import { Paper, Grid, Typography } from '@mui/material';
-import { register, reset } from '../features/auth/authSlice';
+import { register, reset } from '../../features/auth/authSlice';
 
 const validationSchema = yup.object({
   name: yup.string('Enter your name').required('Name is required'),

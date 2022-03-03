@@ -11,7 +11,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import TextField from '@mui/material/TextField';
 import { Paper, Grid, Typography } from '@mui/material';
-import { login, reset } from '../features/auth/authSlice';
+import { login, reset } from '../../features/auth/authSlice';
 
 const validationSchema = yup.object({
   email: yup

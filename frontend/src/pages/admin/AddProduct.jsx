@@ -1,5 +1,5 @@
 import { useFormik } from 'formik';
-import { useState } from 'react';
+// import { useState } from 'react';
 import * as yup from 'yup';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
@@ -11,7 +11,6 @@ import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import Clear from '@mui/icons-material/Clear';
 
 import image1 from '../../images/adapt.jpg';
-import image2 from '../../images/air-force-1.jpg';
 const validationSchema = yup.object({
   manufacturer: yup
     .string('Enter the manufacturer')
@@ -58,12 +57,12 @@ const ClearBtn = styled(Button)({
 });
 
 const AddProduct = () => {
-  const [values, setValues] = useState({
-    manufacturer: '',
-    title: '',
-    description: '',
-    price: '',
-  });
+  // const [values, setValues] = useState({
+  //   manufacturer: '',
+  //   title: '',
+  //   description: '',
+  //   price: '',
+  // });
 
   const formik = useFormik({
     initialValues: {
@@ -74,20 +73,21 @@ const AddProduct = () => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      // const registerUser = async () => {
-      //   await fetch('http://localhost:5000/api/users', {
-      //     method: 'POST',
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //     body: JSON.stringify({
-      //       name: values.name,
-      //       email: values.email,
-      //       password: values.password,
-      //     }),
-      //   });
-      // };
-      // registerUser();
+      const addItem = async () => {
+        await fetch('http://localhost:5000/api/items', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            manufacturer: values.manufacturer,
+            title: values.title,
+            description: values.description,
+            price: values.price,
+          }),
+        });
+      };
+      addItem();
     },
   });
 

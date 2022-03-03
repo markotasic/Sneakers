@@ -25,8 +25,8 @@ const setItem = asyncHandler(async (req, res) => {
     throw new Error('Please fill out the required fields');
   }
 
-  console.log(req.user.admin);
-  if (!req.user.isAdmin) throw new Error('User is not authorized to do this');
+  // console.log(req.user.admin);
+  // if (!req.user.isAdmin) throw new Error('User is not authorized to do this');
 
   const item = await Item.create({
     manufacturer: req.body.manufacturer,
@@ -79,17 +79,17 @@ const deleteItem = asyncHandler(async (req, res) => {
     throw new Error('Item not found');
   }
 
-  // Check for user
-  if (!req.user) {
-    res.status(401);
-    throw new Error('User not found');
-  }
+  // // Check for user
+  // if (!req.user) {
+  //   res.status(401);
+  //   throw new Error('User not found');
+  // }
 
-  // Make sure the logged in user matches the item user
-  if (item.user.toString() !== req.user.id) {
-    res.status(401);
-    throw new Error('User not authorized');
-  }
+  // // Make sure the logged in user matches the item user
+  // if (item.user.toString() !== req.user.id) {
+  //   res.status(401);
+  //   throw new Error('User not authorized');
+  // }
 
   await item.remove();
 

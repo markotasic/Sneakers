@@ -1,18 +1,19 @@
 import { useParams } from 'react-router-dom';
 
-import Carousel from '../components/UI/Carousel/Carousel';
 import { Box, Button, Typography, Grid } from '@mui/material';
 import ShoppingCart from '@mui/icons-material/ShoppingCartCheckoutOutlined';
 import Add from '@mui/icons-material/Add';
 import Remove from '@mui/icons-material/Remove';
 
-import AirForce1 from '../images/air-force-1.jpg';
-import AirMax from '../images/air max.jpg';
-import Future from '../images/back from the future.jpg';
-import Adapt from '../images/adapt.jpg';
-import AirForce1v2 from '../images/air-force-1v2.png';
-import AirForce1v3 from '../images/air-force-1v3.jpg';
-import AirForce1v4 from '../images/air-force-1v4.jpg';
+import Carousel from '../../components/UI/Carousel/Carousel';
+
+import AirForce1 from '../../images/air-force-1.jpg';
+import AirMax from '../../images/air max.jpg';
+import Future from '../../images/back from the future.jpg';
+import Adapt from '../../images/adapt.jpg';
+import AirForce1v2 from '../../images/air-force-1v2.png';
+import AirForce1v3 from '../../images/air-force-1v3.jpg';
+import AirForce1v4 from '../../images/air-force-1v4.jpg';
 const DUMMY_ITEMS = [
   {
     id: 1,

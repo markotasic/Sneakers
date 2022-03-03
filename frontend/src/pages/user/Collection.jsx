@@ -6,22 +6,22 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import Slider from '../components/UI/Slider';
+import Slider from '../../components/UI/Slider';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
-import Accordion from '../components/UI/Accordion';
-import Select from '../components/UI/Select';
+import Accordion from '../../components/UI/Accordion';
+import Select from '../../components/UI/Select';
 import { Container } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-import AirForce1 from '../images/air-force-1.jpg';
-import AirMax from '../images/air max.jpg';
-import Future from '../images/back from the future.jpg';
-import Adapt from '../images/adapt.jpg';
-import AirForce1v2 from '../images/air-force-1v2.png';
-import AirForce1v3 from '../images/air-force-1v3.jpg';
-import AirForce1v4 from '../images/air-force-1v4.jpg';
+import AirForce1 from '../../images/air-force-1.jpg';
+import AirMax from '../../images/air max.jpg';
+import Future from '../../images/back from the future.jpg';
+import Adapt from '../../images/adapt.jpg';
+import AirForce1v2 from '../../images/air-force-1v2.png';
+import AirForce1v3 from '../../images/air-force-1v3.jpg';
+import AirForce1v4 from '../../images/air-force-1v4.jpg';
 
 const DUMMY_ITEMS = [
   {
