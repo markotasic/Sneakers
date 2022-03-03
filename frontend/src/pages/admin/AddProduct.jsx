@@ -63,6 +63,7 @@ const AddProduct = () => {
   //   description: '',
   //   price: '',
   // });
+  const user = JSON.parse(localStorage.getItem('user'));
 
   const formik = useFormik({
     initialValues: {
@@ -78,6 +79,7 @@ const AddProduct = () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${user.token}`,
           },
           body: JSON.stringify({
             manufacturer: values.manufacturer,

@@ -22,6 +22,8 @@ import Adapt from '../../images/adapt.jpg';
 import AirForce1v2 from '../../images/air-force-1v2.png';
 import AirForce1v3 from '../../images/air-force-1v3.jpg';
 import AirForce1v4 from '../../images/air-force-1v4.jpg';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 const DUMMY_ITEMS = [
   {
@@ -63,6 +65,19 @@ const DUMMY_ITEMS = [
 ];
 
 const Collection = () => {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const getProducts = async () => {
+      const res = await fetch('http://localhost:5000/api/items');
+
+      const data = await res.json();
+
+      setProducts(data);
+    };
+    getProducts();
+  }, []);
+
   return (
     <Box
       sx={{
@@ -100,6 +115,35 @@ const Collection = () => {
           <Select />
         </Box>
         <Grid container spacing={2}>
+          {products.map((item) => (
+            <Grid item xs={3} key={Math.random()}>
+              <Card>
+                <Link to={`/${item._id}`}>
+                  <CardMedia
+                    component='img'
+                    height='140'
+                    image={AirForce1}
+                    alt={item.name}
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant='h5' component='div'>
+                      {item.name}
+                    </Typography>
+                    <Typography variant='body2' color='text.secondary'>
+                      {item.description}
+                    </Typography>
+                    <Typography variant='h5' component='div'>
+                      {item.price}
+                    </Typography>
+                  </CardContent>
+                </Link>
+                <CardActions>
+                  <Button size='small'>Add To Cart</Button>
+                  <Button size='small'>Learn More</Button>
+                </CardActions>
+              </Card>
+            </Grid>
+          ))}
           {DUMMY_ITEMS.map((item) => (
             <Grid item xs={3} key={Math.random()}>
               <Card>

@@ -66,6 +66,8 @@ const DUMMY_ITEMS = [
 
 const Collection = () => {
   const [products, setProducts] = useState([]);
+  const user = JSON.parse(localStorage.getItem('user'));
+
   useEffect(() => {
     const getProducts = async () => {
       const res = await fetch('http://localhost:5000/api/items');
@@ -83,6 +85,7 @@ const Collection = () => {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${user.token}`,
       },
     });
 
