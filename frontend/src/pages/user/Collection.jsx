@@ -14,6 +14,9 @@ import Accordion from '../../components/UI/Accordion';
 import Select from '../../components/UI/Select';
 import { Container } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { getItems, reset } from '../../features/items/itemSlice';
 
 import AirForce1 from '../../images/air-force-1.jpg';
 import AirMax from '../../images/air max.jpg';
@@ -65,18 +68,46 @@ const DUMMY_ITEMS = [
 ];
 
 const Collection = () => {
+  //GOAL ITEM NEMAMO POSEBNO NAPRAVLJEN HOOK (PRODUCT ITEM RECIMO) za sada ga stavljam u products state i pravimo item po tome
+
+  //ERROR : PROBLEM JE VRVT API_URL U itemService.js...
   const [products, setProducts] = useState([]);
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { user } = useSelector((state) => state.auth);
+  const { items, isLoading, isError, message } = useSelector(
+    (state) => state.items
+  );
+
   useEffect(() => {
-    const getProducts = async () => {
-      const res = await fetch('http://localhost:5000/api/items');
+    // const getProducts = async () => {
+    //   const res = await fetch('http://localhost:5000/api/items');
 
-      const data = await res.json();
+    //   const data = await res.json();
 
-      setProducts(data);
+    //   setProducts(data);
+    // };
+    // getProducts();
+
+    if (isError) {
+      console.log(message);
+    }
+
+    if (!user) {
+      navigate('/login');
+    }
+
+    const newItems = dispatch(getItems());
+    console.log(newItems);
+
+    setProducts(newItems);
+
+    return () => {
+      dispatch(reset());
     };
-    getProducts();
-  }, []);
+  }, [user, navigate, isError, message, dispatch]);
 
   return (
     <Box

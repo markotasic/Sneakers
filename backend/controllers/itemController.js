@@ -1,4 +1,5 @@
 const asyncHandler = require('express-async-handler');
+const User = require('../models/userModel');
 
 const Item = require('../models/itemModel');
 
@@ -15,17 +16,26 @@ const getItems = asyncHandler(async (req, res) => {
 // @route   POST /api/items
 // @access  Private
 const setItem = asyncHandler(async (req, res) => {
-  if (
-    !req.body.manufacturer ||
-    !req.body.title ||
-    !req.body.description ||
-    !req.body.price
-  ) {
-    res.status(400);
-    throw new Error('Please fill out the required fields');
-  }
+  const { email } = req.body;
 
-  if (!req.user.isAdmin) throw new Error('User is not authorized to do this');
+  // console.log(req.body);
+
+  // const user = await User.findOne({ email });
+  // console.log(user);
+  console.log();
+
+  // if (
+  //   !req.body.manufacturer ||
+  //   !req.body.title ||
+  //   !req.body.description ||
+  //   !req.body.price
+  // ) {
+  //   res.status(400);
+  //   throw new Error('Please fill out the required fields');
+  // }
+  // console.log(req.user);
+
+  // if (!req.user.isAdmin) throw new Error('User is not authorized to do this');
 
   const item = await Item.create({
     manufacturer: req.body.manufacturer,
@@ -78,13 +88,17 @@ const deleteItem = asyncHandler(async (req, res) => {
     throw new Error('Item not found');
   }
 
-  // Check for user
-  if (!req.user) {
-    res.status(401);
-    throw new Error('User not found');
-  }
+  // // Check for user
+  // if (!req.user) {
+  //   res.status(401);
+  //   throw new Error('User not found');
+  // }
 
-  if (!req.user.isAdmin) throw new Error('User is not authorized to do this');
+  // // Make sure the logged in user matches the item user
+  // if (item.user.toString() !== req.user.id) {
+  //   res.status(401);
+  //   throw new Error('User not authorized');
+  // }
 
   await item.remove();
 
