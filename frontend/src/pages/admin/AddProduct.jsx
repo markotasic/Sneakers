@@ -10,6 +10,9 @@ import { styled } from '@mui/material/styles';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import Clear from '@mui/icons-material/Clear';
 
+import { useDispatch } from 'react-redux';
+import { createItem } from '../../features/items/itemSlice';
+
 import image1 from '../../images/adapt.jpg';
 const validationSchema = yup.object({
   manufacturer: yup
@@ -57,13 +60,9 @@ const ClearBtn = styled(Button)({
 });
 
 const AddProduct = () => {
-  // const [values, setValues] = useState({
-  //   manufacturer: '',
-  //   title: '',
-  //   description: '',
-  //   price: '',
-  // });
-  const user = JSON.parse(localStorage.getItem('user'));
+  const dispatch = useDispatch();
+
+  // const user = JSON.parse(localStorage.getItem('user'));
 
   const formik = useFormik({
     initialValues: {
@@ -74,22 +73,7 @@ const AddProduct = () => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      const addItem = async () => {
-        await fetch('http://localhost:5000/api/items', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${user.token}`,
-          },
-          body: JSON.stringify({
-            manufacturer: values.manufacturer,
-            title: values.title,
-            description: values.description,
-            price: values.price,
-          }),
-        });
-      };
-      addItem();
+      dispatch(createItem(values));
     },
   });
 

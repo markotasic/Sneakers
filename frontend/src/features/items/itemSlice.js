@@ -16,7 +16,7 @@ export const createItem = createAsyncThunk(
     try {
       const token = thunkAPI.getState().auth.user.token;
 
-      return await itemService.createGoal(itemData, token);
+      return await itemService.createItem(itemData, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -29,7 +29,7 @@ export const createItem = createAsyncThunk(
   }
 );
 
-//Delete use goal
+//Delete user item
 export const deleteItem = createAsyncThunk(
   'items/delete',
   async (id, thunkAPI) => {
@@ -49,7 +49,7 @@ export const deleteItem = createAsyncThunk(
   }
 );
 
-//Get user goals
+//Get user items
 export const getItems = createAsyncThunk(
   'items/getAll',
   async (_, thunkAPI) => {

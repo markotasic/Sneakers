@@ -28,38 +28,38 @@ import AirForce1v4 from '../../images/air-force-1v4.jpg';
 import { useEffect } from 'react';
 import { useState } from 'react';
 
-const DUMMY_ITEMS = [
-  {
-    id: 2,
-    manufacturer: 'Nike',
-    name: 'Air Max',
-    description:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum ut quas eligendi dolore autem.',
-    images: [AirMax],
-    price: 120,
-  },
-  {
-    id: 3,
-    manufacturer: 'Nike',
-    name: 'Back From The Future',
-    description:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum ut quas eligendi dolore autem.',
-    images: [Future],
-    price: 2000,
-  },
-  {
-    id: 4,
-    manufacturer: 'Nike',
-    name: 'Adaot',
-    description:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum ut quas eligendi dolore autem.',
-    images: [Adapt],
-    price: 80,
-  },
-];
+// const DUMMY_ITEMS = [
+//   {
+//     id: 2,
+//     manufacturer: 'Nike',
+//     name: 'Air Max',
+//     description:
+//       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum ut quas eligendi dolore autem.',
+//     images: [AirMax],
+//     price: 120,
+//   },
+//   {
+//     id: 3,
+//     manufacturer: 'Nike',
+//     name: 'Back From The Future',
+//     description:
+//       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum ut quas eligendi dolore autem.',
+//     images: [Future],
+//     price: 2000,
+//   },
+//   {
+//     id: 4,
+//     manufacturer: 'Nike',
+//     name: 'Adaot',
+//     description:
+//       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum ut quas eligendi dolore autem.',
+//     images: [Adapt],
+//     price: 80,
+//   },
+// ];
 
 const Collection = () => {
-  //GOAL ITEM NEMAMO POSEBNO NAPRAVLJEN HOOK (PRODUCT ITEM RECIMO) za sada ga stavljam u products state i pravimo item po tome
+  //GOAL ITEM NEMAMO POSEBNO NAPRAVLJEN HOOK (PRODUCT ITEM RECIMO)
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -70,15 +70,6 @@ const Collection = () => {
   );
 
   useEffect(() => {
-    // const getProducts = async () => {
-    //   const res = await fetch('http://localhost:5000/api/items');
-
-    //   const data = await res.json();
-
-    //   setProducts(data);
-    // };
-    // getProducts();
-
     if (isError) {
       console.log(message);
     }
@@ -160,7 +151,8 @@ const Collection = () => {
               </Card>
             </Grid>
           ))}
-          {DUMMY_ITEMS.map((item) => (
+
+          {/* {DUMMY_ITEMS.map((item) => (
             <Grid item xs={3} key={Math.random()}>
               {console.log(item)}
               <Card>
@@ -189,7 +181,7 @@ const Collection = () => {
                 </CardActions>
               </Card>
             </Grid>
-          ))}
+          ))} */}
         </Grid>
       </Container>
     </Box>

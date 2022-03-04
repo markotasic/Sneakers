@@ -14,6 +14,8 @@ import Accordion from '../../components/UI/Accordion';
 import Select from '../../components/UI/Select';
 import { Container } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteItem, getItems } from '../../features/items/itemSlice';
 
 import AirForce1 from '../../images/air-force-1.jpg';
 import AirMax from '../../images/air max.jpg';
@@ -25,73 +27,72 @@ import AirForce1v4 from '../../images/air-force-1v4.jpg';
 import { useEffect } from 'react';
 import { useState } from 'react';
 
-const DUMMY_ITEMS = [
-  {
-    id: 1,
-    manufacturer: 'Nike',
-    name: 'Air Force 1',
-    description:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum ut quas eligendi dolore autem.',
-    images: [AirForce1, AirForce1v2, AirForce1v3, AirForce1v4],
-    price: 100,
-  },
-  {
-    id: 2,
-    manufacturer: 'Nike',
-    name: 'Air Max',
-    description:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum ut quas eligendi dolore autem.',
-    images: [AirMax],
-    price: 120,
-  },
-  {
-    id: 3,
-    manufacturer: 'Nike',
-    name: 'Back From The Future',
-    description:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum ut quas eligendi dolore autem.',
-    images: [Future],
-    price: 2000,
-  },
-  {
-    id: 4,
-    manufacturer: 'Nike',
-    name: 'Adaot',
-    description:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum ut quas eligendi dolore autem.',
-    images: [Adapt],
-    price: 80,
-  },
-];
+// const DUMMY_ITEMS = [
+//   {
+//     id: 1,
+//     manufacturer: 'Nike',
+//     name: 'Air Force 1',
+//     description:
+//       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum ut quas eligendi dolore autem.',
+//     images: [AirForce1, AirForce1v2, AirForce1v3, AirForce1v4],
+//     price: 100,
+//   },
+//   {
+//     id: 2,
+//     manufacturer: 'Nike',
+//     name: 'Air Max',
+//     description:
+//       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum ut quas eligendi dolore autem.',
+//     images: [AirMax],
+//     price: 120,
+//   },
+//   {
+//     id: 3,
+//     manufacturer: 'Nike',
+//     name: 'Back From The Future',
+//     description:
+//       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum ut quas eligendi dolore autem.',
+//     images: [Future],
+//     price: 2000,
+//   },
+//   {
+//     id: 4,
+//     manufacturer: 'Nike',
+//     name: 'Adaot',
+//     description:
+//       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum ut quas eligendi dolore autem.',
+//     images: [Adapt],
+//     price: 80,
+//   },
+// ];
 
 const Collection = () => {
+  const dispatch = useDispatch();
+  const { items, isLoading, isError, message } = useSelector(
+    (state) => state.items
+  );
   const [products, setProducts] = useState([]);
   const user = JSON.parse(localStorage.getItem('user'));
 
   useEffect(() => {
-    const getProducts = async () => {
-      const res = await fetch('http://localhost:5000/api/items');
-
-      const data = await res.json();
-
-      setProducts(data);
-    };
-    getProducts();
+    dispatch(getItems());
   }, []);
 
-  const deleteProduct = async (event) => {
-    const itemId = event.target.dataset.id;
-    await fetch(`http://localhost:5000/api/items/${itemId}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${user.token}`,
-      },
-    });
+  // const deleteProduct = async (event) => {
+  //   console.log(event.target.dataset.id);
+  //   dispatch(deleteItem(event.target.id));
+  //   // const itemId = event.target.dataset.id;
+  //   // await fetch(`http://localhost:5000/api/items/${itemId}`, {
+  //   //   method: 'DELETE',
+  //   //   headers: {
+  //   //     'Content-Type': 'application/json',
+  //   //     Authorization: `Bearer ${user.token}`,
+  //   //   },
+  //   // });
 
-    // CHANGE WITH SOMETHING ELSE :)
-    setProducts(products.filter((item) => item._id !== itemId));
-  };
+  //   // // CHANGE WITH SOMETHING ELSE :)
+  //   // setProducts(products.filter((item) => item._id !== itemId));
+  // };
 
   return (
     <Box
@@ -135,19 +136,19 @@ const Collection = () => {
           <Select />
         </Box>
         <Grid container spacing={2}>
-          {products.map((item) => (
-            <Grid item xs={3} key={Math.random()}>
+          {items.map((item) => (
+            <Grid item xs={3} key={Math.random()} id={item._id}>
               <Card>
                 <Link to={`/admin/${item._id}`}>
                   <CardMedia
                     component='img'
                     height='140'
                     image={AirForce1}
-                    alt={item.name}
+                    alt={item.title}
                   />
                   <CardContent>
                     <Typography gutterBottom variant='h5' component='div'>
-                      {item.name}
+                      {item.title}
                     </Typography>
                     <Typography variant='body2' color='text.secondary'>
                       {item.description}
@@ -163,8 +164,10 @@ const Collection = () => {
                   </Link>
                   <Button
                     size='small'
-                    onClick={deleteProduct}
-                    data-id={item._id}
+                    // onClick={deleteProduct}
+                    // data-id={item._id}
+                    // id={item._id}
+                    onClick={() => dispatch(deleteItem(item._id))}
                   >
                     Delete
                   </Button>
@@ -172,7 +175,8 @@ const Collection = () => {
               </Card>
             </Grid>
           ))}
-          {DUMMY_ITEMS.map((item) => (
+
+          {/* {DUMMY_ITEMS.map((item) => (
             <Grid item xs={3} key={Math.random()}>
               <Card>
                 <Link to={`/admin/${item.id}`}>
@@ -202,7 +206,7 @@ const Collection = () => {
                 </CardActions>
               </Card>
             </Grid>
-          ))}
+          ))} */}
         </Grid>
       </Container>
     </Box>

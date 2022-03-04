@@ -7,11 +7,8 @@ fix ligth/dark mode
 add cart
 
 check for isAdmin before adding products
-add delete products
+add delete products 
 add edit products
 secure routes
 add signle item fetch support
 add item filtering and sorting support in backend
-
-
-token za iteme dobijamo iz thunkAPI (const token = thunkAPI.getState().auth.user.token)
