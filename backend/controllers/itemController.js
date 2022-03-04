@@ -5,7 +5,7 @@ const Item = require('../models/itemModel');
 
 // @desc    Get item
 // @route   GET /api/items
-// @access  Private
+// @access  Public
 const getItems = asyncHandler(async (req, res) => {
   const items = await Item.find();
 
@@ -43,6 +43,20 @@ const setItem = asyncHandler(async (req, res) => {
     description: req.body.description,
     price: req.body.price,
   });
+
+  res.status(200).json(item);
+});
+
+// @desc    Get item
+// @route   GET /api/items/:id
+// @access  Public
+const getOneItem = asyncHandler(async (req, res) => {
+  const item = await Item.findById(req.params.id);
+
+  if (!item) {
+    res.status(400);
+    throw new Error('Item not found');
+  }
 
   res.status(200).json(item);
 });
@@ -108,6 +122,7 @@ const deleteItem = asyncHandler(async (req, res) => {
 module.exports = {
   getItems,
   setItem,
+  getOneItem,
   updateItem,
   deleteItem,
 };

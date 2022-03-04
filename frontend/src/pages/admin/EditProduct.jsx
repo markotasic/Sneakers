@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import * as yup from 'yup';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
@@ -10,53 +10,11 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { styled } from '@mui/material/styles';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import Clear from '@mui/icons-material/Clear';
+import airForce1 from '../../images/air-force-1.jpg';
 
-import AirForce1 from '../../images/air-force-1.jpg';
-import AirMax from '../../images/air max.jpg';
-import Future from '../../images/back from the future.jpg';
-import Adapt from '../../images/adapt.jpg';
-import AirForce1v2 from '../../images/air-force-1v2.png';
-import AirForce1v3 from '../../images/air-force-1v3.jpg';
-import AirForce1v4 from '../../images/air-force-1v4.jpg';
+import { getOneItem } from '../../features/items/itemSlice';
 
-const DUMMY_ITEMS = [
-  {
-    id: 1,
-    manufacturer: 'Nike',
-    name: 'Air Force 1',
-    description:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum ut quas eligendi dolore autem.',
-    images: [AirForce1, AirForce1v2, AirForce1v3, AirForce1v4],
-    price: 100,
-  },
-  {
-    id: 2,
-    manufacturer: 'Nike',
-    name: 'Air Max',
-    description:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum ut quas eligendi dolore autem.',
-    images: [AirMax],
-    price: 120,
-  },
-  {
-    id: 3,
-    manufacturer: 'Nike',
-    name: 'Back From The Future',
-    description:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum ut quas eligendi dolore autem.',
-    images: [Future],
-    price: 2000,
-  },
-  {
-    id: 4,
-    manufacturer: 'Nike',
-    name: 'Adaot',
-    description:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum ut quas eligendi dolore autem.',
-    images: [Adapt],
-    price: 80,
-  },
-];
+import { useDispatch, useSelector } from 'react-redux';
 
 const validationSchema = yup.object({
   manufacturer: yup
@@ -105,38 +63,30 @@ const ClearBtn = styled(Button)({
 
 const EditProduct = () => {
   const { itemId } = useParams();
-  const [item] = DUMMY_ITEMS.filter((item) => item.id === +itemId);
-  const [values, setValues] = useState({
-    manufacturer: '',
-    title: '',
-    description: '',
-    price: '',
-  });
+  const dispatch = useDispatch();
+
+  const { items, isLoading, isError, message } = useSelector(
+    (state) => state.items
+  );
+
+  useEffect(() => {
+    if (isError) {
+      console.log(message);
+    }
+
+    dispatch(getOneItem(itemId));
+  }, [isError, message, dispatch, itemId]);
+  console.log(items);
 
   const formik = useFormik({
     initialValues: {
-      manufacturer: item.manufacturer,
-      title: item.name,
-      description: item.description,
-      price: item.price,
+      manufacturer: items.manufacturer,
+      title: items.title,
+      description: items.description,
+      price: items.price,
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      // const registerUser = async () => {
-      //   await fetch('http://localhost:5000/api/users', {
-      //     method: 'POST',
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //     body: JSON.stringify({
-      //       name: values.name,
-      //       email: values.email,
-      //       password: values.password,
-      //     }),
-      //   });
-      // };
-      // registerUser();
-    },
+    onSubmit: (values) => {},
   });
 
   return (
@@ -209,7 +159,7 @@ const EditProduct = () => {
           </FormControl>
           <FormControl sx={{ m: 2 }}>
             <Grid container spacing={2}>
-              <Grid item lg={2} md={3} sm={4} xs={6}>
+              <Grid item lg={2} md={3} sm={4} xs={6} sx={{ height: '207.5px' }}>
                 <label htmlFor='icon-button-file'>
                   <Input accept='image/*' id='icon-button-file' type='file' />
                   <Button
@@ -223,16 +173,15 @@ const EditProduct = () => {
                   </Button>
                 </label>
               </Grid>
-              {item.images.map((image) => (
-                <Grid item lg={2} md={3} sm={4} xs={6} key={Math.random()}>
-                  <ImageContainer>
-                    <ClearBtn size='small'>
-                      <Clear fontSize='small' />
-                    </ClearBtn>
-                    <Image src={image} alt='1' />
-                  </ImageContainer>
-                </Grid>
-              ))}
+
+              <Grid item lg={2} md={3} sm={4} xs={6} key={Math.random()}>
+                <ImageContainer>
+                  <ClearBtn size='small'>
+                    <Clear fontSize='small' />
+                  </ClearBtn>
+                  <Image src={airForce1} alt='1' />
+                </ImageContainer>
+              </Grid>
             </Grid>
           </FormControl>
           <Button sx={{ m: 2 }} variant='contained' type='submit'>

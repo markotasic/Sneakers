@@ -1,89 +1,37 @@
 import * as React from 'react';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
+import {
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Button,
+  Typography,
+  Grid,
+  Paper,
+  Box,
+  Divider,
+  Container,
+} from '@mui/material';
 import Slider from '../../components/UI/Slider';
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
 import Accordion from '../../components/UI/Accordion';
 import Select from '../../components/UI/Select';
-import { Container } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { getItems, reset } from '../../features/items/itemSlice';
+import { getItems } from '../../features/items/itemSlice';
 
 import AirForce1 from '../../images/air-force-1.jpg';
-import AirMax from '../../images/air max.jpg';
-import Future from '../../images/back from the future.jpg';
-import Adapt from '../../images/adapt.jpg';
-import AirForce1v2 from '../../images/air-force-1v2.png';
-import AirForce1v3 from '../../images/air-force-1v3.jpg';
-import AirForce1v4 from '../../images/air-force-1v4.jpg';
 import { useEffect } from 'react';
-import { useState } from 'react';
-
-// const DUMMY_ITEMS = [
-//   {
-//     id: 2,
-//     manufacturer: 'Nike',
-//     name: 'Air Max',
-//     description:
-//       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum ut quas eligendi dolore autem.',
-//     images: [AirMax],
-//     price: 120,
-//   },
-//   {
-//     id: 3,
-//     manufacturer: 'Nike',
-//     name: 'Back From The Future',
-//     description:
-//       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum ut quas eligendi dolore autem.',
-//     images: [Future],
-//     price: 2000,
-//   },
-//   {
-//     id: 4,
-//     manufacturer: 'Nike',
-//     name: 'Adaot',
-//     description:
-//       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum ut quas eligendi dolore autem.',
-//     images: [Adapt],
-//     price: 80,
-//   },
-// ];
 
 const Collection = () => {
-  //GOAL ITEM NEMAMO POSEBNO NAPRAVLJEN HOOK (PRODUCT ITEM RECIMO)
-
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { user } = useSelector((state) => state.auth);
   const { items, isLoading, isError, message } = useSelector(
     (state) => state.items
   );
 
   useEffect(() => {
-    if (isError) {
-      console.log(message);
-    }
-
-    if (!user) {
-      navigate('/login');
-    }
-
     dispatch(getItems());
-
-    return () => {
-      dispatch(reset());
-    };
-  }, [user, navigate, isError, message, dispatch]);
+  }, [dispatch]);
 
   return (
     <Box
@@ -122,66 +70,37 @@ const Collection = () => {
           <Select />
         </Box>
         <Grid container spacing={2}>
-          {items.map((item) => (
-            <Grid item xs={3} key={item._id}>
-              <Card>
-                <Link to={`/${item._id}`}>
-                  <CardMedia
-                    component='img'
-                    height='140'
-                    image={AirForce1}
-                    alt={item.title}
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant='h5' component='div'>
-                      {item.title}
-                    </Typography>
-                    <Typography variant='body2' color='text.secondary'>
-                      {item.description}
-                    </Typography>
-                    <Typography variant='h5' component='div'>
-                      {`$${item.price}`}
-                    </Typography>
-                  </CardContent>
-                </Link>
-                <CardActions>
-                  <Button size='small'>Add To Cart</Button>
-                  <Button size='small'>Learn More</Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))}
-
-          {/* {DUMMY_ITEMS.map((item) => (
-            <Grid item xs={3} key={Math.random()}>
-              {console.log(item)}
-              <Card>
-                <Link to={`/${item.id}`}>
-                  <CardMedia
-                    component='img'
-                    height='140'
-                    image={item.images[0]}
-                    alt={item.name}
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant='h5' component='div'>
-                      {item.name}
-                    </Typography>
-                    <Typography variant='body2' color='text.secondary'>
-                      {item.description}
-                    </Typography>
-                    <Typography variant='h5' component='div'>
-                      {`$${item.price}`}
-                    </Typography>
-                  </CardContent>
-                </Link>
-                <CardActions>
-                  <Button size='small'>Add To Cart</Button>
-                  <Button size='small'>Learn More</Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))} */}
+          {console.log(items)}
+          {items[0] &&
+            items.map((item) => (
+              <Grid item xs={3} key={item._id}>
+                <Card>
+                  <Link to={`/${item._id}`}>
+                    <CardMedia
+                      component='img'
+                      height='140'
+                      image={AirForce1}
+                      alt={item.title}
+                    />
+                    <CardContent>
+                      <Typography gutterBottom variant='h5' component='div'>
+                        {item.title}
+                      </Typography>
+                      <Typography variant='body2' color='text.secondary'>
+                        {item.description}
+                      </Typography>
+                      <Typography variant='h5' component='div'>
+                        {`$${item.price}`}
+                      </Typography>
+                    </CardContent>
+                  </Link>
+                  <CardActions>
+                    <Button size='small'>Add To Cart</Button>
+                    <Button size='small'>Learn More</Button>
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))}
         </Grid>
       </Container>
     </Box>

@@ -1,5 +1,4 @@
 import { useFormik } from 'formik';
-// import { useState } from 'react';
 import * as yup from 'yup';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
@@ -61,8 +60,6 @@ const ClearBtn = styled(Button)({
 
 const AddProduct = () => {
   const dispatch = useDispatch();
-
-  // const user = JSON.parse(localStorage.getItem('user'));
 
   const formik = useFormik({
     initialValues: {

@@ -2,8 +2,7 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api/items/';
 
-//Create new goal
-
+//Create new item
 const createItem = async (itemData, token) => {
   const config = {
     headers: {
@@ -29,6 +28,18 @@ const getItems = async (token) => {
   return response.data;
 };
 
+const getOneItem = async (itemId, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await axios.get(API_URL + itemId, config);
+
+  return response.data;
+};
+
 const deleteItem = async (itemId, token) => {
   const config = {
     headers: {
@@ -44,6 +55,7 @@ const deleteItem = async (itemId, token) => {
 const itemService = {
   createItem,
   getItems,
+  getOneItem,
   deleteItem,
 };
 

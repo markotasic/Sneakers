@@ -3,6 +3,7 @@ const router = express.Router();
 const {
   getItems,
   setItem,
+  getOneItem,
   updateItem,
   deleteItem,
 } = require('../controllers/itemController');
@@ -10,6 +11,10 @@ const {
 const { protect } = require('../middleware/authMiddleware');
 
 router.route('/').get(getItems).post(protect, setItem);
-router.route('/:id').delete(protect, deleteItem).put(protect, updateItem);
+router
+  .route('/:id')
+  .get(getOneItem)
+  .delete(protect, deleteItem)
+  .put(protect, updateItem);
 
 module.exports = router;

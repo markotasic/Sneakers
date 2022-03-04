@@ -8,15 +8,20 @@ import Remove from '@mui/icons-material/Remove';
 import Carousel from '../../components/UI/Carousel/Carousel';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
+import { getOneItem, reset } from '../../features/items/itemSlice';
 
 const Item = () => {
+  const { itemId } = useParams();
+  const dispatch = useDispatch();
+
   const { items, isLoading, isError, message } = useSelector(
     (state) => state.items
   );
 
-  let { itemId } = useParams();
-  const item = items.filter((item) => item._id === itemId);
+  useEffect(() => {
+    dispatch(getOneItem(itemId));
+  }, [isError, message, dispatch, itemId]);
 
   return (
     <Fragment>
@@ -29,7 +34,7 @@ const Item = () => {
           justifyContent: 'space-around',
         }}
       >
-        <Carousel item={item} />
+        <Carousel item={items} />
 
         <Grid item xs={5}>
           <Typography
@@ -38,7 +43,7 @@ const Item = () => {
             color='primary'
             marginBottom={2}
           >
-            {item.manufacturer}
+            {items.manufacturer}
           </Typography>
           <Typography
             variant='h2'
@@ -47,7 +52,7 @@ const Item = () => {
             marginBottom={5}
             fontWeight={500}
           >
-            {item.name}
+            {items.title}
           </Typography>
           <Typography
             variant='h6'
@@ -55,7 +60,7 @@ const Item = () => {
             color='text.secondary'
             marginBottom={5}
           >
-            {item.description}
+            {items.description}
           </Typography>
           <Typography
             variant='h4'
@@ -64,7 +69,7 @@ const Item = () => {
             marginBottom={5}
             fontWeight={700}
           >
-            ${item.price}
+            ${items.price}
           </Typography>
           <Box sx={{ display: 'flex' }}>
             <Box
