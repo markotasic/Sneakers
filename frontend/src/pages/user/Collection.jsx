@@ -70,7 +70,6 @@ const Collection = () => {
           <Select />
         </Box>
         <Grid container spacing={2}>
-          {console.log(items)}
           {items[0] &&
             items.map((item) => (
               <Grid item xs={3} key={item._id}>

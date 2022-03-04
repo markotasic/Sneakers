@@ -13,10 +13,10 @@ import MenuItem from '@mui/material/MenuItem';
 import { Link, useNavigate } from 'react-router-dom';
 import luffy from '../luffy.jpg';
 
-const pages = ['About', 'Contact', 'Register', 'Login'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-
 const ResponsiveAppBar = (props) => {
+  const pages = ['About', 'Contact'];
+  const settings = ['Profile', 'Account', 'Dashboard'];
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -30,7 +30,6 @@ const ResponsiveAppBar = (props) => {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
@@ -127,6 +126,7 @@ const ResponsiveAppBar = (props) => {
           </Box>
 
           {props.mode}
+
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title='Open settings'>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -159,6 +159,19 @@ const ResponsiveAppBar = (props) => {
               </MenuItem>
             </Menu>
           </Box>
+
+          <>
+            <Link to='login' style={{ textDecoration: 'none' }}>
+              <Typography margin={2} sx={{ color: 'text.primary' }}>
+                Login
+              </Typography>
+            </Link>
+            <Link to='register' style={{ textDecoration: 'none' }}>
+              <Typography margin={2} sx={{ color: 'text.primary' }}>
+                Register
+              </Typography>
+            </Link>
+          </>
         </Toolbar>
       </Container>
     </AppBar>
