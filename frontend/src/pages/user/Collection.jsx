@@ -30,15 +30,6 @@ import { useState } from 'react';
 
 const DUMMY_ITEMS = [
   {
-    id: 1,
-    manufacturer: 'Nike',
-    name: 'Air Force 1',
-    description:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum ut quas eligendi dolore autem.',
-    images: [AirForce1, AirForce1v2, AirForce1v3, AirForce1v4],
-    price: 100,
-  },
-  {
     id: 2,
     manufacturer: 'Nike',
     name: 'Air Max',
@@ -70,9 +61,6 @@ const DUMMY_ITEMS = [
 const Collection = () => {
   //GOAL ITEM NEMAMO POSEBNO NAPRAVLJEN HOOK (PRODUCT ITEM RECIMO) za sada ga stavljam u products state i pravimo item po tome
 
-  //ERROR : PROBLEM JE VRVT API_URL U itemService.js...
-  const [products, setProducts] = useState([]);
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -99,10 +87,7 @@ const Collection = () => {
       navigate('/login');
     }
 
-    const newItems = dispatch(getItems());
-    console.log(newItems);
-
-    setProducts(newItems);
+    dispatch(getItems());
 
     return () => {
       dispatch(reset());
@@ -146,25 +131,25 @@ const Collection = () => {
           <Select />
         </Box>
         <Grid container spacing={2}>
-          {products.map((item) => (
-            <Grid item xs={3} key={Math.random()}>
+          {items.map((item) => (
+            <Grid item xs={3} key={item._id}>
               <Card>
                 <Link to={`/${item._id}`}>
                   <CardMedia
                     component='img'
                     height='140'
                     image={AirForce1}
-                    alt={item.name}
+                    alt={item.title}
                   />
                   <CardContent>
                     <Typography gutterBottom variant='h5' component='div'>
-                      {item.name}
+                      {item.title}
                     </Typography>
                     <Typography variant='body2' color='text.secondary'>
                       {item.description}
                     </Typography>
                     <Typography variant='h5' component='div'>
-                      {item.price}
+                      {`$${item.price}`}
                     </Typography>
                   </CardContent>
                 </Link>
@@ -177,6 +162,7 @@ const Collection = () => {
           ))}
           {DUMMY_ITEMS.map((item) => (
             <Grid item xs={3} key={Math.random()}>
+              {console.log(item)}
               <Card>
                 <Link to={`/${item.id}`}>
                   <CardMedia
@@ -193,7 +179,7 @@ const Collection = () => {
                       {item.description}
                     </Typography>
                     <Typography variant='h5' component='div'>
-                      {item.price}
+                      {`$${item.price}`}
                     </Typography>
                   </CardContent>
                 </Link>
