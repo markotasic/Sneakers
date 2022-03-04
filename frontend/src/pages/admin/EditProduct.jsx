@@ -64,131 +64,141 @@ const ClearBtn = styled(Button)({
 const EditProduct = () => {
   const { itemId } = useParams();
   const dispatch = useDispatch();
+  const [newItems, setNewItems] = useState();
 
   const { items, isLoading, isError, message } = useSelector(
     (state) => state.items
   );
 
-  useEffect(() => {
-    if (isError) {
-      console.log(message);
-    }
+  const item = items.filter((item) => item._id === itemId);
 
-    dispatch(getOneItem(itemId));
-  }, [isError, message, dispatch, itemId]);
-  console.log(items);
+  console.log('Item', item[0]);
 
   const formik = useFormik({
     initialValues: {
-      manufacturer: items.manufacturer,
-      title: items.title,
-      description: items.description,
-      price: items.price,
+      manufacturer: item[0].manufacturer,
+      title: item[0].title,
+      description: item[0].description,
+      price: item[0].price,
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {},
+    // onChange: (values) => {
+    //   setNewItems(items);
+    // },
   });
 
   return (
     <Box marginTop={3}>
-      <form onSubmit={formik.handleSubmit}>
-        <Paper sx={{ display: 'grid' }} elevation={5}>
-          <FormControl sx={{ m: 2 }}>
-            <TextField
-              id='manufacturer'
-              name='manufacturer'
-              label='Manufacturer *'
-              type='text'
-              value={formik.values.manufacturer}
-              onChange={formik.handleChange}
-              error={
-                formik.touched.manufacturer &&
-                Boolean(formik.errors.manufacturer)
-              }
-              helperText={
-                formik.touched.manufacturer && formik.errors.manufacturer
-              }
-            />
-          </FormControl>
-          <FormControl sx={{ m: 2 }}>
-            <TextField
-              id='title'
-              name='title'
-              label='Title *'
-              type='text'
-              value={formik.values.title}
-              onChange={formik.handleChange}
-              error={formik.touched.title && Boolean(formik.errors.title)}
-              helperText={formik.touched.title && formik.errors.title}
-            />
-          </FormControl>
-          <FormControl sx={{ m: 2 }}>
-            <TextField
-              id='description'
-              name='description'
-              label='Description *'
-              multiline
-              rows={3}
-              type='text'
-              value={formik.values.description}
-              onChange={formik.handleChange}
-              error={
-                formik.touched.description && Boolean(formik.errors.description)
-              }
-              helperText={
-                formik.touched.description && formik.errors.description
-              }
-            />
-          </FormControl>
-          <FormControl sx={{ m: 2 }}>
-            <TextField
-              id='price'
-              name='price'
-              label='Price *'
-              type='number'
-              value={formik.values.price}
-              onChange={formik.handleChange}
-              error={formik.touched.price && Boolean(formik.errors.price)}
-              helperText={formik.touched.price && formik.errors.price}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position='start'>$</InputAdornment>
-                ),
-              }}
-            />
-          </FormControl>
-          <FormControl sx={{ m: 2 }}>
-            <Grid container spacing={2}>
-              <Grid item lg={2} md={3} sm={4} xs={6} sx={{ height: '207.5px' }}>
-                <label htmlFor='icon-button-file'>
-                  <Input accept='image/*' id='icon-button-file' type='file' />
-                  <Button
-                    color='primary'
-                    aria-label='upload picture'
-                    component='span'
-                    variant='outlined'
-                    sx={{ height: '100%', width: '100%' }}
-                  >
-                    <PhotoCamera />
-                  </Button>
-                </label>
-              </Grid>
+      {console.log('NewItems', newItems)}
+      {console.log(items)}
+      {items && (
+        <form onSubmit={formik.handleSubmit}>
+          <Paper sx={{ display: 'grid' }} elevation={5}>
+            <FormControl sx={{ m: 2 }}>
+              <TextField
+                id='manufacturer'
+                name='manufacturer'
+                label='Manufacturer *'
+                type='text'
+                value={formik.values.manufacturer}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.manufacturer &&
+                  Boolean(formik.errors.manufacturer)
+                }
+                helperText={
+                  formik.touched.manufacturer && formik.errors.manufacturer
+                }
+              />
+            </FormControl>
+            <FormControl sx={{ m: 2 }}>
+              <TextField
+                id='title'
+                name='title'
+                label='Title *'
+                type='text'
+                value={formik.values.title}
+                onChange={formik.handleChange}
+                error={formik.touched.title && Boolean(formik.errors.title)}
+                helperText={formik.touched.title && formik.errors.title}
+              />
+            </FormControl>
+            <FormControl sx={{ m: 2 }}>
+              <TextField
+                id='description'
+                name='description'
+                label='Description *'
+                multiline
+                rows={3}
+                type='text'
+                value={formik.values.description}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.description &&
+                  Boolean(formik.errors.description)
+                }
+                helperText={
+                  formik.touched.description && formik.errors.description
+                }
+              />
+            </FormControl>
+            <FormControl sx={{ m: 2 }}>
+              <TextField
+                id='price'
+                name='price'
+                label='Price *'
+                type='number'
+                value={formik.values.price}
+                onChange={formik.handleChange}
+                error={formik.touched.price && Boolean(formik.errors.price)}
+                helperText={formik.touched.price && formik.errors.price}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position='start'>$</InputAdornment>
+                  ),
+                }}
+              />
+            </FormControl>
+            <FormControl sx={{ m: 2 }}>
+              <Grid container spacing={2}>
+                <Grid
+                  item
+                  lg={2}
+                  md={3}
+                  sm={4}
+                  xs={6}
+                  sx={{ height: '207.5px' }}
+                >
+                  <label htmlFor='icon-button-file'>
+                    <Input accept='image/*' id='icon-button-file' type='file' />
+                    <Button
+                      color='primary'
+                      aria-label='upload picture'
+                      component='span'
+                      variant='outlined'
+                      sx={{ height: '100%', width: '100%' }}
+                    >
+                      <PhotoCamera />
+                    </Button>
+                  </label>
+                </Grid>
 
-              <Grid item lg={2} md={3} sm={4} xs={6} key={Math.random()}>
-                <ImageContainer>
-                  <ClearBtn size='small'>
-                    <Clear fontSize='small' />
-                  </ClearBtn>
-                  <Image src={airForce1} alt='1' />
-                </ImageContainer>
+                <Grid item lg={2} md={3} sm={4} xs={6} key={Math.random()}>
+                  <ImageContainer>
+                    <ClearBtn size='small'>
+                      <Clear fontSize='small' />
+                    </ClearBtn>
+                    <Image src={airForce1} alt='1' />
+                  </ImageContainer>
+                </Grid>
               </Grid>
-            </Grid>
-          </FormControl>
-          <Button sx={{ m: 2 }} variant='contained' type='submit'>
-            Update
-          </Button>
-        </Paper>
-      </form>
+            </FormControl>
+            <Button sx={{ m: 2 }} variant='contained' type='submit'>
+              Update
+            </Button>
+          </Paper>
+        </form>
+      )}
     </Box>
   );
 };
