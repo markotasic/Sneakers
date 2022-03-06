@@ -24,6 +24,8 @@ const ResponsiveAppBar = (props) => {
   //   if (user.isAdmin) pages = [];
   // }
 
+  const arg = 1234;
+
   const settings = ['Profile', 'Account', 'Dashboard'];
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
