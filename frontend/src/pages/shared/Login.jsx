@@ -41,7 +41,7 @@ const Login = () => {
     validationSchema: validationSchema,
     onSubmit: (loginValues) => {
       dispatch(login(loginValues));
-      navigate('/', { replace: true });
+      // if (user) navigate('/', { replace: true });
     },
   });
 
