@@ -36,18 +36,6 @@ const Register = () => {
     (state) => state.auth
   );
 
-  useEffect(() => {
-    if (isError) {
-      console.log(message);
-    }
-
-    if (isSuccess || user) {
-      navigate('/');
-    }
-
-    dispatch(reset());
-  }, [user, isError, isSuccess, message, navigate, dispatch]);
-
   const [values, setValues] = useState({
     name: '',
     email: '',
@@ -67,6 +55,7 @@ const Register = () => {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       dispatch(register(values));
+      navigate('/', { replace: true });
     },
   });
 

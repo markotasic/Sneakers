@@ -24,7 +24,6 @@ import { useEffect } from 'react';
 
 const Collection = () => {
   const dispatch = useDispatch();
-
   const { items, isLoading, isError, message } = useSelector(
     (state) => state.items
   );
@@ -74,7 +73,7 @@ const Collection = () => {
             items.map((item) => (
               <Grid item xs={3} key={item._id}>
                 <Card>
-                  <Link to={`/${item._id}`}>
+                  <Link to={`/item/${item._id}`}>
                     <CardMedia
                       component='img'
                       height='140'

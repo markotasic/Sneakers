@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Routes, Navigate, Route } from 'react-router-dom';
+import { Routes, Navigate, Route, useNavigate } from 'react-router-dom';
 
 // MUI Components
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -27,6 +27,7 @@ import AddProduct from './pages/admin/AddProduct';
 
 import { useDispatch } from 'react-redux';
 import { logout } from './features/auth/authSlice';
+import { useSelector } from 'react-redux';
 
 import 'swiper/css/bundle';
 
@@ -38,8 +39,16 @@ function ToggleMode() {
 }
 
 const App = () => {
+  const navigate = useNavigate();
+  const { isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
+
   const dispatch = useDispatch();
-  const logoutUser = () => dispatch(logout());
+  const logoutUser = () => {
+    dispatch(logout());
+    navigate('/');
+  };
   const [mode, setMode] = React.useState('light');
 
   const user = JSON.parse(localStorage.getItem('user')) || false;
@@ -72,10 +81,8 @@ const App = () => {
   if (user.isAdmin) {
     routes = (
       <>
-        <Route path='/' element={<Navigate to='/admin' />} />
-        <Route path='/admin' element={<CollectionAdmin />} />
+        <Route path='/' element={<CollectionAdmin />} />
         <Route path='/admin/:itemId' element={<EditProduct />} />
-        <Route path='/admin/add' element={<AddProduct />} />
         <Route path='/admin/add' element={<AddProduct />} />
       </>
     );
@@ -85,7 +92,7 @@ const App = () => {
         <Route path='/' element={<Collection />} />
         <Route path='/about' element={<About />} />
         <Route path='/contact' element={<Contact />} />
-        <Route path='/:itemId' element={<Item />} />
+        <Route path='/item/:itemId' element={<Item />} />
       </>
     );
   }
@@ -104,8 +111,12 @@ const App = () => {
               <Nav mode={<ToggleMode />} logout={logoutUser} />
               <Routes>
                 {routes}
-                <Route path='/login' element={<Login />} />
-                <Route path='/register' element={<Register />} />
+                {!user && (
+                  <>
+                    <Route path='/login' element={<Login />} />
+                    <Route path='/register' element={<Register />} />
+                  </>
+                )}
                 <Route path='/404' element={<NotFound />} />
                 <Route exact={true} path='*' element={<Navigate to='/404' />} />
               </Routes>

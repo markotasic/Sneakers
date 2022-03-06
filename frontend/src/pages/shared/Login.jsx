@@ -33,13 +33,6 @@ const Login = () => {
     (state) => state.auth
   );
 
-  useEffect(() => {
-    if (isSuccess || user) {
-      navigate('/');
-      return;
-    }
-  }, [user, isError, isSuccess, message, navigate, dispatch]);
-
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -48,6 +41,7 @@ const Login = () => {
     validationSchema: validationSchema,
     onSubmit: (loginValues) => {
       dispatch(login(loginValues));
+      navigate('/', { replace: true });
     },
   });
 

@@ -12,7 +12,6 @@ import { styled } from '@mui/system';
 
 import './styles.css';
 
-import AirForce1 from '../../../images/air-force-1.jpg';
 import AirMax from '../../../images/air max.jpg';
 import Future from '../../../images/back from the future.jpg';
 import Adapt from '../../../images/adapt.jpg';
@@ -43,7 +42,7 @@ const DUMMY_ITEMS = [
     name: 'Air Force 1',
     description:
       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum ut quas eligendi dolore autem.',
-    images: [AirForce1, AirForce1v2, AirForce1v3, AirForce1v4],
+    images: [AirForce1v2, AirForce1v3, AirForce1v4],
     price: 100,
   },
   {
