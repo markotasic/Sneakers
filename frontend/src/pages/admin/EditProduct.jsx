@@ -12,7 +12,7 @@ import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import Clear from '@mui/icons-material/Clear';
 import airForce1 from '../../images/air-force-1.jpg';
 
-import { getOneItem } from '../../features/items/itemSlice';
+import { getOneItem, updateItem } from '../../features/items/itemSlice';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -63,6 +63,7 @@ const ClearBtn = styled(Button)({
 
 const EditProduct = () => {
   const { itemId } = useParams();
+  const user = JSON.parse(localStorage.getItem('user'));
   const dispatch = useDispatch();
   const [newItems, setNewItems] = useState();
 
@@ -80,9 +81,24 @@ const EditProduct = () => {
       price: item[0].price,
     },
     validationSchema: validationSchema,
-    // onChange: (values) => {
-    //   setNewItems(items);
-    // },
+    onSubmit: (values) => {
+      // dispatch(updateItem(itemId));
+      const postData = async () => {
+        const config = {
+          method: 'PATCH',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${user.token}`,
+          },
+          body: JSON.stringify(values),
+        };
+
+        await fetch(`http://localhost:5000/api/items/${itemId}/edit`, config);
+      };
+
+      postData();
+    },
   });
 
   return (

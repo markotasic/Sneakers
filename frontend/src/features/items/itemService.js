@@ -15,7 +15,7 @@ const createItem = async (itemData, token) => {
   return response.data;
 };
 
-//Get user items
+//Get all items
 const getItems = async (token) => {
   const config = {
     headers: {
@@ -28,6 +28,7 @@ const getItems = async (token) => {
   return response.data;
 };
 
+// Get one item
 const getOneItem = async (itemId, token) => {
   const config = {
     headers: {
@@ -40,6 +41,20 @@ const getOneItem = async (itemId, token) => {
   return response.data;
 };
 
+// Update item
+const updateItem = async (itemId, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await axios.post(API_URL + itemId + '/edit', config);
+
+  return response.data;
+};
+
+// Delete item
 const deleteItem = async (itemId, token) => {
   const config = {
     headers: {
@@ -56,6 +71,7 @@ const itemService = {
   createItem,
   getItems,
   getOneItem,
+  updateItem,
   deleteItem,
 };
 

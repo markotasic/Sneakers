@@ -49,6 +49,31 @@ export const deleteItem = createAsyncThunk(
   }
 );
 
+export const updateItem = createAsyncThunk(
+  'items/update',
+  async (itemId, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+
+      const headers = { givingHead: '❌' };
+
+      return await itemService.updateItem(
+        itemId,
+        JSON.stringify(headers),
+        token
+      );
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 //Get user items
 export const getItems = createAsyncThunk(
   'items/getAll',
@@ -147,6 +172,22 @@ export const itemSlice = createSlice({
         );
       })
       .addCase(deleteItem.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(updateItem.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateItem.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+
+        state.items = state.items.filter(
+          (item) => item._id === action.payload.id
+        );
+      })
+      .addCase(updateItem.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

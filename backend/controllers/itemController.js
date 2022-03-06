@@ -78,15 +78,12 @@ const updateItem = asyncHandler(async (req, res) => {
     throw new Error('User not found');
   }
 
-  // Make sure the logged in user matches the item user
-  if (item.user.toString() !== req.user.id) {
+  if (!req.user.isAdmin) {
     res.status(401);
-    throw new Error('User not authorized');
+    throw new Error('User is not an admin');
   }
 
-  const updatedItem = await Item.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-  });
+  const updatedItem = await Item.findByIdAndUpdate(req.params.id, req.body);
 
   res.status(200).json(updatedItem);
 });
@@ -102,17 +99,16 @@ const deleteItem = asyncHandler(async (req, res) => {
     throw new Error('Item not found');
   }
 
-  // // Check for user
-  // if (!req.user) {
-  //   res.status(401);
-  //   throw new Error('User not found');
-  // }
+  // Check for user
+  if (!req.user) {
+    res.status(401);
+    throw new Error('User not found');
+  }
 
-  // // Make sure the logged in user matches the item user
-  // if (item.user.toString() !== req.user.id) {
-  //   res.status(401);
-  //   throw new Error('User not authorized');
-  // }
+  if (!req.user.isAdmin) {
+    res.status(401);
+    throw new Error('User is not an admin');
+  }
 
   await item.remove();
 
