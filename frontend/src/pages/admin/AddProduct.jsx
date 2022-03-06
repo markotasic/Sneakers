@@ -13,6 +13,8 @@ import { useDispatch } from 'react-redux';
 import { createItem } from '../../features/items/itemSlice';
 
 import image1 from '../../images/adapt.jpg';
+import { useNavigate } from 'react-router-dom';
+
 const validationSchema = yup.object({
   manufacturer: yup
     .string('Enter the manufacturer')
@@ -59,6 +61,7 @@ const ClearBtn = styled(Button)({
 });
 
 const AddProduct = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const formik = useFormik({
@@ -71,6 +74,7 @@ const AddProduct = () => {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       dispatch(createItem(values));
+      navigate('/');
     },
   });
 

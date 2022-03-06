@@ -72,8 +72,6 @@ const EditProduct = () => {
 
   const item = items.filter((item) => item._id === itemId);
 
-  console.log('Item', item[0]);
-
   const formik = useFormik({
     initialValues: {
       manufacturer: item[0].manufacturer,
@@ -89,8 +87,6 @@ const EditProduct = () => {
 
   return (
     <Box marginTop={3}>
-      {console.log('NewItems', newItems)}
-      {console.log(items)}
       {items && (
         <form onSubmit={formik.handleSubmit}>
           <Paper sx={{ display: 'grid' }} elevation={5}>

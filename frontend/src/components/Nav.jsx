@@ -7,42 +7,22 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
 import { Link, useNavigate } from 'react-router-dom';
-import luffy from '../luffy.jpg';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { useSelector } from 'react-redux';
+import { fabClasses } from '@mui/material';
 
 const ResponsiveAppBar = (props) => {
-  const user = localStorage.getItem('user');
-
-  const pages = ['About', 'Contact'];
-
-  // if (user) {
-  //   if (user.isAdmin) pages = [];
-  // }
-
-  const arg = 1234;
-
-  const settings = ['Profile', 'Account', 'Dashboard'];
+  const user = JSON.parse(localStorage.getItem('user'));
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  const admin = user ? user.hasOwnProperty('isAdmin') : false;
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
-  };
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
   };
 
   const navigate = useNavigate();
@@ -103,13 +83,7 @@ const ResponsiveAppBar = (props) => {
               sx={{
                 display: { xs: 'block', md: 'none' },
               }}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign='center'>{page}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+            ></Menu>
           </Box>
           <Typography
             variant='h6'
@@ -124,54 +98,34 @@ const ResponsiveAppBar = (props) => {
             SNEAKERS
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Link
-                to={page.toLocaleLowerCase()}
-                key={page}
-                style={{ textDecoration: 'none' }}
-              >
-                <Typography margin={2} sx={{ color: 'text.primary' }}>
-                  {page}
-                </Typography>
-              </Link>
-            ))}
+            {!admin && (
+              <>
+                <Link to={'/about'} style={{ textDecoration: 'none' }}>
+                  <Typography margin={2} sx={{ color: 'text.primary' }}>
+                    About
+                  </Typography>
+                </Link>
+                <Link to={'/contact'} style={{ textDecoration: 'none' }}>
+                  <Typography margin={2} sx={{ color: 'text.primary' }}>
+                    Contact
+                  </Typography>
+                </Link>
+              </>
+            )}
           </Box>
 
           {props.mode}
 
           {user && (
-            <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title='Open settings'>
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <AccountCircleIcon fontSize='large' />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: '45px' }}
-                id='menu-appbar'
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
+            <Link to='/login'>
+              <Typography
+                margin={2}
+                sx={{ color: 'text.primary' }}
+                onClick={logoutUser}
               >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign='center'>{setting}</Typography>
-                  </MenuItem>
-                ))}
-                <MenuItem onClick={logoutUser}>
-                  <Typography textAlign='center'>Logout</Typography>
-                </MenuItem>
-              </Menu>
-            </Box>
+                Logout
+              </Typography>
+            </Link>
           )}
 
           {!user && (
