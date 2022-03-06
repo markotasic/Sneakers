@@ -27,8 +27,9 @@ const validationSchema = yup.object({
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
   );
@@ -41,7 +42,9 @@ const Login = () => {
     validationSchema: validationSchema,
     onSubmit: (loginValues) => {
       dispatch(login(loginValues));
-      // if (user) navigate('/', { replace: true });
+      if (user) {
+        navigate('/');
+      }
     },
   });
 

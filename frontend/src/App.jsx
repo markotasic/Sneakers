@@ -117,8 +117,7 @@ const App = () => {
                     <Route path='/register' element={<Register />} />
                   </>
                 )}
-                <Route path='/404' element={<NotFound />} />
-                <Route exact={true} path='*' element={<Navigate to='/404' />} />
+                <Route exact={true} path='*' element={<Navigate to='/' />} />
               </Routes>
             </Container>
           </Grid>
