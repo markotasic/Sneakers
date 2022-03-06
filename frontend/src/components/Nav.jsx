@@ -12,9 +12,18 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { Link, useNavigate } from 'react-router-dom';
 import luffy from '../luffy.jpg';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { useSelector } from 'react-redux';
 
 const ResponsiveAppBar = (props) => {
+  const user = localStorage.getItem('user');
+
   const pages = ['About', 'Contact'];
+
+  // if (user) {
+  //   if (user.isAdmin) pages = [];
+  // }
+
   const settings = ['Profile', 'Account', 'Dashboard'];
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -74,6 +83,7 @@ const ResponsiveAppBar = (props) => {
             >
               <MenuIcon />
             </IconButton>
+
             <Menu
               id='menu-appbar'
               anchorEl={anchorElNav}
@@ -127,51 +137,55 @@ const ResponsiveAppBar = (props) => {
 
           {props.mode}
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title='Open settings'>
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt='Monkey D. Luffy' src={luffy} />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id='menu-appbar'
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign='center'>{setting}</Typography>
+          {user && (
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title='Open settings'>
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <AccountCircleIcon fontSize='large' />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: '45px' }}
+                id='menu-appbar'
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {settings.map((setting) => (
+                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                    <Typography textAlign='center'>{setting}</Typography>
+                  </MenuItem>
+                ))}
+                <MenuItem onClick={logoutUser}>
+                  <Typography textAlign='center'>Logout</Typography>
                 </MenuItem>
-              ))}
-              <MenuItem onClick={logoutUser}>
-                <Typography textAlign='center'>Logout</Typography>
-              </MenuItem>
-            </Menu>
-          </Box>
+              </Menu>
+            </Box>
+          )}
 
-          <>
-            <Link to='login' style={{ textDecoration: 'none' }}>
-              <Typography margin={2} sx={{ color: 'text.primary' }}>
-                Login
-              </Typography>
-            </Link>
-            <Link to='register' style={{ textDecoration: 'none' }}>
-              <Typography margin={2} sx={{ color: 'text.primary' }}>
-                Register
-              </Typography>
-            </Link>
-          </>
+          {!user && (
+            <>
+              <Link to='login' style={{ textDecoration: 'none' }}>
+                <Typography margin={2} sx={{ color: 'text.primary' }}>
+                  Login
+                </Typography>
+              </Link>
+              <Link to='register' style={{ textDecoration: 'none' }}>
+                <Typography margin={2} sx={{ color: 'text.primary' }}>
+                  Register
+                </Typography>
+              </Link>
+            </>
+          )}
         </Toolbar>
       </Container>
     </AppBar>
