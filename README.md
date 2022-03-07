@@ -9,7 +9,7 @@ To run on local server:
 5) cd..
 6) npm run dev
 
-it should be up and running on http://localhost:5000/
+it should be up and running on http://localhost:3000/
 
 To enter the admin part of the website login with these credentials:
 email: admin@admin.com 
