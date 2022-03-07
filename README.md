@@ -18,3 +18,9 @@ password: admin123
 For user either create a new one or login with these credentials:
 email: test@test.com 
 password: test123456789
+
+The project is still not finished planning to add:
+1) Cart
+2) Image upload
+3) Product filtering
+4) Checkout, About, Contact pages.
