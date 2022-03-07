@@ -5,7 +5,7 @@ To run on local server:
 1) navigate to Sneakers folder
 2) in the terminal 'npm install'
 3) cd frontend
-4) run npm install 'npm install'
+4) run 'npm install'
 5) cd..
 6) npm run dev
 
