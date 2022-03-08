@@ -8,7 +8,6 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import { Link, useNavigate } from 'react-router-dom';
-import { fabClasses } from '@mui/material';
 
 const ResponsiveAppBar = (props) => {
   const user = JSON.parse(localStorage.getItem('user'));
