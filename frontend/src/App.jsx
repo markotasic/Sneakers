@@ -3,16 +3,16 @@ import { Routes, Navigate, Route, useNavigate } from 'react-router-dom';
 
 // MUI Components
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { Container, Grid, Box } from '@mui/material';
+import { Container, Grid, Box, IconButton } from '@mui/material';
 import { blueGrey } from '@mui/material/colors';
-import Switch from './components/UI/Switch';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 
 import Nav from './components/Nav';
 
 // Shared Pages
 import Login from './pages/shared/Login';
 import Register from './pages/shared/Register';
-import NotFound from './pages/shared/NotFound';
 
 // User Pages
 import Collection from './pages/user/Collection';
@@ -25,33 +25,29 @@ import CollectionAdmin from './pages/admin/CollectionAdmin';
 import EditProduct from './pages/admin/EditProduct';
 import AddProduct from './pages/admin/AddProduct';
 
-import { useDispatch } from 'react-redux';
-import { logout } from './features/auth/authSlice';
-import { useSelector } from 'react-redux';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { logout, reset } from './features/auth/authSlice';
 import 'swiper/css/bundle';
 
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
-function ToggleMode() {
-  const colorMode = React.useContext(ColorModeContext);
-  return <Switch onClick={colorMode.toggleColorMode} />;
-}
-
 const App = () => {
   const navigate = useNavigate();
-  const { isLoading, isError, isSuccess, message } = useSelector(
-    (state) => state.auth
-  );
 
   const dispatch = useDispatch();
   const logoutUser = () => {
     dispatch(logout());
+    dispatch(reset());
     navigate('/');
   };
-  const [mode, setMode] = React.useState('light');
+  const getColorMode = localStorage.getItem('colorMode') || 'light';
+  const [mode, setMode] = React.useState(getColorMode);
 
-  const user = JSON.parse(localStorage.getItem('user')) || false;
+  React.useEffect(() => {
+    localStorage.setItem('colorMode', mode);
+  }, [mode]);
+
+  const { user } = useSelector((state) => state.auth);
 
   const colorMode = React.useMemo(
     () => ({
@@ -77,8 +73,25 @@ const App = () => {
     [mode]
   );
 
+  function ToggleMode() {
+    const colorMode = React.useContext(ColorModeContext);
+    return (
+      <IconButton
+        sx={{ ml: 1 }}
+        onClick={colorMode.toggleColorMode}
+        color='inherit'
+      >
+        {theme.palette.mode === 'dark' ? (
+          <Brightness7Icon />
+        ) : (
+          <Brightness4Icon />
+        )}
+      </IconButton>
+    );
+  }
+
   let routes;
-  if (user.isAdmin) {
+  if (user?.isAdmin) {
     routes = (
       <>
         <Route path='/' element={<CollectionAdmin />} />

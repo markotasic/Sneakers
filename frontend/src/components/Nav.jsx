@@ -8,9 +8,18 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import { Link, useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { logout, reset } from '../features/auth/authSlice';
 
 const ResponsiveAppBar = (props) => {
-  const user = JSON.parse(localStorage.getItem('user'));
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+
+  const onLogout = () => {
+    dispatch(logout());
+    dispatch(reset());
+  };
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
 
@@ -22,12 +31,6 @@ const ResponsiveAppBar = (props) => {
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
-  };
-
-  const navigate = useNavigate();
-  const logoutUser = async () => {
-    await props.logout();
-    navigate('/login');
   };
 
   return (
@@ -116,12 +119,8 @@ const ResponsiveAppBar = (props) => {
           {props.mode}
 
           {user && (
-            <Link to='/login'>
-              <Typography
-                margin={2}
-                sx={{ color: 'text.primary' }}
-                onClick={logoutUser}
-              >
+            <Link to='/' onClick={onLogout}>
+              <Typography margin={2} sx={{ color: 'text.primary' }}>
                 Logout
               </Typography>
             </Link>

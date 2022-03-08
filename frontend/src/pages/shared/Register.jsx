@@ -12,6 +12,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import TextField from '@mui/material/TextField';
 import { Paper, Grid, Typography } from '@mui/material';
 import { register, reset } from '../../features/auth/authSlice';
+import Spinner from '../../components/UI/Spinner';
 
 const validationSchema = yup.object({
   name: yup.string('Enter your name').required('Name is required'),
@@ -36,6 +37,18 @@ const Register = () => {
     (state) => state.auth
   );
 
+  useEffect(() => {
+    if (isError) {
+      alert(message);
+    }
+
+    if (isSuccess || user) {
+      navigate('/');
+    }
+
+    dispatch(reset());
+  }, [user, isError, isSuccess, message, navigate, dispatch]);
+
   const [values, setValues] = useState({
     name: '',
     email: '',
@@ -55,7 +68,6 @@ const Register = () => {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       dispatch(register(values));
-      navigate('/', { replace: true });
     },
   });
 
@@ -82,123 +94,131 @@ const Register = () => {
   };
 
   return (
-    <Grid
-      container
-      spacing={0}
-      direction='column'
-      alignItems='center'
-      justify='center'
-      mt={'20vh'}
-    >
-      <Grid>
-        <form onSubmit={formik.handleSubmit}>
-          <Paper sx={{ display: 'grid', minWidth: 400 }} elevation={5}>
-            <Typography margin={2} variant='h4' component='h2'>
-              Register
-            </Typography>
-            <FormControl sx={{ m: 2 }}>
-              <TextField
-                id='name'
-                name='name'
-                variant='filled'
-                label='Name'
-                type='text'
-                value={formik.values.name}
-                onChange={formik.handleChange}
-                error={formik.touched.name && Boolean(formik.errors.name)}
-                helperText={formik.touched.name && formik.errors.name}
-              />
-            </FormControl>
-            <FormControl sx={{ m: 2 }}>
-              <TextField
-                id='email'
-                name='email'
-                variant='filled'
-                label='Email'
-                type='text'
-                value={formik.values.email}
-                onChange={formik.handleChange}
-                error={formik.touched.email && Boolean(formik.errors.email)}
-                helperText={formik.touched.email && formik.errors.email}
-              />
-            </FormControl>
-            <FormControl sx={{ m: 2 }}>
-              <TextField
-                id='password'
-                name='password'
-                variant='filled'
-                label='Password'
-                type={values.showPassword ? 'text' : 'password'}
-                value={formik.values.password}
-                onChange={formik.handleChange}
-                error={
-                  formik.touched.password && Boolean(formik.errors.password)
-                }
-                helperText={formik.touched.password && formik.errors.password}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position='end'>
-                      <IconButton
-                        aria-label='toggle password visibility'
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                        edge='end'
-                      >
-                        {values.showPassword ? (
-                          <VisibilityOff />
-                        ) : (
-                          <Visibility />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </FormControl>
-            <FormControl sx={{ m: 2 }}>
-              <TextField
-                id='passwordConfirm'
-                name='passwordConfirm'
-                variant='filled'
-                label='Confirm Password'
-                type={values.showPasswordConfirm ? 'text' : 'password'}
-                value={formik.values.passwordConfirm}
-                onChange={formik.handleChange}
-                error={
-                  formik.touched.passwordConfirm &&
-                  Boolean(formik.errors.passwordConfirm)
-                }
-                helperText={
-                  formik.touched.passwordConfirm &&
-                  formik.errors.passwordConfirm
-                }
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position='end'>
-                      <IconButton
-                        aria-label='toggle password visibility'
-                        onClick={handleClickShowPasswordConfirm}
-                        onMouseDown={handleMouseDownPasswordConfirm}
-                        edge='end'
-                      >
-                        {values.showPasswordConfirm ? (
-                          <VisibilityOff />
-                        ) : (
-                          <Visibility />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </FormControl>
-            <Button sx={{ m: 2 }} variant='contained' type='submit'>
-              Register
-            </Button>
-          </Paper>
-        </form>
-      </Grid>
-    </Grid>
+    <>
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <Grid
+          container
+          spacing={0}
+          direction='column'
+          alignItems='center'
+          justify='center'
+          mt={'20vh'}
+        >
+          <Grid>
+            <form onSubmit={formik.handleSubmit}>
+              <Paper sx={{ display: 'grid', minWidth: 400 }} elevation={5}>
+                <Typography margin={2} variant='h4' component='h2'>
+                  Register
+                </Typography>
+                <FormControl sx={{ m: 2 }}>
+                  <TextField
+                    id='name'
+                    name='name'
+                    variant='filled'
+                    label='Name'
+                    type='text'
+                    value={formik.values.name}
+                    onChange={formik.handleChange}
+                    error={formik.touched.name && Boolean(formik.errors.name)}
+                    helperText={formik.touched.name && formik.errors.name}
+                  />
+                </FormControl>
+                <FormControl sx={{ m: 2 }}>
+                  <TextField
+                    id='email'
+                    name='email'
+                    variant='filled'
+                    label='Email'
+                    type='text'
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    error={formik.touched.email && Boolean(formik.errors.email)}
+                    helperText={formik.touched.email && formik.errors.email}
+                  />
+                </FormControl>
+                <FormControl sx={{ m: 2 }}>
+                  <TextField
+                    id='password'
+                    name='password'
+                    variant='filled'
+                    label='Password'
+                    type={values.showPassword ? 'text' : 'password'}
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
+                    error={
+                      formik.touched.password && Boolean(formik.errors.password)
+                    }
+                    helperText={
+                      formik.touched.password && formik.errors.password
+                    }
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position='end'>
+                          <IconButton
+                            aria-label='toggle password visibility'
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                            edge='end'
+                          >
+                            {values.showPassword ? (
+                              <VisibilityOff />
+                            ) : (
+                              <Visibility />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </FormControl>
+                <FormControl sx={{ m: 2 }}>
+                  <TextField
+                    id='passwordConfirm'
+                    name='passwordConfirm'
+                    variant='filled'
+                    label='Confirm Password'
+                    type={values.showPasswordConfirm ? 'text' : 'password'}
+                    value={formik.values.passwordConfirm}
+                    onChange={formik.handleChange}
+                    error={
+                      formik.touched.passwordConfirm &&
+                      Boolean(formik.errors.passwordConfirm)
+                    }
+                    helperText={
+                      formik.touched.passwordConfirm &&
+                      formik.errors.passwordConfirm
+                    }
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position='end'>
+                          <IconButton
+                            aria-label='toggle password visibility'
+                            onClick={handleClickShowPasswordConfirm}
+                            onMouseDown={handleMouseDownPasswordConfirm}
+                            edge='end'
+                          >
+                            {values.showPasswordConfirm ? (
+                              <VisibilityOff />
+                            ) : (
+                              <Visibility />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </FormControl>
+                <Button sx={{ m: 2 }} variant='contained' type='submit'>
+                  Register
+                </Button>
+              </Paper>
+            </form>
+          </Grid>
+        </Grid>
+      )}
+    </>
   );
 };
 

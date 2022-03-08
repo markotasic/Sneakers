@@ -22,12 +22,11 @@ import Select from '../../components/UI/Select';
 import { deleteItem, getItems } from '../../features/items/itemSlice';
 
 import AirForce1 from '../../images/air-force-1.jpg';
+import Spinner from '../../components/UI/Spinner';
 
 const Collection = () => {
   const dispatch = useDispatch();
-  const { items, isLoading, isError, message } = useSelector(
-    (state) => state.items
-  );
+  const { items, isLoading } = useSelector((state) => state.items);
 
   // Get all items
   useEffect(() => {
@@ -80,6 +79,7 @@ const Collection = () => {
           </Box>
           <Select />
         </Box>
+        {isLoading && <Spinner />}
         <Grid container spacing={2}>
           {items[0] &&
             items.map((item) => (

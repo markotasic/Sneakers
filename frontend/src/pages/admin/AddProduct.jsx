@@ -40,7 +40,6 @@ const AddProduct = () => {
       title: '',
       description: '',
       price: '',
-      images: [],
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {

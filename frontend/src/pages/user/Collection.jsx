@@ -17,7 +17,8 @@ import Accordion from '../../components/UI/Accordion';
 import Select from '../../components/UI/Select';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { getItems } from '../../features/items/itemSlice';
+import { getItems, reset } from '../../features/items/itemSlice';
+import Spinner from '../../components/UI/Spinner';
 
 import AirForce1 from '../../images/air-force-1.jpg';
 import { useEffect } from 'react';
@@ -30,6 +31,10 @@ const Collection = () => {
 
   useEffect(() => {
     dispatch(getItems());
+
+    return () => {
+      dispatch(reset());
+    };
   }, [dispatch]);
 
   return (
@@ -68,6 +73,7 @@ const Collection = () => {
           </Typography>
           <Select />
         </Box>
+        {isLoading && <Spinner />}
         <Grid container spacing={2}>
           {items[0] &&
             items.map((item) => (

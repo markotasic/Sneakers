@@ -1,7 +1,7 @@
-import { Grid, Button, Paper, imageListItemBarClasses } from '@mui/material';
+import { Grid, Button, Paper } from '@mui/material';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { styled } from '@mui/system';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Clear from '@mui/icons-material/Clear';
 
 const Input = styled('input')({

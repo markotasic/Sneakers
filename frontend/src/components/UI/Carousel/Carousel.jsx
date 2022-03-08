@@ -42,7 +42,7 @@ const DUMMY_ITEMS = [
     name: 'Air Force 1',
     description:
       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum ut quas eligendi dolore autem.',
-    images: [AirForce1v2, AirForce1v3, AirForce1v4],
+    images: [AirForce1v2],
     price: 100,
   },
   {

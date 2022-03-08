@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import Button from '@mui/material/Button';
@@ -32,6 +32,7 @@ const validationSchema = yup.object({
 const EditProduct = () => {
   const { itemId } = useParams();
   const user = JSON.parse(localStorage.getItem('user'));
+  const navigate = useNavigate();
 
   const { items } = useSelector((state) => state.items);
 
@@ -59,6 +60,8 @@ const EditProduct = () => {
         };
 
         await fetch(`http://localhost:5000/api/items/${itemId}/edit`, config);
+
+        navigate('/');
       };
 
       postData();

@@ -79,9 +79,7 @@ export const getItems = createAsyncThunk(
   'items/getAll',
   async (_, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user.token;
-
-      return await itemService.getItems(token);
+      return await itemService.getItems();
     } catch (error) {
       const message =
         (error.response &&

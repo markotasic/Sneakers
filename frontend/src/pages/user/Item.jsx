@@ -10,6 +10,7 @@ import Carousel from '../../components/UI/Carousel/Carousel';
 import { useSelector, useDispatch } from 'react-redux';
 import { Fragment, useEffect } from 'react';
 import { getOneItem } from '../../features/items/itemSlice';
+import Spinner from '../../components/UI/Spinner';
 
 const Item = () => {
   const { itemId } = useParams();
@@ -37,6 +38,7 @@ const Item = () => {
         <Carousel item={items} />
 
         <Grid item xs={5}>
+          {isLoading && <Spinner />}
           <Typography
             variant='h6'
             component='h4'
