@@ -37,7 +37,7 @@ const ImageUpload = (props) => {
     for (let i = 0; i < files.length; i++) {
       (function (file) {
         var reader = new FileReader();
-        reader.onload = (file) => {
+        reader.onload = () => {
           setPreviewUrl((oldUrl) => [...oldUrl, reader.result]);
         };
         reader.readAsDataURL(file);
@@ -72,7 +72,12 @@ const ImageUpload = (props) => {
         previewUrl.map((item, i) => (
           <Grid item lg={2} md={3} sm={4} xs={6} key={i}>
             <ImageContainer>
-              <ClearBtn size='small'>
+              <ClearBtn
+                size='small'
+                onClick={() => {
+                  setPreviewUrl(previewUrl.filter((name) => name !== item));
+                }}
+              >
                 <Clear fontSize='small' />
               </ClearBtn>
               <Image src={item} alt='1' />

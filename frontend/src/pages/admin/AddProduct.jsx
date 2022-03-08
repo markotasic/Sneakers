@@ -3,17 +3,11 @@ import * as yup from 'yup';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
-import { Paper, Grid, Box } from '@mui/material';
+import { Paper, Box } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
-import { styled } from '@mui/material/styles';
 import ImageUpload from '../../components/ImageUpload/ImageUpload';
-
-import Clear from '@mui/icons-material/Clear';
-
 import { useDispatch } from 'react-redux';
 import { createItem } from '../../features/items/itemSlice';
-
-import image1 from '../../images/adapt.jpg';
 import { useNavigate } from 'react-router-dom';
 
 const validationSchema = yup.object({
@@ -36,27 +30,6 @@ const validationSchema = yup.object({
     .required('Price is required'),
 });
 
-const Image = styled('img')({
-  width: '100%',
-  height: '150px',
-  objectFit: 'cover',
-  borderRadius: '5px',
-});
-
-const ImageContainer = styled(Paper)({
-  padding: '7.5px',
-  justifyItems: 'end',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'flex-end',
-});
-
-const ClearBtn = styled(Button)({
-  minWidth: '20px',
-  marginBottom: '5px',
-  height: '20px',
-});
-
 const AddProduct = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -67,6 +40,7 @@ const AddProduct = () => {
       title: '',
       description: '',
       price: '',
+      images: [],
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -75,9 +49,6 @@ const AddProduct = () => {
     },
   });
 
-  const inputHandler = (event) => {
-    console.log(event);
-  };
   return (
     <Box marginTop={3}>
       <form onSubmit={formik.handleSubmit}>
