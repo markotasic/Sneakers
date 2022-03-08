@@ -1,5 +1,5 @@
 import { useFormik } from 'formik';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
@@ -11,7 +11,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import TextField from '@mui/material/TextField';
 import { Paper, Grid, Typography } from '@mui/material';
-import { login, reset } from '../../features/auth/authSlice';
+import { login } from '../../features/auth/authSlice';
 
 const validationSchema = yup.object({
   email: yup
@@ -30,9 +30,7 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { user, isLoading, isError, isSuccess, message } = useSelector(
-    (state) => state.auth
-  );
+  const { user, isError, message } = useSelector((state) => state.auth);
 
   const formik = useFormik({
     initialValues: {

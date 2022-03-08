@@ -1,20 +1,12 @@
 import { useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
-import { useState, useEffect } from 'react';
 import * as yup from 'yup';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
-import { Paper, Grid, Box } from '@mui/material';
+import { Paper, Box } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
-import { styled } from '@mui/material/styles';
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import Clear from '@mui/icons-material/Clear';
-import airForce1 from '../../images/air-force-1.jpg';
-
-import { getOneItem, updateItem } from '../../features/items/itemSlice';
-
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import ImageUpload from '../../components/ImageUpload/ImageUpload';
 
 const validationSchema = yup.object({
@@ -37,40 +29,11 @@ const validationSchema = yup.object({
     .required('Price is required'),
 });
 
-const Input = styled('input')({
-  display: 'none',
-});
-
-const Image = styled('img')({
-  width: '100%',
-  height: '150px',
-  objectFit: 'cover',
-  borderRadius: '5px',
-});
-
-const ImageContainer = styled(Paper)({
-  padding: '7.5px',
-  justifyItems: 'end',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'flex-end',
-});
-
-const ClearBtn = styled(Button)({
-  minWidth: '20px',
-  marginBottom: '5px',
-  height: '20px',
-});
-
 const EditProduct = () => {
   const { itemId } = useParams();
   const user = JSON.parse(localStorage.getItem('user'));
-  const dispatch = useDispatch();
-  const [newItems, setNewItems] = useState();
 
-  const { items, isLoading, isError, message } = useSelector(
-    (state) => state.items
-  );
+  const { items } = useSelector((state) => state.items);
 
   const item = items.filter((item) => item._id === itemId);
 
