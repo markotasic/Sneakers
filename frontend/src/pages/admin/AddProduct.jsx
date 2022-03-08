@@ -6,7 +6,8 @@ import TextField from '@mui/material/TextField';
 import { Paper, Grid, Box } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
 import { styled } from '@mui/material/styles';
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import ImageUpload from '../../components/ImageUpload/ImageUpload';
+
 import Clear from '@mui/icons-material/Clear';
 
 import { useDispatch } from 'react-redux';
@@ -33,10 +34,6 @@ const validationSchema = yup.object({
     .number()
     .min(10, 'The price should not be less than 10$')
     .required('Price is required'),
-});
-
-const Input = styled('input')({
-  display: 'none',
 });
 
 const Image = styled('img')({
@@ -78,6 +75,9 @@ const AddProduct = () => {
     },
   });
 
+  const inputHandler = (event) => {
+    console.log(event);
+  };
   return (
     <Box marginTop={3}>
       <form onSubmit={formik.handleSubmit}>
@@ -147,62 +147,7 @@ const AddProduct = () => {
             />
           </FormControl>
           <FormControl sx={{ m: 2 }}>
-            <Grid container spacing={2}>
-              <Grid item lg={2} md={3} sm={4} xs={6}>
-                <label htmlFor='icon-button-file'>
-                  <Input accept='image/*' id='icon-button-file' type='file' />
-                  <Button
-                    color='primary'
-                    aria-label='upload picture'
-                    component='span'
-                    variant='outlined'
-                    sx={{ height: '100%', width: '100%' }}
-                  >
-                    <PhotoCamera />
-                  </Button>
-                </label>
-              </Grid>
-              <Grid item lg={2} md={3} sm={4} xs={6}>
-                <ImageContainer>
-                  <ClearBtn size='small'>
-                    <Clear fontSize='small' />
-                  </ClearBtn>
-                  <Image src={image1} alt='1' />
-                </ImageContainer>
-              </Grid>
-              <Grid item lg={2} md={3} sm={4} xs={6}>
-                <ImageContainer>
-                  <ClearBtn size='small'>
-                    <Clear fontSize='small' />
-                  </ClearBtn>
-                  <Image src={image1} alt='1' />
-                </ImageContainer>
-              </Grid>
-              <Grid item lg={2} md={3} sm={4} xs={6}>
-                <ImageContainer>
-                  <ClearBtn size='small'>
-                    <Clear fontSize='small' />
-                  </ClearBtn>
-                  <Image src={image1} alt='1' />
-                </ImageContainer>
-              </Grid>
-              <Grid item lg={2} md={3} sm={4} xs={6}>
-                <ImageContainer>
-                  <ClearBtn size='small'>
-                    <Clear fontSize='small' />
-                  </ClearBtn>
-                  <Image src={image1} alt='1' />
-                </ImageContainer>
-              </Grid>
-              <Grid item lg={2} md={3} sm={4} xs={6}>
-                <ImageContainer>
-                  <ClearBtn size='small'>
-                    <Clear fontSize='small' />
-                  </ClearBtn>
-                  <Image src={image1} alt='1' />
-                </ImageContainer>
-              </Grid>
-            </Grid>
+            <ImageUpload />
           </FormControl>
           <Button sx={{ m: 2 }} variant='contained' type='submit'>
             Add

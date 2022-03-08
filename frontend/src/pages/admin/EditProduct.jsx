@@ -15,6 +15,7 @@ import airForce1 from '../../images/air-force-1.jpg';
 import { getOneItem, updateItem } from '../../features/items/itemSlice';
 
 import { useDispatch, useSelector } from 'react-redux';
+import ImageUpload from '../../components/ImageUpload/ImageUpload';
 
 const validationSchema = yup.object({
   manufacturer: yup
@@ -172,38 +173,7 @@ const EditProduct = () => {
               />
             </FormControl>
             <FormControl sx={{ m: 2 }}>
-              <Grid container spacing={2}>
-                <Grid
-                  item
-                  lg={2}
-                  md={3}
-                  sm={4}
-                  xs={6}
-                  sx={{ height: '207.5px' }}
-                >
-                  <label htmlFor='icon-button-file'>
-                    <Input accept='image/*' id='icon-button-file' type='file' />
-                    <Button
-                      color='primary'
-                      aria-label='upload picture'
-                      component='span'
-                      variant='outlined'
-                      sx={{ height: '100%', width: '100%' }}
-                    >
-                      <PhotoCamera />
-                    </Button>
-                  </label>
-                </Grid>
-
-                <Grid item lg={2} md={3} sm={4} xs={6} key={Math.random()}>
-                  <ImageContainer>
-                    <ClearBtn size='small'>
-                      <Clear fontSize='small' />
-                    </ClearBtn>
-                    <Image src={airForce1} alt='1' />
-                  </ImageContainer>
-                </Grid>
-              </Grid>
+              <ImageUpload />
             </FormControl>
             <Button sx={{ m: 2 }} variant='contained' type='submit'>
               Update
