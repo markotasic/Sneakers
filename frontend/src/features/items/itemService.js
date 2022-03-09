@@ -16,27 +16,15 @@ const createItem = async (itemData, token) => {
 };
 
 //Get all items
-const getItems = async (token) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-
-  const response = await axios.get(API_URL, config);
+const getItems = async () => {
+  const response = await axios.get(API_URL);
 
   return response.data;
 };
 
 // Get one item
-const getOneItem = async (itemId, token) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-
-  const response = await axios.get(API_URL + itemId, config);
+const getOneItem = async (itemId) => {
+  const response = await axios.get(API_URL + itemId);
 
   return response.data;
 };

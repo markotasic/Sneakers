@@ -9,7 +9,7 @@ import Carousel from '../../components/UI/Carousel/Carousel';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { Fragment, useEffect } from 'react';
-import { getOneItem } from '../../features/items/itemSlice';
+import { getOneItem, reset } from '../../features/items/itemSlice';
 import Spinner from '../../components/UI/Spinner';
 
 const Item = () => {
