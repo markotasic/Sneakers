@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import { Routes, Navigate, Route, useNavigate } from 'react-router-dom';
 
 // MUI Components
@@ -28,13 +29,19 @@ import AddProduct from './pages/admin/AddProduct';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, reset } from './features/auth/authSlice';
 import 'swiper/css/bundle';
+import { setInitialCartItems } from './features/cart/cartSlice';
 
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
 const App = () => {
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
+
+  // Set initial cart
+  useEffect(() => {
+    dispatch(setInitialCartItems());
+  }, [dispatch]);
+
   const logoutUser = () => {
     dispatch(logout());
     dispatch(reset());
@@ -82,9 +89,9 @@ const App = () => {
         color='inherit'
       >
         {theme.palette.mode === 'dark' ? (
-          <Brightness7Icon />
+          <Brightness7Icon color='action' />
         ) : (
-          <Brightness4Icon />
+          <Brightness4Icon color='action' />
         )}
       </IconButton>
     );

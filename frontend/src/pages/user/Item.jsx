@@ -1,20 +1,79 @@
 import { useParams } from 'react-router-dom';
 
 import { Box, Button, Typography, Grid } from '@mui/material';
-import ShoppingCart from '@mui/icons-material/ShoppingCartCheckoutOutlined';
+import AddShoppingCartTwoToneIcon from '@mui/icons-material/AddShoppingCartTwoTone';
 import Add from '@mui/icons-material/Add';
 import Remove from '@mui/icons-material/Remove';
 
 import Carousel from '../../components/UI/Carousel/Carousel';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { Fragment, useEffect } from 'react';
-import { getOneItem, reset } from '../../features/items/itemSlice';
+import { Fragment, useEffect, useState } from 'react';
+import { getOneItem } from '../../features/items/itemSlice';
 import Spinner from '../../components/UI/Spinner';
+import { addToCart } from '../../features/cart/cartSlice';
 
 const Item = () => {
   const { itemId } = useParams();
   const dispatch = useDispatch();
+
+  const [amount, setAmount] = useState(1);
+  const [cardData, setCardData] = useState([]);
+
+  const decrement = () => {
+    if (amount <= 1) return;
+    setAmount(amount - 1);
+  };
+  const increment = () => {
+    if (amount >= 5) return;
+    setAmount(amount + 1);
+  };
+
+  const storageItem = localStorage.getItem('Item');
+
+  useEffect(() => {
+    if (!storageItem) return;
+    const parsedItem = JSON.parse(storageItem);
+
+    setCardData(parsedItem);
+  }, [storageItem]);
+
+  const createItemInCart = (item) => {
+    const index = cardData.findIndex((item) => item.id === itemId);
+    if (index > -1) {
+      setCardData((oldArray) => {
+        const newArray = [...oldArray];
+        newArray[index] = {
+          ...newArray[index],
+          amount: amount + oldArray[index].amount,
+        };
+
+        localStorage.setItem('Item', JSON.stringify(newArray));
+        dispatch(addToCart(newArray));
+        return newArray;
+      });
+      // dispatch(addToCart(cardData));
+    } else {
+      setCardData((oldArray) => {
+        console.log(item._id);
+        const newArray = [
+          ...oldArray,
+          {
+            id: item._id,
+            title: item.title,
+            image: '',
+            price: item.price,
+            amount,
+          },
+        ];
+
+        localStorage.setItem('Item', JSON.stringify(newArray));
+        dispatch(addToCart(newArray));
+        return newArray;
+      });
+      // dispatch(addToCart(cardData));
+    }
+  };
 
   const { items, isLoading, isError, message } = useSelector(
     (state) => state.items
@@ -87,15 +146,17 @@ const Item = () => {
               <Button
                 size='large'
                 sx={{ paddingY: '20px', borderRadius: '15px' }}
+                onClick={decrement}
               >
                 <Remove />
               </Button>
               <Typography variant='h6' component='p' marginX={2}>
-                4
+                {amount}
               </Typography>
               <Button
                 size='large'
                 sx={{ paddingY: '20px', borderRadius: '15px' }}
+                onClick={increment}
               >
                 <Add />
               </Button>
@@ -108,9 +169,12 @@ const Item = () => {
                 borderRadius: '15px',
                 paddingY: '15px',
               }}
+              onClick={() => {
+                createItemInCart(items);
+              }}
             >
-              <ShoppingCart />
-              <Typography variant='h6' component='p'>
+              <AddShoppingCartTwoToneIcon />
+              <Typography variant='h6' component='p' marginLeft='20px'>
                 Add to cart
               </Typography>
             </Button>
