@@ -9,6 +9,7 @@ import ImageUpload from '../../components/ImageUpload/ImageUpload';
 import { useDispatch } from 'react-redux';
 import { createItem } from '../../features/items/itemSlice';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 const validationSchema = yup.object({
   manufacturer: yup
@@ -34,12 +35,31 @@ const AddProduct = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const [previewUrl, setPreviewUrl] = useState([]);
+
+  const pickedHandler = (e) => {
+    let files = e.target.files;
+    for (let i = 0; i < files.length; i++) {
+      (function (file) {
+        var reader = new FileReader();
+        reader.onload = () => {
+          setPreviewUrl((oldUrl) => [...oldUrl, reader.result]);
+        };
+        reader.readAsDataURL(file);
+      })(files[i]);
+    }
+  };
+
+  const removeImages = (imageId) => {
+    setPreviewUrl(previewUrl.filter((name) => name !== imageId));
+  };
+
   const formik = useFormik({
     initialValues: {
       manufacturer: '',
       title: '',
       description: '',
-      price: '',
+      price: +'',
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -105,7 +125,7 @@ const AddProduct = () => {
               name='price'
               label='Price *'
               type='number'
-              value={formik.values.price}
+              value={+formik.values.price}
               onChange={formik.handleChange}
               error={formik.touched.price && Boolean(formik.errors.price)}
               helperText={formik.touched.price && formik.errors.price}
@@ -117,7 +137,11 @@ const AddProduct = () => {
             />
           </FormControl>
           <FormControl sx={{ m: 2 }}>
-            <ImageUpload />
+            <ImageUpload
+              pickedHandler={pickedHandler}
+              previewUrl={previewUrl}
+              removeImages={removeImages}
+            />
           </FormControl>
           <Button sx={{ m: 2 }} variant='contained' type='submit'>
             Add

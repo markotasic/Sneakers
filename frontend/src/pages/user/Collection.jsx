@@ -30,7 +30,7 @@ const Collection = () => {
   );
 
   useEffect(() => {
-    dispatch(getItems());
+    dispatch(getItems('asc'));
 
     return () => {
       dispatch(reset());

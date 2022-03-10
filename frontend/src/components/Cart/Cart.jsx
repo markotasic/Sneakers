@@ -1,4 +1,4 @@
-import { ShoppingCart, Delete } from '@mui/icons-material';
+import Delete from '@mui/icons-material/Delete';
 import ShoppingCartTwoToneIcon from '@mui/icons-material/ShoppingCartTwoTone';
 import {
   Button,

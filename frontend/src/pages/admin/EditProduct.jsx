@@ -43,7 +43,7 @@ const EditProduct = () => {
       manufacturer: item[0].manufacturer,
       title: item[0].title,
       description: item[0].description,
-      price: item[0].price,
+      price: +item[0].price,
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {

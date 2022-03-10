@@ -16,8 +16,9 @@ const createItem = async (itemData, token) => {
 };
 
 //Get all items
-const getItems = async () => {
-  const response = await axios.get(API_URL);
+const getItems = async (sort) => {
+  console.log('21 itemService', sort);
+  const response = await axios.get(API_URL, { todo: 'Buy the milk' });
 
   return response.data;
 };

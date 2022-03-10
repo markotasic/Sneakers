@@ -15,7 +15,7 @@ const itemSchema = mongoose.Schema(
       required: [true, 'Please add a description'],
     },
     price: {
-      type: String,
+      type: Number,
       required: [true, 'Please add a price'],
     },
   },

@@ -74,12 +74,13 @@ export const updateItem = createAsyncThunk(
   }
 );
 
-//Get user items
+//Get items
 export const getItems = createAsyncThunk(
   'items/getAll',
-  async (_, thunkAPI) => {
+  async (sort, thunkAPI) => {
     try {
-      return await itemService.getItems();
+      console.log('83 itemSlice', sort);
+      return await itemService.getItems(sort);
     } catch (error) {
       const message =
         (error.response &&

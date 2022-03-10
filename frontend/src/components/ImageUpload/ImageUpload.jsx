@@ -30,21 +30,6 @@ const ClearBtn = styled(Button)({
 });
 
 const ImageUpload = (props) => {
-  const [previewUrl, setPreviewUrl] = useState([]);
-
-  const pickedHandler = (e) => {
-    let files = e.target.files;
-    for (let i = 0; i < files.length; i++) {
-      (function (file) {
-        var reader = new FileReader();
-        reader.onload = () => {
-          setPreviewUrl((oldUrl) => [...oldUrl, reader.result]);
-        };
-        reader.readAsDataURL(file);
-      })(files[i]);
-    }
-  };
-
   return (
     <Grid container spacing={2}>
       <Grid item lg={2} md={3} sm={4} xs={6} sx={{ height: '207.5px' }}>
@@ -54,7 +39,7 @@ const ImageUpload = (props) => {
             id='icon-button-file'
             type='file'
             multiple
-            onChange={pickedHandler}
+            onChange={props.pickedHandler}
           />
           <Button
             color='primary'
@@ -68,14 +53,14 @@ const ImageUpload = (props) => {
         </label>
       </Grid>
 
-      {previewUrl.length > 0 &&
-        previewUrl.map((item, i) => (
+      {props.previewUrl.length > 0 &&
+        props.previewUrl.map((item, i) => (
           <Grid item lg={2} md={3} sm={4} xs={6} key={i}>
             <ImageContainer>
               <ClearBtn
                 size='small'
                 onClick={() => {
-                  setPreviewUrl(previewUrl.filter((name) => name !== item));
+                  props.removeImages(item);
                 }}
               >
                 <Clear fontSize='small' />

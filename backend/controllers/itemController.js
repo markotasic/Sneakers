@@ -1,13 +1,14 @@
 const asyncHandler = require('express-async-handler');
-const User = require('../models/userModel');
-
 const Item = require('../models/itemModel');
 
 // @desc    Get item
 // @route   GET /api/items
 // @access  Public
 const getItems = asyncHandler(async (req, res) => {
-  const items = await Item.find();
+  console.log('sort', req.body);
+  const items = await Item.find({}).sort({
+    price: 1,
+  });
 
   res.status(200).json(items);
 });
@@ -16,13 +17,10 @@ const getItems = asyncHandler(async (req, res) => {
 // @route   POST /api/items
 // @access  Private
 const setItem = asyncHandler(async (req, res) => {
-  const { email } = req.body;
-
   // console.log(req.body);
 
   // const user = await User.findOne({ email });
   // console.log(user);
-  console.log();
 
   // if (
   //   !req.body.manufacturer ||
