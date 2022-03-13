@@ -32,8 +32,8 @@ import filters from '../../filters/filters.json';
 const Collection = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [sortOrder, setSortOrder] = useState([]);
+  const [searchParams] = useSearchParams();
+  const [sortOrder, setSortOrder] = useState();
   const [query, setQuery] = useState([]);
 
   const { items, isLoading, isError, message } = useSelector(
@@ -42,32 +42,33 @@ const Collection = () => {
 
   const params = {
     price: sortOrder,
-    category: query,
+    gender: query,
   };
 
   useEffect(() => {
-    navigate({
-      pathname: '/',
-      search: `?${createSearchParams(params)}`,
-    });
-  }, [query, navigate, sortOrder]);
-
-  useEffect(() => {
-    dispatch(getItems(`?${createSearchParams(params)}`));
+    dispatch(getItems('?price=' + JSON.stringify(params.price)));
 
     return () => {
       dispatch(reset());
     };
   }, [dispatch, searchParams, sortOrder]);
 
-  useEffect(() => {});
+  useEffect(() => {
+    if (query.length >= 1 || sortOrder) {
+      navigate({
+        pathname: '/',
+        search: `?${createSearchParams(params)}`,
+      });
+    }
+  }, [query, navigate, sortOrder]);
 
-  const changeValue = (event) => {
-    setSortOrder(event.target.value);
+  const handleChange = (event) => {
+    if (event.target.value) {
+      setSortOrder(event.target.value);
+    }
   };
 
   const filterItems = (event) => {
-    console.log(event.target.value);
     if (event.target.checked) {
       setQuery((oldQuery) => [...oldQuery, event.target.value]);
     }
@@ -107,20 +108,10 @@ const Collection = () => {
           <Typography variant='h4' component='h2' color='text.primary'>
             Men's Sneakers
           </Typography>
-
-          {/*  */}
-
-          {/*  */}
-
-          {/*  */}
-
-          <Select value={sortOrder} changeValue={changeValue} />
-
-          {/*  */}
-
-          {/*  */}
-
-          {/*  */}
+          <Select
+            sortBy={searchParams.get('price') || ''}
+            handleChange={handleChange}
+          />
         </Box>
         {isLoading && <Spinner />}
         <Grid container spacing={2}>

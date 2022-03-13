@@ -8,11 +8,15 @@ import { Paper, Box } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
 import { useSelector } from 'react-redux';
 import ImageUpload from '../../components/ImageUpload/ImageUpload';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import FormHelperText from '@mui/material/FormHelperText';
 
 const validationSchema = yup.object({
-  manufacturer: yup
-    .string('Enter the manufacturer')
-    .required('Manufacturer is required'),
+  brand: yup.string('Enter the brand').required('Brand is required'),
+  category: yup.string().required('Category is required'),
+  type: yup.string().required('Type is required'),
   title: yup
     .string('Enter your title')
     .min(4, 'Title should be of minimum 4 characters length')
@@ -40,10 +44,12 @@ const EditProduct = () => {
 
   const formik = useFormik({
     initialValues: {
-      manufacturer: item[0].manufacturer,
+      brand: item[0].brand,
       title: item[0].title,
       description: item[0].description,
       price: +item[0].price,
+      category: item[0].category,
+      type: item[0].type,
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -74,21 +80,95 @@ const EditProduct = () => {
         <form onSubmit={formik.handleSubmit}>
           <Paper sx={{ display: 'grid' }} elevation={5}>
             <FormControl sx={{ m: 2 }}>
-              <TextField
-                id='manufacturer'
-                name='manufacturer'
-                label='Manufacturer *'
+              <InputLabel
+                id='brand'
+                error={
+                  formik.touched.brand && formik.errors.brand ? true : false
+                }
+              >
+                Brand *
+              </InputLabel>
+              <Select
+                id='brand'
+                name='brand'
+                label='Brand *'
                 type='text'
-                value={formik.values.manufacturer}
+                value={formik.values.brand}
+                onChange={formik.handleChange}
+                error={formik.touched.brand && Boolean(formik.errors.brand)}
+              >
+                <MenuItem value={'Nike'}>Nike</MenuItem>
+                <MenuItem value={'Adidas'}>Adidas</MenuItem>
+                <MenuItem value={'Converse'}>Converse</MenuItem>
+                <MenuItem value={'Reebok'}>Reebok</MenuItem>
+                <MenuItem value={'New Balance'}>New Balance</MenuItem>
+                <MenuItem value={'Vans'}>Vans</MenuItem>
+                <MenuItem value={'Puma'}>Puma</MenuItem>
+                <MenuItem value={'Jordan'}>Jordan</MenuItem>
+                <MenuItem value={'Yeezy'}>Yeezy</MenuItem>
+                <MenuItem value={'Asics'}>Asics</MenuItem>
+              </Select>
+              {formik.touched.brand && (
+                <FormHelperText error>{formik.errors.brand}</FormHelperText>
+              )}
+            </FormControl>
+            <FormControl sx={{ m: 2 }}>
+              <InputLabel
+                id='category'
+                error={
+                  formik.touched.category && formik.errors.category
+                    ? true
+                    : false
+                }
+              >
+                Category *
+              </InputLabel>
+              <Select
+                id='category'
+                name='category'
+                label='Category *'
+                type='text'
+                value={formik.values.category}
                 onChange={formik.handleChange}
                 error={
-                  formik.touched.manufacturer &&
-                  Boolean(formik.errors.manufacturer)
+                  formik.touched.category && Boolean(formik.errors.category)
                 }
-                helperText={
-                  formik.touched.manufacturer && formik.errors.manufacturer
-                }
-              />
+              >
+                <MenuItem value={'men'}>Men</MenuItem>
+                <MenuItem value={'women'}>Women</MenuItem>
+                <MenuItem value={'kids'}>Kids</MenuItem>
+              </Select>
+              {formik.touched.category && (
+                <FormHelperText error>{formik.errors.category}</FormHelperText>
+              )}
+            </FormControl>
+            <FormControl sx={{ m: 2 }}>
+              <InputLabel
+                id='type'
+                error={formik.touched.type && formik.errors.type ? true : false}
+              >
+                Type *
+              </InputLabel>
+              <Select
+                id='type'
+                name='type'
+                label='type *'
+                type='text'
+                value={formik.values.type}
+                onChange={formik.handleChange}
+                error={formik.touched.type && Boolean(formik.errors.type)}
+              >
+                <MenuItem value={'Lifestyle'}>Lifestyle</MenuItem>
+                <MenuItem value={'Running'}>Running</MenuItem>
+                <MenuItem value={'Training & Gym'}>Training & Gym</MenuItem>
+                <MenuItem value={'Basketball'}>Basketball</MenuItem>
+                <MenuItem value={'Soccer'}>Soccer</MenuItem>
+                <MenuItem value={'Tennis'}>Tennis</MenuItem>
+                <MenuItem value={'Track & Field'}>Track & Field</MenuItem>
+              </Select>
+              {formik.touched.type && (
+                <FormHelperText error>{formik.errors.type}</FormHelperText>
+              )}
             </FormControl>
             <FormControl sx={{ m: 2 }}>
               <TextField

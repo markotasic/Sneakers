@@ -1,0 +1,5 @@
+{
+  "Category": ["Men", "Women", "Kids"],
+  "Manufacturer": ["Nike", "Adidas", "Puma"],
+  "Color": ["Red", "Green", "Blue", "Black", "White"]
+}

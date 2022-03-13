@@ -104,7 +104,7 @@ const Item = () => {
             color='primary'
             marginBottom={2}
           >
-            {items.manufacturer}
+            {items.brand}
           </Typography>
           <Typography
             variant='h2'

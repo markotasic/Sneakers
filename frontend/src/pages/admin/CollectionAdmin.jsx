@@ -23,19 +23,26 @@ import { deleteItem, getItems } from '../../features/items/itemSlice';
 
 import AirForce1 from '../../images/air-force-1.jpg';
 import Spinner from '../../components/UI/Spinner';
+import Filters from '../../filters/filters.json';
+import { useState } from 'react';
 
 const Collection = () => {
   const dispatch = useDispatch();
   const { items, isLoading } = useSelector((state) => state.items);
+  const [sortOrder, setSortOrder] = useState([]);
 
   // Get all items
   useEffect(() => {
-    dispatch(getItems());
+    dispatch(getItems('?sort=asc'));
   }, [dispatch]);
 
   const deleteProduct = async (event) => {
     const itemId = event.target.dataset.id;
     dispatch(deleteItem(itemId));
+  };
+
+  const changeValue = (event) => {
+    setSortOrder(event.target.value);
   };
 
   return (
@@ -58,7 +65,7 @@ const Collection = () => {
           <Divider />
           <Slider />
         </Paper>
-        <Accordion name={'arg'} />
+        <Accordion filter={Filters} name={'arg'} />
       </Grid>
       <Container>
         <Box
@@ -77,7 +84,7 @@ const Collection = () => {
               <Button variant='contained'>Add Product</Button>
             </Link>
           </Box>
-          <Select />
+          <Select value={'asc'} changeValue={changeValue} />
         </Box>
         {isLoading && <Spinner />}
         <Grid container spacing={2}>

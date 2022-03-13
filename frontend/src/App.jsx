@@ -137,7 +137,7 @@ const App = () => {
                     <Route path='/register' element={<Register />} />
                   </>
                 )}
-                <Route exact={true} path='*' element={<Navigate to='/' />} />
+                {/* <Route exact={true} path='*' element={<Navigate to='/' />} /> */}
               </Routes>
             </Container>
           </Grid>

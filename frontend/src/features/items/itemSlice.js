@@ -79,7 +79,6 @@ export const getItems = createAsyncThunk(
   'items/getAll',
   async (sort, thunkAPI) => {
     try {
-      console.log('83 itemSlice', sort);
       return await itemService.getItems(sort);
     } catch (error) {
       const message =

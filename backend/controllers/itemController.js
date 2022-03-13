@@ -5,10 +5,21 @@ const Item = require('../models/itemModel');
 // @route   GET /api/items
 // @access  Public
 const getItems = asyncHandler(async (req, res) => {
-  console.log('sort', req.body);
-  const items = await Item.find({}).sort({
-    price: 1,
-  });
+  const query = req.query;
+  console.log(query);
+
+  const sortBy =
+    query.price === 'asc'
+      ? { price: 1 }
+      : query.price === 'desc'
+      ? { price: -1 }
+      : {};
+
+  let items = await Item.find({}).sort(sortBy);
+
+  if (query.category) {
+    items = items.filter((item) => item.category === query.category);
+  }
 
   res.status(200).json(items);
 });
@@ -17,26 +28,24 @@ const getItems = asyncHandler(async (req, res) => {
 // @route   POST /api/items
 // @access  Private
 const setItem = asyncHandler(async (req, res) => {
-  // console.log(req.body);
-
-  // const user = await User.findOne({ email });
-  // console.log(user);
-
-  // if (
-  //   !req.body.manufacturer ||
-  //   !req.body.title ||
-  //   !req.body.description ||
-  //   !req.body.price
-  // ) {
-  //   res.status(400);
-  //   throw new Error('Please fill out the required fields');
-  // }
-  // console.log(req.user);
-
-  // if (!req.user.isAdmin) throw new Error('User is not authorized to do this');
+  if (
+    !req.body.brand ||
+    !req.body.category ||
+    !req.body.type ||
+    !req.body.title ||
+    !req.body.description ||
+    !req.body.price
+  ) {
+    res.status(400);
+    throw new Error('Please fill out the required fields');
+  }
+  console.log(req.user);
+  if (!req.user.isAdmin) throw new Error('User is not authorized to do this');
 
   const item = await Item.create({
-    manufacturer: req.body.manufacturer,
+    brand: req.body.brand,
+    category: req.body.category,
+    type: req.body.type,
     title: req.body.title,
     description: req.body.description,
     price: req.body.price,

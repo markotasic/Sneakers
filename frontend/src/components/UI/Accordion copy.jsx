@@ -76,7 +76,7 @@ export default function CustomizedAccordions(props) {
                   control={<Checkbox />}
                   value={item.toLowerCase()}
                   label={item}
-                  onChange={props.filterItems}
+                  onClick={props.filterItems}
                 />
               </FormGroup>
             ))}

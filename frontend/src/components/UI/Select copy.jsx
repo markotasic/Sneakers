@@ -6,7 +6,6 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
 export default function BasicSelect(props) {
-  const value = props.value.length >= 1 ? props.value : '';
   return (
     <Box sx={{ minWidth: 200 }}>
       <FormControl fullWidth>
@@ -14,9 +13,9 @@ export default function BasicSelect(props) {
         <Select
           labelId='demo-simple-select-label'
           id='demo-simple-select'
-          value={value}
+          value={props.sortBy}
           label='Sort By'
-          onChange={props.changeValue}
+          onChange={props.handleChange}
         >
           <MenuItem value={'asc'}>Price Ascending</MenuItem>
           <MenuItem value={'desc'}>Price Descending</MenuItem>
