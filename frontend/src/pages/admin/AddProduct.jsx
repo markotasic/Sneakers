@@ -9,7 +9,8 @@ import ImageUpload from '../../components/ImageUpload/ImageUpload';
 import { useDispatch } from 'react-redux';
 import { createItem } from '../../features/items/itemSlice';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const validationSchema = yup.object({
   manufacturer: yup
@@ -36,6 +37,13 @@ const AddProduct = () => {
   const dispatch = useDispatch();
 
   const [previewUrl, setPreviewUrl] = useState([]);
+
+  const uploadImages = async () => {
+    await axios.post(
+      'http://localhost:5000/api/items/add/uploadImages',
+      previewUrl
+    );
+  };
 
   const pickedHandler = (e) => {
     let files = e.target.files;
@@ -65,6 +73,8 @@ const AddProduct = () => {
     onSubmit: (values) => {
       dispatch(createItem(values));
       navigate('/');
+      uploadImages();
+      return;
     },
   });
 

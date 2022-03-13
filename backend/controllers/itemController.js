@@ -113,10 +113,41 @@ const deleteItem = asyncHandler(async (req, res) => {
   res.status(200).json({ id: req.params.id });
 });
 
+const getUploadedImages = async (req, res) => {
+  try {
+    const path = require('path');
+    const fs = require('fs');
+    // const Jimp = require('jimp'); AKO HOCEMO DA SMANJIMO KVALITET SLIKA
+
+    const dirPath = path.join(__dirname, '../images');
+    const data = req.body;
+
+    let buffer = [];
+    data.map((item) => {
+      const newItem = item.replace(/^data:image\/\w+;base64,/, '');
+      buffer.push(new Buffer.from(newItem, 'base64'));
+    });
+
+    (async () => {
+      buffer.forEach((item, i) => {
+        fs.writeFile(
+          path.join(dirPath + `/${Date.now() + i}.png`),
+          item,
+          function (err) {
+            if (err) return console.error(err);
+          }
+        );
+      });
+    })();
+  } catch (error) {
+    console.log(error);
+  }
+};
 module.exports = {
   getItems,
   setItem,
   getOneItem,
   updateItem,
   deleteItem,
+  getUploadedImages,
 };
