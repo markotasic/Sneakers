@@ -9,11 +9,12 @@ import ImageUpload from '../../components/ImageUpload/ImageUpload';
 import { useDispatch } from 'react-redux';
 import { createItem } from '../../features/items/itemSlice';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormHelperText from '@mui/material/FormHelperText';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const validationSchema = yup.object({
   brand: yup.string().required('Brand is required'),
@@ -40,6 +41,13 @@ const AddProduct = () => {
   const dispatch = useDispatch();
 
   const [previewUrl, setPreviewUrl] = useState([]);
+
+  const uploadImages = async () => {
+    await axios.post(
+      'http://localhost:5000/api/items/add/uploadImages',
+      previewUrl
+    );
+  };
 
   const pickedHandler = (e) => {
     let files = e.target.files;
@@ -71,6 +79,8 @@ const AddProduct = () => {
     onSubmit: (values) => {
       dispatch(createItem(values));
       navigate('/');
+      uploadImages();
+      return;
     },
   });
 

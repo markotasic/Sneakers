@@ -12,6 +12,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormHelperText from '@mui/material/FormHelperText';
+import { useState } from 'react';
 
 const validationSchema = yup.object({
   brand: yup.string('Enter the brand').required('Brand is required'),
@@ -37,6 +38,7 @@ const EditProduct = () => {
   const { itemId } = useParams();
   const user = JSON.parse(localStorage.getItem('user'));
   const navigate = useNavigate();
+  const [previewUrl, setPreviewUrl] = useState([]);
 
   const { items } = useSelector((state) => state.items);
 
@@ -73,6 +75,23 @@ const EditProduct = () => {
       postData();
     },
   });
+
+  const pickedHandler = (e) => {
+    let files = e.target.files;
+    for (let i = 0; i < files.length; i++) {
+      (function (file) {
+        var reader = new FileReader();
+        reader.onload = () => {
+          setPreviewUrl((oldUrl) => [...oldUrl, reader.result]);
+        };
+        reader.readAsDataURL(file);
+      })(files[i]);
+    }
+  };
+
+  const removeImages = (imageId) => {
+    setPreviewUrl(previewUrl.filter((name) => name !== imageId));
+  };
 
   return (
     <Box marginTop={3}>
@@ -219,7 +238,11 @@ const EditProduct = () => {
               />
             </FormControl>
             <FormControl sx={{ m: 2 }}>
-              <ImageUpload />
+              <ImageUpload
+                pickedHandler={pickedHandler}
+                previewUrl={previewUrl}
+                removeImages={removeImages}
+              />
             </FormControl>
             <Button sx={{ m: 2 }} variant='contained' type='submit'>
               Update

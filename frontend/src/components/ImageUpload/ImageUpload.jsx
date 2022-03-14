@@ -53,7 +53,7 @@ const ImageUpload = (props) => {
         </label>
       </Grid>
 
-      {/* {props.previewUrl.length > 0 &&
+      {props.previewUrl.length > 0 &&
         props.previewUrl.map((item, i) => (
           <Grid item lg={2} md={3} sm={4} xs={6} key={i}>
             <ImageContainer>
@@ -68,7 +68,7 @@ const ImageUpload = (props) => {
               <Image src={item} alt='1' />
             </ImageContainer>
           </Grid>
-        ))} */}
+        ))}
     </Grid>
   );
 };
