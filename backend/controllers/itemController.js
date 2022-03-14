@@ -121,11 +121,10 @@ const deleteItem = asyncHandler(async (req, res) => {
   res.status(200).json({ id: req.params.id });
 });
 
-const getUploadedImages = async (req, res) => {
+const getUploadedImages = (req, res) => {
   try {
     const path = require('path');
     const fs = require('fs');
-    // const Jimp = require('jimp'); AKO HOCEMO DA SMANJIMO KVALITET SLIKA
 
     const dirPath = path.join(__dirname, '../images');
     const data = req.body;
@@ -146,11 +145,15 @@ const getUploadedImages = async (req, res) => {
           }
         );
       });
+
+      console.log('GetImages from backend function Fired Up');
     })();
   } catch (err) {
     console.error(err);
   }
+  res.status(200).json('arg');
 };
+
 module.exports = {
   getItems,
   setItem,

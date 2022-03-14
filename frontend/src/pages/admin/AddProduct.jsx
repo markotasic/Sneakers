@@ -43,6 +43,7 @@ const AddProduct = () => {
   const [previewUrl, setPreviewUrl] = useState([]);
 
   const uploadImages = async () => {
+    console.log('UploadImages fired up!');
     await axios.post(
       'http://localhost:5000/api/items/add/uploadImages',
       previewUrl
@@ -79,6 +80,7 @@ const AddProduct = () => {
     onSubmit: (values) => {
       dispatch(createItem(values));
       navigate('/');
+      console.log('Submit fired up');
       uploadImages();
       return;
     },
