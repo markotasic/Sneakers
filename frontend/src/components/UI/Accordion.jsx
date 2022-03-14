@@ -73,10 +73,9 @@ export default function CustomizedAccordions(props) {
             {value.map((item) => (
               <FormGroup key={item}>
                 <FormControlLabel
-                  control={<Checkbox />}
+                  control={<Checkbox onChange={props.filterItems} />}
                   value={item.toLowerCase()}
                   label={item}
-                  onChange={props.filterItems}
                 />
               </FormGroup>
             ))}

@@ -116,7 +116,6 @@ const ResponsiveAppBar = (props) => {
             )}
           </Box>
 
-
           <Cart />
           {props.mode}
 

@@ -55,7 +55,6 @@ const Item = () => {
       // dispatch(addToCart(cardData));
     } else {
       setCardData((oldArray) => {
-        console.log(item._id);
         const newArray = [
           ...oldArray,
           {

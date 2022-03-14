@@ -50,6 +50,7 @@ const Collection = () => {
       pathname: '/',
       search: `?${createSearchParams(params)}`,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query, navigate, sortOrder]);
 
   useEffect(() => {
@@ -67,9 +68,10 @@ const Collection = () => {
   };
 
   const filterItems = (event) => {
-    console.log(event.target.value);
     if (event.target.checked) {
       setQuery((oldQuery) => [...oldQuery, event.target.value]);
+    } else {
+      setQuery(query.filter((item) => item !== event.target.value));
     }
   };
 
