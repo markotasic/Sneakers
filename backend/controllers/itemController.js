@@ -139,8 +139,8 @@ const getUploadedImages = async (req, res) => {
         );
       });
     })();
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.error(err);
   }
 };
 module.exports = {
