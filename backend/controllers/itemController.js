@@ -6,7 +6,6 @@ const Item = require('../models/itemModel');
 // @access  Public
 const getItems = asyncHandler(async (req, res) => {
   const query = req.query;
-  console.log(query);
 
   const sortBy =
     query.price === 'asc'
@@ -17,9 +16,15 @@ const getItems = asyncHandler(async (req, res) => {
 
   let items = await Item.find({}).sort(sortBy);
 
-  if (query.category) {
-    items = items.filter((item) => item.category === query.category);
-  }
+  items = items.filter((products) => {
+    let isValid = true;
+    for (key in query) {
+      isValid = Array.isArray(query.category)
+        ? query[key].includes(products[key])
+        : [query[key]].includes(products[key]);
+    }
+    return isValid;
+  });
 
   res.status(200).json(items);
 });

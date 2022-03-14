@@ -55,6 +55,7 @@ const Collection = () => {
 
   useEffect(() => {
     dispatch(getItems(`?${createSearchParams(params)}`));
+    // dispatch(getItems(`?${createSearchParams(params)}`));
 
     return () => {
       dispatch(reset());

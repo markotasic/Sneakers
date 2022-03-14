@@ -1,5 +1,24 @@
 {
   "Category": ["Men", "Women", "Kids"],
-  "Manufacturer": ["Nike", "Adidas", "Puma"],
-  "Color": ["Red", "Green", "Blue", "Black", "White"]
+  "Brand": [
+    "Nike",
+    "Adidas",
+    "Converse",
+    "Reebok",
+    "New Balance",
+    "Vans",
+    "Puma",
+    "Jordan",
+    "Yeezy",
+    "Asics"
+  ],
+  "Type": [
+    "Lifestyle",
+    "Running",
+    "Training & Gym",
+    "Basketball",
+    "Soccer",
+    "Tennis",
+    "Track & Field"
+  ]
 }
