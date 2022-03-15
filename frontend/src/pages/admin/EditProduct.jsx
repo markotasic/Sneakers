@@ -13,6 +13,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormHelperText from '@mui/material/FormHelperText';
 import { useState } from 'react';
+import axios from 'axios';
 
 const validationSchema = yup.object({
   brand: yup.string('Enter the brand').required('Brand is required'),
@@ -39,6 +40,13 @@ const EditProduct = () => {
   const user = JSON.parse(localStorage.getItem('user'));
   const navigate = useNavigate();
   const [previewUrl, setPreviewUrl] = useState([]);
+
+  const uploadImages = async () => {
+    await axios.post(
+      'http://localhost:5000/api/items/add/uploadImages',
+      previewUrl
+    );
+  };
 
   const { items } = useSelector((state) => state.items);
 
@@ -73,6 +81,8 @@ const EditProduct = () => {
       };
 
       postData();
+      uploadImages();
+      return;
     },
   });
 

@@ -3,6 +3,7 @@ import axios from 'axios';
 const API_URL = 'http://localhost:5000/api/items/';
 
 //Create new item
+//OVDE CU MORATI DA DOPREMIM imagePreview da ga posljem funkiciji koja na backendu pravi item i salje ga mongoDB
 const createItem = async (itemData, token) => {
   const config = {
     headers: {

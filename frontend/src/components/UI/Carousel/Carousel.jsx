@@ -74,7 +74,7 @@ const DUMMY_ITEMS = [
   },
 ];
 
-export default function App(props) {
+function Carousel(props) {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
   return (
@@ -119,3 +119,5 @@ export default function App(props) {
     </div>
   );
 }
+
+export default Carousel;

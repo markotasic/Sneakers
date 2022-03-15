@@ -10,7 +10,7 @@ const initialState = {
 };
 
 // Create new item
-export const createItem = createAsyncThunk(
+export const createNewItem = createAsyncThunk(
   'items/create',
   async (itemData, thunkAPI) => {
     try {
@@ -118,15 +118,15 @@ export const itemSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(createItem.pending, (state) => {
+      .addCase(createNewItem.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(createItem.fulfilled, (state, action) => {
+      .addCase(createNewItem.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.items.push(action.payload);
       })
-      .addCase(createItem.rejected, (state, action) => {
+      .addCase(createNewItem.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

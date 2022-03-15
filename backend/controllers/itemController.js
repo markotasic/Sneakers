@@ -27,6 +27,8 @@ const getItems = asyncHandler(async (req, res) => {
 // @desc    Set item
 // @route   POST /api/items
 // @access  Private
+
+//_________MORAM DA IZBRISEM FUNKCIJU 'getUploadedImages, I DA PREBACIM LOGIKU U SetItem, TAKO DA KADA SE SETUJE ITEM U MongoDB SALJEM image path do foldera gde se slika pravi, TAKODJE CU MORATI DA PROMENIM RUTU POSTO SE setItem POGADJA NA NEKI DRUGI POST A NE NA uploadImages//////////////
 const setItem = asyncHandler(async (req, res) => {
   if (
     !req.body.brand ||
@@ -122,36 +124,33 @@ const deleteItem = asyncHandler(async (req, res) => {
 });
 
 const getUploadedImages = (req, res) => {
-  try {
-    const path = require('path');
-    const fs = require('fs');
+  const path = require('path');
+  const fs = require('fs');
 
-    const dirPath = path.join(__dirname, '../images');
-    const data = req.body;
+  const dirPath = path.join(__dirname, '../images');
+  const data = req.body;
 
-    let buffer = [];
-    data.map((item) => {
-      const newItem = item.replace(/^data:image\/\w+;base64,/, '');
-      buffer.push(new Buffer.from(newItem, 'base64'));
+  let buffer = [];
+  data.map((item) => {
+    const newItem = item.replace(/^data:image\/\w+;base64,/, '');
+    buffer.push(new Buffer.from(newItem, 'base64'));
+  });
+
+  (async () => {
+    buffer.forEach((item, i) => {
+      fs.writeFile(
+        path.join(dirPath + `/${Date.now() + i}.png`),
+        item,
+        function (err) {
+          if (err) return console.error(err);
+        }
+      );
     });
 
-    (async () => {
-      buffer.forEach((item, i) => {
-        fs.writeFile(
-          path.join(dirPath + `/${Date.now() + i}.png`),
-          item,
-          function (err) {
-            if (err) return console.error(err);
-          }
-        );
-      });
+    console.log('GetImages from backend function Fired Up');
+  })();
 
-      console.log('GetImages from backend function Fired Up');
-    })();
-  } catch (err) {
-    console.error(err);
-  }
-  res.status(200).json('arg');
+  res.status(200).json(data);
 };
 
 module.exports = {
