@@ -62,7 +62,7 @@ const setItem = asyncHandler(async (req, res) => {
 
   const dirPath = path.join(__dirname, '../images');
   const data = req.body.previewUrl;
-
+  let myImagesArr = [];
   let buffer = [];
   data.map((item) => {
     const newItem = item.replace(/^data:image\/\w+;base64,/, '');
@@ -70,16 +70,16 @@ const setItem = asyncHandler(async (req, res) => {
   });
 
   (async () => {
+    let pathToImages = path.join(dirPath + `/${Date.now()}`);
     buffer.forEach((item, i) => {
-      fs.writeFile(
-        path.join(dirPath + `/${Date.now() + i}.png`),
-        item,
-        function (err) {
-          if (err) return console.error(err);
-        }
-      );
+      fs.writeFile(pathToImages + i + '.png', item, function (err) {
+        if (err) return console.error(err);
+      });
+      myImagesArr.push(pathToImages);
     });
   })();
+
+  let imagePaths = myImagesArr.map((item, i) => item + i + '.png');
 
   if (
     !req.body.itemData.brand ||
@@ -94,8 +94,7 @@ const setItem = asyncHandler(async (req, res) => {
   }
   if (!req.user.isAdmin) throw new Error('User is not authorized to do this');
 
-  console.log('BRAND =========>', req.body.itemData.brand);
-  console.log('IMAGES =========>', req.body.previewUrl);
+  console.log(imagePaths);
 
   const item = await Item.create({
     brand: req.body.itemData.brand,
@@ -104,12 +103,12 @@ const setItem = asyncHandler(async (req, res) => {
     title: req.body.itemData.title,
     description: req.body.itemData.description,
     price: req.body.itemData.price,
-    // images: req.body.previewUrl,
+    imagePaths: imagePaths,
   });
 
-  ///////////////////////////////////////////////////////////////////////
-
   res.status(200).json(item);
+
+  ///////////////////////////////////////////////////////////////////////
 });
 
 // @desc    Get item

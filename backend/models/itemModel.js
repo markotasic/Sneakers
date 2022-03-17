@@ -26,6 +26,7 @@ const itemSchema = mongoose.Schema(
       type: Number,
       required: [true, 'Please add a price'],
     },
+    imagePaths: [{ type: String }],
   },
   {
     timestamps: true,
