@@ -57,8 +57,6 @@ const getItems = asyncHandler(async (req, res) => {
 
 //_________MORAM DA IZBRISEM FUNKCIJU 'getUploadedImages, I DA PREBACIM LOGIKU U SetItem, TAKO DA KADA SE SETUJE ITEM U MongoDB SALJEM image path do foldera gde se slika pravi, TAKODJE CU MORATI DA PROMENIM RUTU POSTO SE setItem POGADJA NA NEKI DRUGI POST A NE NA uploadImages//////////////
 const setItem = asyncHandler(async (req, res) => {
-  ///////////////////////////////////////////////////////////
-
   const path = require('path');
   const fs = require('fs');
 
@@ -83,8 +81,6 @@ const setItem = asyncHandler(async (req, res) => {
     });
   })();
 
-  ///////////////////////////////////////////////////////////////
-  console.log(req.body.itemData);
   if (
     !req.body.itemData.brand ||
     !req.body.itemData.category ||
@@ -97,7 +93,9 @@ const setItem = asyncHandler(async (req, res) => {
     throw new Error('Please fill out the required fields');
   }
   if (!req.user.isAdmin) throw new Error('User is not authorized to do this');
-  l;
+
+  console.log('BRAND =========>', req.body.itemData.brand);
+  console.log('IMAGES =========>', req.body.previewUrl);
 
   const item = await Item.create({
     brand: req.body.itemData.brand,
@@ -108,6 +106,8 @@ const setItem = asyncHandler(async (req, res) => {
     price: req.body.itemData.price,
     // images: req.body.previewUrl,
   });
+
+  ///////////////////////////////////////////////////////////////////////
 
   res.status(200).json(item);
 });
