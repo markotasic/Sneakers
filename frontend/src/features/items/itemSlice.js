@@ -10,13 +10,13 @@ const initialState = {
 };
 
 // Create new item
-export const createNewItem = createAsyncThunk(
+export const createItem = createAsyncThunk(
   'items/create',
-  async (itemData, thunkAPI) => {
+  async ({ itemData, previewUrl }, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
 
-      return await itemService.createItem(itemData, token);
+      return await itemService.createItem({ itemData, previewUrl }, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -118,15 +118,15 @@ export const itemSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(createNewItem.pending, (state) => {
+      .addCase(createItem.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(createNewItem.fulfilled, (state, action) => {
+      .addCase(createItem.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.items.push(action.payload);
       })
-      .addCase(createNewItem.rejected, (state, action) => {
+      .addCase(createItem.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

@@ -7,7 +7,7 @@ import { Paper, Box } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
 import ImageUpload from '../../components/ImageUpload/ImageUpload';
 import { useDispatch } from 'react-redux';
-import { createNewItem } from '../../features/items/itemSlice';
+import { createItem } from '../../features/items/itemSlice';
 import { useNavigate } from 'react-router-dom';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -42,14 +42,6 @@ const AddProduct = () => {
 
   const [previewUrl, setPreviewUrl] = useState([]);
 
-  const uploadImages = async () => {
-    const response = await axios.post(
-      'http://localhost:5000/api/items/add/uploadImages',
-      previewUrl
-    );
-    console.log(response.data);
-  };
-
   const pickedHandler = (e) => {
     let files = e.target.files;
     for (let i = 0; i < files.length; i++) {
@@ -78,9 +70,8 @@ const AddProduct = () => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      dispatch(createNewItem(values));
+      dispatch(createItem({ itemData: values, previewUrl }));
       navigate('/');
-      uploadImages();
       return;
     },
   });

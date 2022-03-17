@@ -30,26 +30,56 @@ const getItems = asyncHandler(async (req, res) => {
 
 //_________MORAM DA IZBRISEM FUNKCIJU 'getUploadedImages, I DA PREBACIM LOGIKU U SetItem, TAKO DA KADA SE SETUJE ITEM U MongoDB SALJEM image path do foldera gde se slika pravi, TAKODJE CU MORATI DA PROMENIM RUTU POSTO SE setItem POGADJA NA NEKI DRUGI POST A NE NA uploadImages//////////////
 const setItem = asyncHandler(async (req, res) => {
+  ///////////////////////////////////////////////////////////
+
+  const path = require('path');
+  const fs = require('fs');
+
+  const dirPath = path.join(__dirname, '../images');
+  const data = req.body.previewUrl;
+
+  let buffer = [];
+  data.map((item) => {
+    const newItem = item.replace(/^data:image\/\w+;base64,/, '');
+    buffer.push(new Buffer.from(newItem, 'base64'));
+  });
+
+  (async () => {
+    buffer.forEach((item, i) => {
+      fs.writeFile(
+        path.join(dirPath + `/${Date.now() + i}.png`),
+        item,
+        function (err) {
+          if (err) return console.error(err);
+        }
+      );
+    });
+  })();
+
+  ///////////////////////////////////////////////////////////////
+  console.log(req.body.itemData);
   if (
-    !req.body.brand ||
-    !req.body.category ||
-    !req.body.type ||
-    !req.body.title ||
-    !req.body.description ||
-    !req.body.price
+    !req.body.itemData.brand ||
+    !req.body.itemData.category ||
+    !req.body.itemData.type ||
+    !req.body.itemData.title ||
+    !req.body.itemData.description ||
+    !req.body.itemData.price
   ) {
     res.status(400);
     throw new Error('Please fill out the required fields');
   }
   if (!req.user.isAdmin) throw new Error('User is not authorized to do this');
+  l;
 
   const item = await Item.create({
-    brand: req.body.brand,
-    category: req.body.category,
-    type: req.body.type,
-    title: req.body.title,
-    description: req.body.description,
-    price: req.body.price,
+    brand: req.body.itemData.brand,
+    category: req.body.itemData.category,
+    type: req.body.itemData.type,
+    title: req.body.itemData.title,
+    description: req.body.itemData.description,
+    price: req.body.itemData.price,
+    // images: req.body.previewUrl,
   });
 
   res.status(200).json(item);
@@ -123,35 +153,10 @@ const deleteItem = asyncHandler(async (req, res) => {
   res.status(200).json({ id: req.params.id });
 });
 
-const getUploadedImages = (req, res) => {
-  const path = require('path');
-  const fs = require('fs');
+// const getUploadedImages = (req, res) => {
 
-  const dirPath = path.join(__dirname, '../images');
-  const data = req.body;
-
-  let buffer = [];
-  data.map((item) => {
-    const newItem = item.replace(/^data:image\/\w+;base64,/, '');
-    buffer.push(new Buffer.from(newItem, 'base64'));
-  });
-
-  (async () => {
-    buffer.forEach((item, i) => {
-      fs.writeFile(
-        path.join(dirPath + `/${Date.now() + i}.png`),
-        item,
-        function (err) {
-          if (err) return console.error(err);
-        }
-      );
-    });
-
-    console.log('GetImages from backend function Fired Up');
-  })();
-
-  res.status(200).json(data);
-};
+//   res.status(200).json(data);
+// };
 
 module.exports = {
   getItems,
@@ -159,5 +164,4 @@ module.exports = {
   getOneItem,
   updateItem,
   deleteItem,
-  getUploadedImages,
 };
