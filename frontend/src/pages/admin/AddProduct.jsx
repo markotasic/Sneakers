@@ -61,11 +61,11 @@ const AddProduct = () => {
 
   const formik = useFormik({
     initialValues: {
-      brand: '',
+      brand: ''.toLocaleLowerCase(),
       title: '',
-      description: '',
+      description: ''.toLocaleLowerCase(),
       price: +'',
-      category: '',
+      category: ''.toLocaleLowerCase(),
       type: '',
     },
     validationSchema: validationSchema,
@@ -76,6 +76,7 @@ const AddProduct = () => {
     },
   });
 
+  // Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde, repudiandae.
   return (
     <Box marginTop={3}>
       <form onSubmit={formik.handleSubmit}>

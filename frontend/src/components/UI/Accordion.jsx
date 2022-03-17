@@ -46,7 +46,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }));
 
 export default function CustomizedAccordions(props) {
-  const [expanded, setExpanded] = React.useState('panel0');
+  const [expanded, setExpanded] = React.useState('panel1');
 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
@@ -54,34 +54,81 @@ export default function CustomizedAccordions(props) {
 
   return (
     <>
-      {Object.entries(props.filter).map(([key, value], i) => (
-        <Accordion
-          key={key}
-          sx={{
-            backgroundColor: 'transparent',
-          }}
-          expanded={expanded === `panel${i}`}
-          onChange={handleChange(`panel${i}`)}
+      <Accordion
+        sx={{
+          backgroundColor: 'transparent',
+        }}
+        expanded={expanded === 'panel1'}
+        onChange={handleChange('panel1')}
+      >
+        <AccordionSummary
+          aria-controls={'panel1d-content'}
+          id={'panel1d-header'}
         >
-          <AccordionSummary
-            aria-controls={`panel${i}d-content`}
-            id={`panel${i}d-header`}
-          >
-            <Typography>{key}</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            {value.map((item) => (
-              <FormGroup key={item}>
-                <FormControlLabel
-                  control={<Checkbox onChange={props.filterItems} />}
-                  value={item.toLowerCase()}
-                  label={item}
-                />
-              </FormGroup>
-            ))}
-          </AccordionDetails>
-        </Accordion>
-      ))}
+          <Typography>Category</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          {props.filter.Category.map((item) => (
+            <FormGroup key={item}>
+              <FormControlLabel
+                control={<Checkbox onChange={props.filterCategoryItems} />}
+                value={item}
+                label={item}
+              />
+            </FormGroup>
+          ))}
+        </AccordionDetails>
+      </Accordion>
+      <Accordion
+        sx={{
+          backgroundColor: 'transparent',
+        }}
+        expanded={expanded === 'panel2'}
+        onChange={handleChange('panel2')}
+      >
+        <AccordionSummary
+          aria-controls={'panel2d-content'}
+          id={'panel2d-header'}
+        >
+          <Typography>Brand</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          {props.filter.Brand.map((item) => (
+            <FormGroup key={item}>
+              <FormControlLabel
+                control={<Checkbox onChange={props.filterBrandItems} />}
+                value={item}
+                label={item}
+              />
+            </FormGroup>
+          ))}
+        </AccordionDetails>
+      </Accordion>
+      <Accordion
+        sx={{
+          backgroundColor: 'transparent',
+        }}
+        expanded={expanded === 'panel3'}
+        onChange={handleChange('panel3')}
+      >
+        <AccordionSummary
+          aria-controls={'panel3d-content'}
+          id={'panel3d-header'}
+        >
+          <Typography>Type</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          {props.filter.Type.map((item) => (
+            <FormGroup key={item}>
+              <FormControlLabel
+                control={<Checkbox onChange={props.filterTypeItems} />}
+                value={item}
+                label={item}
+              />
+            </FormGroup>
+          ))}
+        </AccordionDetails>
+      </Accordion>
     </>
   );
 }

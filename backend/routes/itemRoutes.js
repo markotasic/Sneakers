@@ -6,7 +6,6 @@ const {
   getOneItem,
   updateItem,
   deleteItem,
-  getUploadedImages,
 } = require('../controllers/itemController');
 
 const { protect } = require('../middleware/authMiddleware');
