@@ -32,9 +32,11 @@ import filters from '../../filters/filters.json';
 const Collection = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [sortOrder, setSortOrder] = useState([]);
-  const [query, setQuery] = useState([]);
+  const [categoryQuery, setCategoryQuery] = useState([]);
+  const [brandQuery, setBrandQuery] = useState([]);
+  const [typeQuery, setTypeQuery] = useState([]);
 
   const { items, isLoading, isError, message } = useSelector(
     (state) => state.items
@@ -42,7 +44,9 @@ const Collection = () => {
 
   const params = {
     price: sortOrder,
-    category: query,
+    category: categoryQuery,
+    brand: brandQuery,
+    type: typeQuery,
   };
 
   useEffect(() => {
@@ -50,29 +54,56 @@ const Collection = () => {
       pathname: '/',
       search: `?${createSearchParams(params)}`,
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [query, navigate, sortOrder]);
+  }, [navigate, sortOrder, categoryQuery, brandQuery, typeQuery]);
 
   useEffect(() => {
     dispatch(getItems(`?${createSearchParams(params)}`));
-    // dispatch(getItems(`?${createSearchParams(params)}`));
 
     return () => {
       dispatch(reset());
     };
   }, [dispatch, searchParams, sortOrder]);
 
-  useEffect(() => {});
-
   const changeValue = (event) => {
     setSortOrder(event.target.value);
   };
 
-  const filterItems = (event) => {
+  const filterCategoryItems = (event) => {
     if (event.target.checked) {
-      setQuery((oldQuery) => [...oldQuery, event.target.value]);
+      setCategoryQuery((oldQuery) => [
+        ...oldQuery,
+        event.target.value.toLowerCase(),
+      ]);
     } else {
-      setQuery(query.filter((item) => item !== event.target.value));
+      setCategoryQuery(
+        categoryQuery.filter(
+          (item) => item !== event.target.value.toLowerCase()
+        )
+      );
+    }
+  };
+  const filterBrandItems = (event) => {
+    if (event.target.checked) {
+      setBrandQuery((oldQuery) => [
+        ...oldQuery,
+        event.target.value.toLowerCase(),
+      ]);
+    } else {
+      setBrandQuery(
+        brandQuery.filter((item) => item !== event.target.value.toLowerCase())
+      );
+    }
+  };
+  const filterTypeItems = (event) => {
+    if (event.target.checked) {
+      setTypeQuery((oldQuery) => [
+        ...oldQuery,
+        event.target.value.toLowerCase(),
+      ]);
+    } else {
+      setTypeQuery(
+        typeQuery.filter((item) => item !== event.target.value.toLowerCase())
+      );
     }
   };
 
@@ -96,7 +127,12 @@ const Collection = () => {
           <Divider />
           <Slider />
         </Paper>
-        <Accordion filter={filters} filterItems={filterItems} />
+        <Accordion
+          filter={filters}
+          filterCategoryItems={filterCategoryItems}
+          filterTypeItems={filterTypeItems}
+          filterBrandItems={filterBrandItems}
+        />
       </Grid>
       <Container>
         <Box
@@ -110,20 +146,7 @@ const Collection = () => {
           <Typography variant='h4' component='h2' color='text.primary'>
             Men's Sneakers
           </Typography>
-
-          {/*  */}
-
-          {/*  */}
-
-          {/*  */}
-
           <Select value={sortOrder} changeValue={changeValue} />
-
-          {/*  */}
-
-          {/*  */}
-
-          {/*  */}
         </Box>
         {isLoading && <Spinner />}
         <Grid container spacing={2}>

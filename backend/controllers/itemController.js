@@ -16,15 +16,37 @@ const getItems = asyncHandler(async (req, res) => {
 
   let items = await Item.find({}).sort(sortBy);
 
-  items = items.filter((products) => {
-    let isValid = true;
-    for (key in query) {
+  if (query.category)
+    items = items.filter((products) => {
+      let isValid = true;
       isValid = Array.isArray(query.category)
-        ? query[key].includes(products[key])
-        : [query[key]].includes(products[key]);
-    }
-    return isValid;
-  });
+        ? query.category.includes(products.category)
+        : [query.category].includes(products.category);
+
+      return isValid;
+    });
+
+  if (query.brand)
+    items = items.filter((products) => {
+      let isValid = true;
+
+      isValid = Array.isArray(query.brand)
+        ? query.brand.includes(products.brand)
+        : [query.brand].includes(products.brand);
+
+      return isValid;
+    });
+
+  if (query.type)
+    items = items.filter((products) => {
+      let isValid = true;
+
+      isValid = Array.isArray(query.type)
+        ? query.type.includes(products.type)
+        : [query.type].includes(products.type);
+
+      return isValid;
+    });
 
   res.status(200).json(items);
 });
@@ -126,10 +148,11 @@ const deleteItem = asyncHandler(async (req, res) => {
   res.status(200).json({ id: req.params.id });
 });
 
-const getUploadedImages = (req, res) => {
+const getUploadedImages = async (req, res) => {
   try {
     const path = require('path');
     const fs = require('fs');
+    // const Jimp = require('jimp'); AKO HOCEMO DA SMANJIMO KVALITET SLIKA
 
     const dirPath = path.join(__dirname, '../images');
     const data = req.body;
@@ -150,15 +173,11 @@ const getUploadedImages = (req, res) => {
           }
         );
       });
-
-      console.log('GetImages from backend function Fired Up');
     })();
   } catch (err) {
     console.error(err);
   }
-  res.status(200).json('arg');
 };
-
 module.exports = {
   getItems,
   setItem,

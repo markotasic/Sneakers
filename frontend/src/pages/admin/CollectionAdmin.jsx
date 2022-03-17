@@ -19,22 +19,54 @@ import {
 import Slider from '../../components/UI/Slider';
 import Accordion from '../../components/UI/Accordion';
 import Select from '../../components/UI/Select';
-import { deleteItem, getItems } from '../../features/items/itemSlice';
+import { deleteItem, getItems, reset } from '../../features/items/itemSlice';
+import {
+  useSearchParams,
+  useNavigate,
+  createSearchParams,
+} from 'react-router-dom';
 
 import AirForce1 from '../../images/air-force-1.jpg';
 import Spinner from '../../components/UI/Spinner';
-import Filters from '../../filters/filters.json';
+import filters from '../../filters/filters.json';
 import { useState } from 'react';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 
 const Collection = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { items, isLoading } = useSelector((state) => state.items);
+  const [searchParams] = useSearchParams();
+  const [itemLimit, setItemLimit] = useState([]);
   const [sortOrder, setSortOrder] = useState([]);
+  const [categoryQuery, setCategoryQuery] = useState([]);
+  const [brandQuery, setBrandQuery] = useState([]);
+  const [typeQuery, setTypeQuery] = useState([]);
+
+  const params = {
+    limit: itemLimit,
+    price: sortOrder,
+    category: categoryQuery,
+    brand: brandQuery,
+    type: typeQuery,
+  };
+
+  useEffect(() => {
+    navigate({
+      pathname: '/',
+      search: `?${createSearchParams(params)}`,
+    });
+  }, [navigate, sortOrder, categoryQuery, brandQuery, typeQuery]);
 
   // Get all items
   useEffect(() => {
-    dispatch(getItems('?sort=asc'));
-  }, [dispatch]);
+    dispatch(getItems(`?${createSearchParams(params)}`));
+
+    return () => {
+      dispatch(reset());
+    };
+  }, [dispatch, searchParams, sortOrder]);
 
   const deleteProduct = async (event) => {
     const itemId = event.target.dataset.id;
@@ -43,6 +75,45 @@ const Collection = () => {
 
   const changeValue = (event) => {
     setSortOrder(event.target.value);
+  };
+
+  const filterCategoryItems = (event) => {
+    if (event.target.checked) {
+      setCategoryQuery((oldQuery) => [
+        ...oldQuery,
+        event.target.value.toLowerCase(),
+      ]);
+    } else {
+      setCategoryQuery(
+        categoryQuery.filter(
+          (item) => item !== event.target.value.toLowerCase()
+        )
+      );
+    }
+  };
+  const filterBrandItems = (event) => {
+    if (event.target.checked) {
+      setBrandQuery((oldQuery) => [
+        ...oldQuery,
+        event.target.value.toLowerCase(),
+      ]);
+    } else {
+      setBrandQuery(
+        brandQuery.filter((item) => item !== event.target.value.toLowerCase())
+      );
+    }
+  };
+  const filterTypeItems = (event) => {
+    if (event.target.checked) {
+      setTypeQuery((oldQuery) => [
+        ...oldQuery,
+        event.target.value.toLowerCase(),
+      ]);
+    } else {
+      setTypeQuery(
+        typeQuery.filter((item) => item !== event.target.value.toLowerCase())
+      );
+    }
   };
 
   return (
@@ -65,7 +136,12 @@ const Collection = () => {
           <Divider />
           <Slider />
         </Paper>
-        <Accordion filter={Filters} name={'arg'} />
+        <Accordion
+          filter={filters}
+          filterCategoryItems={filterCategoryItems}
+          filterTypeItems={filterTypeItems}
+          filterBrandItems={filterBrandItems}
+        />
       </Grid>
       <Container>
         <Box
@@ -84,7 +160,7 @@ const Collection = () => {
               <Button variant='contained'>Add Product</Button>
             </Link>
           </Box>
-          <Select value={'asc'} changeValue={changeValue} />
+          <Select value={sortOrder} changeValue={changeValue} />
         </Box>
         {isLoading && <Spinner />}
         <Grid container spacing={2}>
@@ -127,6 +203,18 @@ const Collection = () => {
               </Grid>
             ))}
         </Grid>
+        {console.log(items.length)}
+        {items.length / 1 > 1 && (
+          <Box
+            m={5}
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            <Pagination count={items.length / 1} />
+          </Box>
+        )}
       </Container>
     </Box>
   );

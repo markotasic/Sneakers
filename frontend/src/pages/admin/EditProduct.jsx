@@ -6,16 +6,17 @@ import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import { Paper, Box } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ImageUpload from '../../components/ImageUpload/ImageUpload';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormHelperText from '@mui/material/FormHelperText';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { getOneItem } from '../../features/items/itemSlice';
 
 const validationSchema = yup.object({
-  brand: yup.string('Enter the brand').required('Brand is required'),
+  brand: yup.string().required('Brand is required'),
   category: yup.string().required('Category is required'),
   type: yup.string().required('Type is required'),
   title: yup
@@ -35,23 +36,29 @@ const validationSchema = yup.object({
 });
 
 const EditProduct = () => {
+  const dispatch = useDispatch();
   const { itemId } = useParams();
   const user = JSON.parse(localStorage.getItem('user'));
   const navigate = useNavigate();
   const [previewUrl, setPreviewUrl] = useState([]);
 
-  const { items } = useSelector((state) => state.items);
+  const { items, isLoading, isError, message } = useSelector(
+    (state) => state.items
+  );
 
-  const item = items.filter((item) => item._id === itemId);
+  useEffect(() => {
+    dispatch(getOneItem(itemId));
+  }, [isError, message, dispatch, itemId]);
 
+  console.log(items);
   const formik = useFormik({
     initialValues: {
-      brand: item[0].brand,
-      title: item[0].title,
-      description: item[0].description,
-      price: +item[0].price,
-      category: item[0].category,
-      type: item[0].type,
+      brand: '',
+      title: items.title,
+      description: '',
+      price: 0,
+      category: '',
+      type: '',
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -116,16 +123,16 @@ const EditProduct = () => {
                 onChange={formik.handleChange}
                 error={formik.touched.brand && Boolean(formik.errors.brand)}
               >
-                <MenuItem value={'Nike'}>Nike</MenuItem>
-                <MenuItem value={'Adidas'}>Adidas</MenuItem>
-                <MenuItem value={'Converse'}>Converse</MenuItem>
-                <MenuItem value={'Reebok'}>Reebok</MenuItem>
-                <MenuItem value={'New Balance'}>New Balance</MenuItem>
-                <MenuItem value={'Vans'}>Vans</MenuItem>
-                <MenuItem value={'Puma'}>Puma</MenuItem>
-                <MenuItem value={'Jordan'}>Jordan</MenuItem>
-                <MenuItem value={'Yeezy'}>Yeezy</MenuItem>
-                <MenuItem value={'Asics'}>Asics</MenuItem>
+                <MenuItem value={'nike'}>Nike</MenuItem>
+                <MenuItem value={'adidas'}>Adidas</MenuItem>
+                <MenuItem value={'converse'}>Converse</MenuItem>
+                <MenuItem value={'reebok'}>Reebok</MenuItem>
+                <MenuItem value={'new balance'}>New Balance</MenuItem>
+                <MenuItem value={'vans'}>Vans</MenuItem>
+                <MenuItem value={'puma'}>Puma</MenuItem>
+                <MenuItem value={'jordan'}>Jordan</MenuItem>
+                <MenuItem value={'yeezy'}>Yeezy</MenuItem>
+                <MenuItem value={'asics'}>Asics</MenuItem>
               </Select>
               {formik.touched.brand && (
                 <FormHelperText error>{formik.errors.brand}</FormHelperText>
@@ -177,13 +184,13 @@ const EditProduct = () => {
                 onChange={formik.handleChange}
                 error={formik.touched.type && Boolean(formik.errors.type)}
               >
-                <MenuItem value={'Lifestyle'}>Lifestyle</MenuItem>
-                <MenuItem value={'Running'}>Running</MenuItem>
-                <MenuItem value={'Training & Gym'}>Training & Gym</MenuItem>
-                <MenuItem value={'Basketball'}>Basketball</MenuItem>
-                <MenuItem value={'Soccer'}>Soccer</MenuItem>
-                <MenuItem value={'Tennis'}>Tennis</MenuItem>
-                <MenuItem value={'Track & Field'}>Track & Field</MenuItem>
+                <MenuItem value={'lifestyle'}>Lifestyle</MenuItem>
+                <MenuItem value={'running'}>Running</MenuItem>
+                <MenuItem value={'training & gym'}>Training & Gym</MenuItem>
+                <MenuItem value={'basketball'}>Basketball</MenuItem>
+                <MenuItem value={'soccer'}>Soccer</MenuItem>
+                <MenuItem value={'tennis'}>Tennis</MenuItem>
+                <MenuItem value={'track & field'}>Track & Field</MenuItem>
               </Select>
               {formik.touched.type && (
                 <FormHelperText error>{formik.errors.type}</FormHelperText>
