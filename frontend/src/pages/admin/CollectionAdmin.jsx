@@ -164,17 +164,31 @@ const Collection = () => {
         </Box>
         {isLoading && <Spinner />}
         <Grid container spacing={2}>
+          {console.log(items)}
           {items[0] &&
             items.map((item) => (
               <Grid item xs={3} key={Math.random()} id={item._id}>
                 <Card>
                   <Link to={`/admin/${item._id}`}>
-                    <CardMedia
-                      component='img'
-                      height='140'
-                      image={AirForce1}
-                      alt={item.title}
-                    />
+                    {!item.imagePaths[0] && (
+                      <CardMedia
+                        component='img'
+                        height='140'
+                        image={AirForce1}
+                        // image={`http://localhost:5000/${item.imagePaths[0]}`}
+                        // alt={item.title}
+                      />
+                    )}
+
+                    {item.imagePaths[0] && (
+                      <CardMedia
+                        component='img'
+                        height='140'
+                        image={`http://localhost:5000/${item.imagePaths[0]}`}
+                        alt={item.title}
+                      />
+                    )}
+
                     <CardContent>
                       <Typography gutterBottom variant='h5' component='div'>
                         {item.title}

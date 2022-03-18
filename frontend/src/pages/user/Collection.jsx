@@ -158,7 +158,7 @@ const Collection = () => {
                     <CardMedia
                       component='img'
                       height='140'
-                      image={AirForce1}
+                      image={`http://localhost:5000/${item.imagePaths[0]}`}
                       alt={item.title}
                     />
                     <CardContent>

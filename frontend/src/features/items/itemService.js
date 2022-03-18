@@ -15,6 +15,7 @@ const createItem = async ({ itemData, previewUrl }, token) => {
 
   const response = await axios.post(API_URL, { itemData, previewUrl }, config);
 
+  console.log('CREATE ONE ITEM RESPONSE =======>     ', response.data);
   return response.data;
 };
 
@@ -22,6 +23,7 @@ const createItem = async ({ itemData, previewUrl }, token) => {
 const getItems = async (sort) => {
   const response = await axios.get(API_URL + sort);
 
+  console.log('GET ITEMS RESPONSE =======>     ', response.data);
   return response.data;
 };
 

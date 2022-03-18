@@ -55,7 +55,6 @@ const getItems = asyncHandler(async (req, res) => {
 // @route   POST /api/items
 // @access  Private
 
-//_________MORAM DA IZBRISEM FUNKCIJU 'getUploadedImages, I DA PREBACIM LOGIKU U SetItem, TAKO DA KADA SE SETUJE ITEM U MongoDB SALJEM image path do foldera gde se slika pravi, TAKODJE CU MORATI DA PROMENIM RUTU POSTO SE setItem POGADJA NA NEKI DRUGI POST A NE NA uploadImages//////////////
 const setItem = asyncHandler(async (req, res) => {
   const path = require('path');
   const fs = require('fs');
@@ -79,7 +78,12 @@ const setItem = asyncHandler(async (req, res) => {
     });
   })();
 
-  let imagePaths = myImagesArr.map((item, i) => item + i + '.png');
+  let imagePaths = myImagesArr.map(
+    (item, i) =>
+      item.replace('E:\\MyWorkspace\\Sneakers\\backend\\', '') + i + '.png'
+  );
+
+  console.log(imagePaths);
 
   if (
     !req.body.itemData.brand ||
@@ -94,8 +98,6 @@ const setItem = asyncHandler(async (req, res) => {
   }
   if (!req.user.isAdmin) throw new Error('User is not authorized to do this');
 
-  console.log(imagePaths);
-
   const item = await Item.create({
     brand: req.body.itemData.brand,
     category: req.body.itemData.category,
@@ -107,8 +109,6 @@ const setItem = asyncHandler(async (req, res) => {
   });
 
   res.status(200).json(item);
-
-  ///////////////////////////////////////////////////////////////////////
 });
 
 // @desc    Get item
