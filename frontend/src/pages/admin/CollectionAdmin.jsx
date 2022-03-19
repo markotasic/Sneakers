@@ -164,7 +164,6 @@ const Collection = () => {
         </Box>
         {isLoading && <Spinner />}
         <Grid container spacing={2}>
-          {console.log(items)}
           {items[0] &&
             items.map((item) => (
               <Grid item xs={3} key={Math.random()} id={item._id}>
@@ -175,8 +174,6 @@ const Collection = () => {
                         component='img'
                         height='140'
                         image={AirForce1}
-                        // image={`http://localhost:5000/${item.imagePaths[0]}`}
-                        // alt={item.title}
                       />
                     )}
 
@@ -217,7 +214,6 @@ const Collection = () => {
               </Grid>
             ))}
         </Grid>
-        {console.log(items.length)}
         {items.length / 1 > 1 && (
           <Box
             m={5}
