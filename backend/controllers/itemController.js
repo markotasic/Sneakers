@@ -1,5 +1,9 @@
 const asyncHandler = require('express-async-handler');
 const Item = require('../models/itemModel');
+const path = require('path');
+const fs = require('fs');
+
+const dirPath = path.join(__dirname, '../images');
 
 // @desc    Get item
 // @route   GET /api/items
@@ -73,35 +77,32 @@ const getItems = asyncHandler(async (req, res) => {
 // @route   POST /api/items
 // @access  Private
 
-//_________MORAM DA IZBRISEM FUNKCIJU 'getUploadedImages, I DA PREBACIM LOGIKU U SetItem, TAKO DA KADA SE SETUJE ITEM U MongoDB SALJEM image path do foldera gde se slika pravi, TAKODJE CU MORATI DA PROMENIM RUTU POSTO SE setItem POGADJA NA NEKI DRUGI POST A NE NA uploadImages//////////////
 const setItem = asyncHandler(async (req, res) => {
-  ///////////////////////////////////////////////////////////
+  const data = req.body.previewUrl;
+  //___________________OUTSOURCE___________________//
+  let myImagesArr = [];
+  let buffer = [];
+  data.map((item) => {
+    const newItem = item.replace(/^data:image\/\w+;base64,/, '');
+    buffer.push(new Buffer.from(newItem, 'base64'));
+  });
 
-  // const path = require('path');
-  // const fs = require('fs');
+  (async () => {
+    let pathToImages = path.join(dirPath + `/${Date.now()}`);
+    buffer.forEach((item, i) => {
+      fs.writeFile(pathToImages + i + '.png', item, function (err) {
+        if (err) return console.error(err);
+      });
+      myImagesArr.push(pathToImages);
+    });
+  })();
 
-  // const dirPath = path.join(__dirname, '../images');
-  // const data = req.body.previewUrl;
+  let imagePaths = myImagesArr.map(
+    (item, i) =>
+      item.replace('E:\\MyWorkspace\\Sneakers\\backend\\', '') + i + '.png'
+  );
+  //___________________OUTSOURCE___________________//
 
-  // let buffer = [];
-  // data.map((item) => {
-  //   const newItem = item.replace(/^data:image\/\w+;base64,/, '');
-  //   buffer.push(new Buffer.from(newItem, 'base64'));
-  // });
-
-  // (async () => {
-  //   buffer.forEach((item, i) => {
-  //     fs.writeFile(
-  //       path.join(dirPath + `/${Date.now() + i}.png`),
-  //       item,
-  //       function (err) {
-  //         if (err) return console.error(err);
-  //       }
-  //     );
-  //   });
-  // })();
-
-  ///////////////////////////////////////////////////////////////
   if (
     !req.body.itemData.brand ||
     !req.body.itemData.category ||
@@ -122,7 +123,7 @@ const setItem = asyncHandler(async (req, res) => {
     title: req.body.itemData.title,
     description: req.body.itemData.description,
     price: req.body.itemData.price,
-    // images: req.body.previewUrl,
+    imagePaths: imagePaths,
   });
 
   res.status(200).json(item);
@@ -147,6 +148,32 @@ const getOneItem = asyncHandler(async (req, res) => {
 // @access  Private
 const updateItem = asyncHandler(async (req, res) => {
   const item = await Item.findById(req.params.id);
+  //___________________OUTSOURCE___________________//
+  const data = req.body.previewUrl;
+  let myImagesArr = [];
+  let buffer = [];
+  data.map((item) => {
+    const newItem = item.replace(/^data:image\/\w+;base64,/, '');
+    buffer.push(new Buffer.from(newItem, 'base64'));
+  });
+
+  (async () => {
+    let pathToImages = path.join(dirPath + `/${Date.now()}`);
+    buffer.forEach((item, i) => {
+      fs.writeFile(pathToImages + i + '.png', item, function (err) {
+        if (err) return console.error(err);
+      });
+      myImagesArr.push(pathToImages);
+    });
+  })();
+
+  let imagePaths = myImagesArr.map(
+    (item, i) =>
+      item.replace('E:\\MyWorkspace\\Sneakers\\backend\\', '') + i + '.png'
+  );
+  //___________________OUTSOURCE___________________//
+
+  let newData = { ...req.body.itemData, imagePaths };
 
   if (!item) {
     res.status(400);
@@ -164,7 +191,7 @@ const updateItem = asyncHandler(async (req, res) => {
     throw new Error('User is not an admin');
   }
 
-  const updatedItem = await Item.findByIdAndUpdate(req.params.id, req.body);
+  const updatedItem = await Item.findByIdAndUpdate(req.params.id, newData);
 
   res.status(200).json(updatedItem);
 });

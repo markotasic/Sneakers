@@ -10,6 +10,7 @@ connectDB();
 
 const app = express();
 const bodyParser = require('body-parser');
+console.log(path.join(__dirname, '/images'));
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -30,6 +31,7 @@ app.use(express.urlencoded({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: false }));
 
 app.use('/api/items', require('./routes/itemRoutes'));
+app.use('/images', express.static(path.join(__dirname, '/images')));
 app.use('/api/users', require('./routes/userRoutes'));
 
 // app.use(bodyParser.json({ limit: '5mb' }));

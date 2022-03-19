@@ -12,7 +12,6 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormHelperText from '@mui/material/FormHelperText';
-import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { getOneItem } from '../../features/items/itemSlice';
 
@@ -51,7 +50,6 @@ const EditProduct = () => {
     dispatch(getOneItem(itemId));
   }, [isError, message, dispatch, itemId]);
 
-  console.log(items);
   const formik = useFormik({
     initialValues: {
       brand: '',
@@ -72,7 +70,7 @@ const EditProduct = () => {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${user.token}`,
           },
-          body: JSON.stringify(values),
+          body: JSON.stringify({ itemData: values, previewUrl }),
         };
 
         await fetch(`http://localhost:5000/api/items/${itemId}/edit`, config);

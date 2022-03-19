@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -21,6 +22,7 @@ import AirForce1v4 from '../../../images/air-force-1v4.jpg';
 
 // import required modules
 import { FreeMode, Navigation, Thumbs, EffectCoverflow } from 'swiper';
+import { useParams } from 'react-router-dom';
 
 const Image = styled('img')({
   // width: 'fit-content',
@@ -35,46 +37,8 @@ const ThumbImage = styled('img')({
   borderRadius: '5px',
 });
 
-const DUMMY_ITEMS = [
-  {
-    id: 1,
-    manufacturer: 'Nike',
-    name: 'Air Force 1',
-    description:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum ut quas eligendi dolore autem.',
-    images: [AirForce1v2],
-    price: 100,
-  },
-  {
-    id: 2,
-    manufacturer: 'Nike',
-    name: 'Air Max',
-    description:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum ut quas eligendi dolore autem.',
-    images: [AirMax],
-    price: 120,
-  },
-  {
-    id: 3,
-    manufacturer: 'Nike',
-    name: 'Back From The Future',
-    description:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum ut quas eligendi dolore autem.',
-    images: [Future],
-    price: 2000,
-  },
-  {
-    id: 4,
-    manufacturer: 'Nike',
-    name: 'Adaot',
-    description:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum ut quas eligendi dolore autem.',
-    images: [Adapt],
-    price: 80,
-  },
-];
-
 function Carousel(props) {
+  const { items } = useSelector((state) => state.items);
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
   return (
@@ -97,11 +61,15 @@ function Carousel(props) {
         thumbs={{ swiper: thumbsSwiper }}
         modules={[FreeMode, Navigation, Thumbs, EffectCoverflow]}
       >
-        {DUMMY_ITEMS.map((img) => (
+        {items.imagePaths && (
           <SwiperSlide key={Math.random()}>
-            <Image src={img.images} alt={img.name} />
+            <Image
+              src={`http://localhost:5000/${items.imagePaths[0]}`}
+              alt={items.title}
+            />
+            ;
           </SwiperSlide>
-        ))}
+        )}
       </Swiper>
       <Swiper
         onSwiper={setThumbsSwiper}
@@ -110,11 +78,15 @@ function Carousel(props) {
         modules={[FreeMode, Navigation, Thumbs]}
         className='mySwiper'
       >
-        {DUMMY_ITEMS.map((img) => (
-          <SwiperSlide key={Math.random()}>
-            <ThumbImage src={img.images} alt={img.name} />
-          </SwiperSlide>
-        ))}
+        {items.imagePaths &&
+          items.imagePaths.map((item) => (
+            <SwiperSlide key={Math.random()}>
+              <ThumbImage
+                src={`http://localhost:5000/${item}`}
+                alt={items.title}
+              />
+            </SwiperSlide>
+          ))}
       </Swiper>
     </div>
   );
