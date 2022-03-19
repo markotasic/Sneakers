@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import * as React from 'react';
 import {
   Card,
@@ -54,6 +55,7 @@ const Collection = () => {
       pathname: '/',
       search: `?${createSearchParams(params)}`,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate, sortOrder, categoryQuery, brandQuery, typeQuery]);
 
   useEffect(() => {
@@ -62,6 +64,7 @@ const Collection = () => {
     return () => {
       dispatch(reset());
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, searchParams, sortOrder]);
 
   const changeValue = (event) => {

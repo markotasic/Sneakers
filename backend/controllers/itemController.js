@@ -7,6 +7,12 @@ const Item = require('../models/itemModel');
 const getItems = asyncHandler(async (req, res) => {
   const query = req.query;
 
+  const limit = 16;
+  const page = +query.page;
+
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+
   const sortBy =
     query.price === 'asc'
       ? { price: 1 }
@@ -14,41 +20,53 @@ const getItems = asyncHandler(async (req, res) => {
       ? { price: -1 }
       : {};
 
-  let items = await Item.find({}).sort(sortBy);
+  let filteredItems = {};
+  if (query.category) filteredItems.category = query.category;
+  if (query.brand) filteredItems.brand = query.brand;
+  if (query.type) filteredItems.type = query.type;
 
-  if (query.category)
-    items = items.filter((products) => {
-      let isValid = true;
-      isValid = Array.isArray(query.category)
-        ? query.category.includes(products.category)
-        : [query.category].includes(products.category);
+  let products = {};
+  products.items = await Item.find(filteredItems)
+    .sort(sortBy)
+    .limit(limit)
+    .skip(startIndex)
+    .exec();
 
-      return isValid;
-    });
+  if (endIndex < (await Item.countDocuments().exec())) {
+    products.next = {
+      page: page + 1,
+      limit: limit,
+    };
+  }
 
-  if (query.brand)
-    items = items.filter((products) => {
-      let isValid = true;
+  if (startIndex > 0) {
+    products.previous = {
+      page: page - 1,
+      limit: limit,
+    };
+  }
 
-      isValid = Array.isArray(query.brand)
-        ? query.brand.includes(products.brand)
-        : [query.brand].includes(products.brand);
+  products.total = Math.ceil(
+    (await Item.find(filteredItems).countDocuments({})) / limit
+  );
 
-      return isValid;
-    });
+  // const maxPrice = Math.max.apply(
+  //   Math,
+  //   Item.find(filteredItems).map((item) => {
+  //     return item.price;
+  //   })
+  // );
 
-  if (query.type)
-    items = items.filter((products) => {
-      let isValid = true;
+  const maxPrice = await Item.find().sort({ price: -1 }).limit(1);
+  const minPrice = await Item.find()
+    .sort({ age: +1 })
+    .limit(1);
+  products.maxPrice = maxPrice[0].price;
+  products.minPrice = minPrice[0].price;
 
-      isValid = Array.isArray(query.type)
-        ? query.type.includes(products.type)
-        : [query.type].includes(products.type);
+  console.log(maxPrice);
 
-      return isValid;
-    });
-
-  res.status(200).json(items);
+  res.status(200).json(products);
 });
 
 // @desc    Set item
@@ -59,32 +77,31 @@ const getItems = asyncHandler(async (req, res) => {
 const setItem = asyncHandler(async (req, res) => {
   ///////////////////////////////////////////////////////////
 
-  const path = require('path');
-  const fs = require('fs');
+  // const path = require('path');
+  // const fs = require('fs');
 
-  const dirPath = path.join(__dirname, '../images');
-  const data = req.body.previewUrl;
+  // const dirPath = path.join(__dirname, '../images');
+  // const data = req.body.previewUrl;
 
-  let buffer = [];
-  data.map((item) => {
-    const newItem = item.replace(/^data:image\/\w+;base64,/, '');
-    buffer.push(new Buffer.from(newItem, 'base64'));
-  });
+  // let buffer = [];
+  // data.map((item) => {
+  //   const newItem = item.replace(/^data:image\/\w+;base64,/, '');
+  //   buffer.push(new Buffer.from(newItem, 'base64'));
+  // });
 
-  (async () => {
-    buffer.forEach((item, i) => {
-      fs.writeFile(
-        path.join(dirPath + `/${Date.now() + i}.png`),
-        item,
-        function (err) {
-          if (err) return console.error(err);
-        }
-      );
-    });
-  })();
+  // (async () => {
+  //   buffer.forEach((item, i) => {
+  //     fs.writeFile(
+  //       path.join(dirPath + `/${Date.now() + i}.png`),
+  //       item,
+  //       function (err) {
+  //         if (err) return console.error(err);
+  //       }
+  //     );
+  //   });
+  // })();
 
   ///////////////////////////////////////////////////////////////
-  console.log(req.body.itemData);
   if (
     !req.body.itemData.brand ||
     !req.body.itemData.category ||
@@ -97,7 +114,6 @@ const setItem = asyncHandler(async (req, res) => {
     throw new Error('Please fill out the required fields');
   }
   if (!req.user.isAdmin) throw new Error('User is not authorized to do this');
-  l;
 
   const item = await Item.create({
     brand: req.body.itemData.brand,
