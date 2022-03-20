@@ -1,3 +1,6 @@
 *Delete item image(s) from the folder when item is edited and changed
 *If item has some images in the mongo, and there is a new one added, add that image to an array without deleting the image
 *Change the name of the images for the ItemData.name 
+
+
+Naravi da se u edit produkt pokazu slike koje su vec tu, od tog proizvoda, onda svaka ce moci da se obrise, ako se stave nove a stare se rucno ne obrisu, nove ce da se stave zajedno sa starim slikama
