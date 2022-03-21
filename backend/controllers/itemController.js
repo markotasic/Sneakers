@@ -54,21 +54,13 @@ const getItems = asyncHandler(async (req, res) => {
     (await Item.find(filteredItems).countDocuments({})) / limit
   );
 
-  // const maxPrice = Math.max.apply(
-  //   Math,
-  //   Item.find(filteredItems).map((item) => {
-  //     return item.price;
-  //   })
-  // );
-
   const maxPrice = await Item.find().sort({ price: -1 }).limit(1);
   const minPrice = await Item.find()
-    .sort({ age: +1 })
+    .sort({ price: +1 })
     .limit(1);
+
   products.maxPrice = maxPrice[0].price;
   products.minPrice = minPrice[0].price;
-
-  console.log(maxPrice);
 
   res.status(200).json(products);
 });

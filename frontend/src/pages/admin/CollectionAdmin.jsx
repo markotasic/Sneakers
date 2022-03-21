@@ -128,6 +128,8 @@ const Collection = () => {
     }
   };
 
+  console.log(items.minPrice);
+
   return (
     <Box
       sx={{
@@ -149,7 +151,10 @@ const Collection = () => {
           <h1>
             {items.minPrice} - {items.maxPrice}
           </h1>
-          <Slider maxPrice={items.maxPrice} minPrice={items.minPrice} />
+          <Slider
+            maxPrice={items.maxPrice || 0}
+            minPrice={items.minPrice || 100}
+          />
         </Paper>
         <Accordion
           filter={filters}
