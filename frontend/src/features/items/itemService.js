@@ -15,6 +15,9 @@ const createItem = async ({ itemData, previewUrl }, token) => {
 
   const response = await axios.post(API_URL, { itemData, previewUrl }, config);
 
+  console.log('DATA =========>', itemData);
+  console.log('IMAGES COUNT =========>', previewUrl.length);
+
   return response.data;
 };
 

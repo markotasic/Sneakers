@@ -5,61 +5,12 @@ const fs = require('fs');
 
 const dirPath = path.join(__dirname, '../images');
 
-// @desc    Get item
-// @route   GET /api/items
-// @access  Public
-const getItems = asyncHandler(async (req, res) => {
-  const query = req.query;
-
-  const sortBy =
-    query.price === 'asc'
-      ? { price: 1 }
-      : query.price === 'desc'
-      ? { price: -1 }
-      : {};
-
-  let items = await Item.find({}).sort(sortBy);
-
-  if (query.category)
-    items = items.filter((products) => {
-      let isValid = true;
-      isValid = Array.isArray(query.category)
-        ? query.category.includes(products.category)
-        : [query.category].includes(products.category);
-
-      return isValid;
-    });
-
-  if (query.brand)
-    items = items.filter((products) => {
-      let isValid = true;
-
-      isValid = Array.isArray(query.brand)
-        ? query.brand.includes(products.brand)
-        : [query.brand].includes(products.brand);
-
-      return isValid;
-    });
-
-  if (query.type)
-    items = items.filter((products) => {
-      let isValid = true;
-
-      isValid = Array.isArray(query.type)
-        ? query.type.includes(products.type)
-        : [query.type].includes(products.type);
-
-      return isValid;
-    });
-
-  res.status(200).json(items);
-});
-
 // @desc    Set item
 // @route   POST /api/items
 // @access  Private
 
 const setItem = asyncHandler(async (req, res) => {
+  console.log('setItems FIRED UP!!!!!!!!!');
   const data = req.body.previewUrl;
   //___________________OUTSOURCE___________________//
   let myImagesArr = [];
@@ -109,6 +60,58 @@ const setItem = asyncHandler(async (req, res) => {
   });
 
   res.status(200).json(item);
+});
+
+// @desc    Get item
+// @route   GET /api/items
+// @access  Public
+const getItems = asyncHandler(async (req, res) => {
+  const query = req.query;
+
+  const sortBy =
+    query.price === 'asc'
+      ? { price: 1 }
+      : query.price === 'desc'
+      ? { price: -1 }
+      : {};
+
+  let items = await Item.find({}).sort(sortBy);
+
+  if (query.category)
+    items = items.filter((products) => {
+      let isValid = true;
+      isValid = Array.isArray(query.category)
+        ? query.category.includes(products.category)
+        : [query.category].includes(products.category);
+
+      return isValid;
+    });
+
+  if (query.brand)
+    items = items.filter((products) => {
+      let isValid = true;
+
+      isValid = Array.isArray(query.brand)
+        ? query.brand.includes(products.brand)
+        : [query.brand].includes(products.brand);
+
+      return isValid;
+    });
+
+  if (query.type)
+    items = items.filter((products) => {
+      let isValid = true;
+
+      isValid = Array.isArray(query.type)
+        ? query.type.includes(products.type)
+        : [query.type].includes(products.type);
+
+      return isValid;
+    });
+
+  console.log('ITEMS LENGTH = ', items.length);
+
+  res.status(200).json(items);
 });
 
 // @desc    Get item
@@ -182,27 +185,42 @@ const updateItem = asyncHandler(async (req, res) => {
 // @route   DELETE /api/items/:id
 // @access  Private
 const deleteItem = asyncHandler(async (req, res) => {
-  const item = await Item.findById(req.params.id);
+  try {
+    const item = await Item.findById(req.params.id);
 
-  if (!item) {
-    res.status(400);
-    throw new Error('Item not found');
+    if (!item) {
+      res.status(400);
+      throw new Error('Item not found');
+    }
+
+    //____________Delete images from the folder____________//
+    const pathsForDelete = [];
+    item.imagePaths.forEach((imagePath) => pathsForDelete.push(imagePath));
+
+    pathsForDelete.forEach((path) => {
+      fs.unlink(path.replace('images', dirPath), function (err) {
+        if (err) return console.log(err);
+      });
+    });
+    //____________________________________________________//
+
+    // Check for user
+    if (!req.user) {
+      res.status(401);
+      throw new Error('User not found');
+    }
+
+    if (!req.user.isAdmin) {
+      res.status(401);
+      throw new Error('User is not an admin');
+    }
+
+    await item.remove();
+
+    res.status(200).json({ id: req.params.id });
+  } catch (err) {
+    console.error(err);
   }
-
-  // Check for user
-  if (!req.user) {
-    res.status(401);
-    throw new Error('User not found');
-  }
-
-  if (!req.user.isAdmin) {
-    res.status(401);
-    throw new Error('User is not an admin');
-  }
-
-  await item.remove();
-
-  res.status(200).json({ id: req.params.id });
 });
 
 // const getUploadedImages = (req, res) => {
