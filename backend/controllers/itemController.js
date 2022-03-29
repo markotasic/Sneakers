@@ -161,9 +161,8 @@ const updateItem = asyncHandler(async (req, res) => {
     });
   })();
 
-  let imagePaths = myImagesArr.map(
-    (item, i) =>
-      item.replace('E:\\MyWorkspace\\Sneakers\\backend\\', '') + i + '.png'
+  let imagePaths = myImagesArr.map((item, i) =>
+    item.replace((item, i) => item.replace(dirPath, 'images/') + i + '.png')
   );
   //___________________OUTSOURCE___________________//
 
