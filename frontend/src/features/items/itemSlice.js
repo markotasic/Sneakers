@@ -109,6 +109,8 @@ export const getOneItem = createAsyncThunk(
   }
 );
 
+console.log(initialState.items);
+
 export const itemSlice = createSlice({
   name: 'item',
   initialState,
@@ -164,7 +166,7 @@ export const itemSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.items = state.items.filter(
-          console.log((item) => item._id !== action.payload.id)
+          (item) => item._id !== action.payload.id
         );
       })
       .addCase(deleteItem.rejected, (state, action) => {

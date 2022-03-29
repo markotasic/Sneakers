@@ -1,10 +1,8 @@
 import axios from 'axios';
-import { useState } from 'react';
 
 const API_URL = 'http://localhost:5000/api/items/';
 
 //Create new item
-//OVDE CU MORATI DA DOPREMIM imagePreview da ga posljem funkiciji koja na backendu pravi item i salje ga mongoDB
 
 const createItem = async ({ itemData, previewUrl }, token) => {
   const config = {
@@ -14,9 +12,6 @@ const createItem = async ({ itemData, previewUrl }, token) => {
   };
 
   const response = await axios.post(API_URL, { itemData, previewUrl }, config);
-
-  console.log('DATA =========>', itemData);
-  console.log('IMAGES COUNT =========>', previewUrl.length);
 
   return response.data;
 };

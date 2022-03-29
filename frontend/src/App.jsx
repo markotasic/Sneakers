@@ -37,21 +37,6 @@ const App = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const rest1 = {
-    name: 'Capri',
-    numGuests: 20,
-  };
-  const rest2 = {
-    name: 'La Pizza',
-    owner: 'Marko',
-  };
-
-  rest1.numGuests ||= 10;
-  rest2.numGuests ||= 10;
-
-  console.log(rest1);
-  console.log(rest2);
-
   // Set initial cart
   useEffect(() => {
     dispatch(setInitialCartItems());
