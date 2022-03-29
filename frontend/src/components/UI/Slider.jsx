@@ -6,32 +6,20 @@ function valuetext(value) {
   return `${value}°C`;
 }
 
-const minDistance = 10;
+export default function MinimumDistanceSlider(props) {
+  const [value, setValue] = React.useState([0, 100]);
 
-export default function MinimumDistanceSlider() {
-  const [value, setValue] = React.useState([20, 37]);
-
-  const handleChange = (event, newValue, activeThumb) => {
-    if (!Array.isArray(newValue)) {
-      return;
-    }
-
-    if (activeThumb === 0) {
-      setValue([Math.min(newValue[0], value[1] - minDistance), value[1]]);
-    } else {
-      setValue([value[0], Math.max(newValue[1], value[0] + minDistance)]);
-    }
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
   };
 
   return (
     <Box sx={{ width: '100%' }}>
       <Slider
-        getAriaLabel={() => 'Minimum distance'}
+        getAriaLabel={() => 'Price range'}
         value={value}
         onChange={handleChange}
         valueLabelDisplay='auto'
-        getAriaValueText={valuetext}
-        disableSwap
       />
     </Box>
   );

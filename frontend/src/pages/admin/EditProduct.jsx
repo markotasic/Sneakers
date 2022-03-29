@@ -12,7 +12,6 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormHelperText from '@mui/material/FormHelperText';
-import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { getOneItem } from '../../features/items/itemSlice';
 

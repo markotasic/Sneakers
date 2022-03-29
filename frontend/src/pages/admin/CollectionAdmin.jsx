@@ -31,21 +31,21 @@ import Spinner from '../../components/UI/Spinner';
 import filters from '../../filters/filters.json';
 import { useState } from 'react';
 import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
 
 const Collection = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { items, isLoading } = useSelector((state) => state.items);
   const [searchParams] = useSearchParams();
-  const [itemLimit, setItemLimit] = useState([]);
+  const [page, setPage] = useState(1);
   const [sortOrder, setSortOrder] = useState([]);
   const [categoryQuery, setCategoryQuery] = useState([]);
   const [brandQuery, setBrandQuery] = useState([]);
   const [typeQuery, setTypeQuery] = useState([]);
 
+  console.log(items);
   const params = {
-    limit: itemLimit,
+    page,
     price: sortOrder,
     category: categoryQuery,
     brand: brandQuery,
@@ -57,7 +57,8 @@ const Collection = () => {
       pathname: '/',
       search: `?${createSearchParams(params)}`,
     });
-  }, [navigate, sortOrder, categoryQuery, brandQuery, typeQuery]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigate, sortOrder, categoryQuery, brandQuery, typeQuery, page]);
 
   // Get all items
   useEffect(() => {
@@ -66,6 +67,7 @@ const Collection = () => {
     return () => {
       dispatch(reset());
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, searchParams, sortOrder]);
 
   const deleteProduct = async (event) => {
@@ -73,22 +75,29 @@ const Collection = () => {
     dispatch(deleteItem(itemId));
   };
 
+  const handlePageChange = (event, value) => {
+    setPage(value);
+  };
+
   const changeValue = (event) => {
     setSortOrder(event.target.value);
   };
 
+  // 3 TIMES REAPING THE SAME FUNCTION, NEED TO CLEAN IT UP
   const filterCategoryItems = (event) => {
     if (event.target.checked) {
       setCategoryQuery((oldQuery) => [
         ...oldQuery,
         event.target.value.toLowerCase(),
       ]);
+      setPage(1);
     } else {
       setCategoryQuery(
         categoryQuery.filter(
           (item) => item !== event.target.value.toLowerCase()
         )
       );
+      setPage(1);
     }
   };
   const filterBrandItems = (event) => {
@@ -97,10 +106,12 @@ const Collection = () => {
         ...oldQuery,
         event.target.value.toLowerCase(),
       ]);
+      setPage(1);
     } else {
       setBrandQuery(
         brandQuery.filter((item) => item !== event.target.value.toLowerCase())
       );
+      setPage(1);
     }
   };
   const filterTypeItems = (event) => {
@@ -109,10 +120,12 @@ const Collection = () => {
         ...oldQuery,
         event.target.value.toLowerCase(),
       ]);
+      setPage(1);
     } else {
       setTypeQuery(
         typeQuery.filter((item) => item !== event.target.value.toLowerCase())
       );
+      setPage(1);
     }
   };
 
@@ -134,7 +147,10 @@ const Collection = () => {
         >
           <Typography component='h6'>Price</Typography>
           <Divider />
-          <Slider />
+          <h1>
+            {items.minPrice} - {items.maxPrice}
+          </h1>
+          <Slider maxPrice={items.maxPrice} minPrice={items.minPrice} />
         </Paper>
         <Accordion
           filter={filters}
@@ -164,8 +180,8 @@ const Collection = () => {
         </Box>
         {isLoading && <Spinner />}
         <Grid container spacing={2}>
-          {items[0] &&
-            items.map((item) => (
+          {items.items &&
+            items.items.map((item) => (
               <Grid item xs={3} key={Math.random()} id={item._id}>
                 <Card>
                   <Link to={`/admin/${item._id}`}>
@@ -214,7 +230,8 @@ const Collection = () => {
               </Grid>
             ))}
         </Grid>
-        {items.length / 1 > 1 && (
+
+        {items.total > 1 && (
           <Box
             m={5}
             sx={{
@@ -222,7 +239,11 @@ const Collection = () => {
               justifyContent: 'center',
             }}
           >
-            <Pagination count={items.length / 1} />
+            <Pagination
+              count={items.total}
+              page={page}
+              onChange={handlePageChange}
+            />
           </Box>
         )}
       </Container>
