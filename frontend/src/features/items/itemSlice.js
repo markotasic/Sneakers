@@ -140,6 +140,7 @@ export const itemSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.items = action.payload;
+        console.log();
       })
       .addCase(getItems.rejected, (state, action) => {
         state.isLoading = false;
@@ -165,7 +166,7 @@ export const itemSlice = createSlice({
       .addCase(deleteItem.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.items = state.items.filter(
+        state.items.items = state.items.items.filter(
           (item) => item._id !== action.payload.id
         );
       })
@@ -180,9 +181,8 @@ export const itemSlice = createSlice({
       .addCase(updateItem.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-
-        state.items = state.items.filter(
-          (item) => item._id === action.payload.id
+        state.items.items = state.items.items.filter(
+          (item) => item._id !== action.payload.id
         );
       })
       .addCase(updateItem.rejected, (state, action) => {
