@@ -11,7 +11,6 @@ const dirPath = path.join(__dirname, '../images');
 
 const setItem = asyncHandler(async (req, res) => {
   console.log('setItems FIRED UP!!!!!!!!!');
-  let pathToImages = path.join(dirPath + `/${Date.now()}`);
   const data = req.body.previewUrl;
   //___________________OUTSOURCE___________________//
   let myImagesArr = [];
@@ -22,6 +21,7 @@ const setItem = asyncHandler(async (req, res) => {
   });
 
   (async () => {
+    let pathToImages = path.join(dirPath + `/${Date.now()}`);
     buffer.forEach((item, i) => {
       fs.writeFile(pathToImages + i + '.png', item, function (err) {
         if (err) return console.error(err);
@@ -31,8 +31,9 @@ const setItem = asyncHandler(async (req, res) => {
   })();
 
   let imagePaths = myImagesArr.map(
-    (item, i) => item.replace(pathToImages, '') + i + '.png'
+    (item, i) => item.replace(dirPath, 'images/') + i + '.png'
   );
+
   //___________________OUTSOURCE___________________//
 
   if (
