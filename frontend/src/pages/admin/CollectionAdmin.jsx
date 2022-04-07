@@ -43,7 +43,6 @@ const Collection = () => {
   const [brandQuery, setBrandQuery] = useState([]);
   const [typeQuery, setTypeQuery] = useState([]);
 
-  console.log(items);
   const params = {
     page,
     price: sortOrder,

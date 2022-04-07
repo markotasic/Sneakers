@@ -50,6 +50,8 @@ const EditProduct = () => {
     dispatch(getOneItem(itemId));
   }, [isError, message, dispatch, itemId]);
 
+  console.log(items);
+
   const formik = useFormik({
     initialValues: {
       brand: '',
@@ -61,7 +63,6 @@ const EditProduct = () => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      // dispatch(updateItem(itemId));
       const postData = async () => {
         const config = {
           method: 'PATCH',
@@ -83,6 +84,18 @@ const EditProduct = () => {
       return;
     },
   });
+
+  useEffect(() => {
+    const prepopulatedData = {
+      brand: items.brand ? items.brand.toLowerCase() : '',
+      title: items.title || '',
+      description: items.description || '',
+      price: items.price || '',
+      category: items.category ? items.category.toLowerCase() : '',
+      type: items.type ? items.type.toLowerCase() : '',
+    };
+    !isLoading && formik.setValues(prepopulatedData);
+  }, [items, isLoading]);
 
   const pickedHandler = (e) => {
     let files = e.target.files;

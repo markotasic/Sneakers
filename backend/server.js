@@ -10,7 +10,6 @@ connectDB();
 
 const app = express();
 const bodyParser = require('body-parser');
-console.log(path.join(__dirname, '/images'));
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');

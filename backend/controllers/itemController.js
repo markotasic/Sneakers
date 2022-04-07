@@ -10,7 +10,6 @@ const dirPath = path.join(__dirname, '../images');
 // @access  Private
 
 const setItem = asyncHandler(async (req, res) => {
-  console.log('setItems FIRED UP!!!!!!!!!');
   const data = req.body.previewUrl;
   //___________________OUTSOURCE___________________//
   let myImagesArr = [];
@@ -152,7 +151,6 @@ const updateItem = asyncHandler(async (req, res) => {
 
   (async () => {
     let pathToImages = path.join(dirPath + `/${Date.now()}`);
-    console.log(pathToImages);
     buffer.forEach((item, i) => {
       fs.writeFile(pathToImages + i + '.png', item, function (err) {
         if (err) return console.error(err);

@@ -97,16 +97,16 @@ const AddProduct = () => {
               onChange={formik.handleChange}
               error={formik.touched.brand && Boolean(formik.errors.brand)}
             >
-              <MenuItem value={'Nike'}>Nike</MenuItem>
-              <MenuItem value={'Adidas'}>Adidas</MenuItem>
-              <MenuItem value={'Converse'}>Converse</MenuItem>
-              <MenuItem value={'Reebok'}>Reebok</MenuItem>
-              <MenuItem value={'New Balance'}>New Balance</MenuItem>
-              <MenuItem value={'Vans'}>Vans</MenuItem>
-              <MenuItem value={'Puma'}>Puma</MenuItem>
-              <MenuItem value={'Jordan'}>Jordan</MenuItem>
-              <MenuItem value={'Yeezy'}>Yeezy</MenuItem>
-              <MenuItem value={'Asics'}>Asics</MenuItem>
+              <MenuItem value={'nike'}>Nike</MenuItem>
+              <MenuItem value={'adidas'}>Adidas</MenuItem>
+              <MenuItem value={'converse'}>Converse</MenuItem>
+              <MenuItem value={'reebok'}>Reebok</MenuItem>
+              <MenuItem value={'new balance'}>New Balance</MenuItem>
+              <MenuItem value={'vans'}>Vans</MenuItem>
+              <MenuItem value={'puma'}>Puma</MenuItem>
+              <MenuItem value={'jordan'}>Jordan</MenuItem>
+              <MenuItem value={'yeezy'}>Yeezy</MenuItem>
+              <MenuItem value={'asics'}>Asics</MenuItem>
             </Select>
             {formik.touched.brand && (
               <FormHelperText error>{formik.errors.brand}</FormHelperText>
@@ -154,13 +154,13 @@ const AddProduct = () => {
               onChange={formik.handleChange}
               error={formik.touched.type && Boolean(formik.errors.type)}
             >
-              <MenuItem value={'Lifestyle'}>Lifestyle</MenuItem>
-              <MenuItem value={'Running'}>Running</MenuItem>
-              <MenuItem value={'Training & Gym'}>Training & Gym</MenuItem>
-              <MenuItem value={'Basketball'}>Basketball</MenuItem>
-              <MenuItem value={'Soccer'}>Soccer</MenuItem>
-              <MenuItem value={'Tennis'}>Tennis</MenuItem>
-              <MenuItem value={'Track & Field'}>Track & Field</MenuItem>
+              <MenuItem value={'lifestyle'}>Lifestyle</MenuItem>
+              <MenuItem value={'running'}>Running</MenuItem>
+              <MenuItem value={'training & gym'}>Training & Gym</MenuItem>
+              <MenuItem value={'basketball'}>Basketball</MenuItem>
+              <MenuItem value={'soccer'}>Soccer</MenuItem>
+              <MenuItem value={'tennis'}>Tennis</MenuItem>
+              <MenuItem value={'track & field'}>Track & Field</MenuItem>
             </Select>
             {formik.touched.type && (
               <FormHelperText error>{formik.errors.type}</FormHelperText>

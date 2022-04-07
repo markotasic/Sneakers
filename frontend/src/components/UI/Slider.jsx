@@ -1,25 +1,29 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
+import { useEffect } from 'react';
 
-function valuetext(value) {
-  return `${value}°C`;
-}
+export default function MinimumDistanceSlider({ minPrice, maxPrice }) {
+  const [value, setValue] = React.useState([0, 500]);
 
-export default function MinimumDistanceSlider(props) {
-  const [value, setValue] = React.useState([0, 100]);
+  useEffect(() => {
+    setValue([minPrice, maxPrice]);
+  }, [minPrice, maxPrice]);
 
   const handleChange = (event, newValue) => {
+    console.log(event.target.value);
     setValue(newValue);
   };
 
   return (
     <Box sx={{ width: '100%' }}>
       <Slider
-        getAriaLabel={() => 'Price range'}
+        getAriaLabel={() => 500}
         value={value}
         onChange={handleChange}
         valueLabelDisplay='auto'
+        min={minPrice}
+        max={maxPrice}
       />
     </Box>
   );
