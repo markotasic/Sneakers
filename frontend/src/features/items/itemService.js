@@ -53,6 +53,7 @@ const deleteItem = async (itemId, token) => {
 
   const response = await axios.delete(API_URL + itemId, config);
 
+  console.log(response);
   return response.data;
 };
 
