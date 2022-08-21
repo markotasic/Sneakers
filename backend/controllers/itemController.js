@@ -167,8 +167,6 @@ const updateItem = asyncHandler(async (req, res) => {
 
   let newData = { ...req.body.itemData, imagePaths };
 
-  console.log('NEW DATA ========> ', newData);
-
   if (!item) {
     res.status(400);
     throw new Error('Item not found');
@@ -186,7 +184,6 @@ const updateItem = asyncHandler(async (req, res) => {
   }
 
   const updatedItem = await Item.findByIdAndUpdate(req.params.id, newData);
-  console.log('UPDATED ITEM =============>', updatedItem);
 
   res.status(200).json(updatedItem);
 });
@@ -196,7 +193,6 @@ const updateItem = asyncHandler(async (req, res) => {
 // @access  Private
 const deleteItem = asyncHandler(async (req, res) => {
   try {
-    console.log('DELETE FIRED UP!!!!!!!!!!!!!!!!');
     const item = await Item.findById(req.params.id);
 
     if (!item) {
@@ -233,11 +229,6 @@ const deleteItem = asyncHandler(async (req, res) => {
     console.error(err);
   }
 });
-
-// const getUploadedImages = (req, res) => {
-
-//   res.status(200).json(data);
-// };
 
 module.exports = {
   getItems,

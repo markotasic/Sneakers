@@ -110,6 +110,15 @@ const Collection = () => {
     }
   };
 
+  //____________________________OUTSOURCE____________________//
+  const truncateString = (stringValue, checkValue) => {
+    if (stringValue !== undefined && stringValue.length > checkValue)
+      stringValue = stringValue.substr(0, checkValue - 2) + '...';
+
+    return stringValue;
+  };
+  //_________________________________________________________//
+
   return (
     <Box
       sx={{
@@ -124,7 +133,10 @@ const Collection = () => {
       >
         <Paper
           variant='outlined'
-          sx={{ backgroundColor: 'transparent', padding: '20px' }}
+          sx={{
+            backgroundColor: 'transparent',
+            padding: '20px',
+          }}
         >
           <Typography component='h6'>Price</Typography>
           <Divider />
@@ -156,7 +168,7 @@ const Collection = () => {
           {items.items &&
             items.items.map((item) => (
               <Grid item xs={3} key={item._id}>
-                <Card>
+                <Card sx={{ maxHeight: '300px', maxWidth: '276px' }}>
                   <Link to={`/item/${item._id}`}>
                     <CardMedia
                       component='img'
@@ -166,7 +178,9 @@ const Collection = () => {
                     />
                     <CardContent>
                       <Typography gutterBottom variant='h6' component='div'>
-                        {item.title}
+                        {/* {item.title.length > 20} */}
+                        {truncateString(item.title, 20)}
+                        {/* {item.title.substr(0, 20)} */}
                       </Typography>
                       <Typography variant='h5' component='div'>
                         {`$${item.price}`}

@@ -51,8 +51,6 @@ const Collection = () => {
     type: typeQuery,
   };
 
-  console.log(items);
-
   useEffect(() => {
     navigate({
       pathname: '/',
