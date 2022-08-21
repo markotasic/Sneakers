@@ -55,13 +55,7 @@ export const updateItem = createAsyncThunk(
     try {
       const token = thunkAPI.getState().auth.user.token;
 
-      const headers = { givingHead: '❌' };
-
-      return await itemService.updateItem(
-        itemId,
-        JSON.stringify(headers),
-        token
-      );
+      return await itemService.updateItem(itemId, token);
     } catch (error) {
       const message =
         (error.response &&

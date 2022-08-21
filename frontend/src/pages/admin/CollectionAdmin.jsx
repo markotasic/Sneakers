@@ -51,6 +51,8 @@ const Collection = () => {
     type: typeQuery,
   };
 
+  console.log(items);
+
   useEffect(() => {
     navigate({
       pathname: '/',
@@ -146,9 +148,6 @@ const Collection = () => {
         >
           <Typography component='h6'>Price</Typography>
           <Divider />
-          <h1>
-            {items.minPrice} - {items.maxPrice}
-          </h1>
           <Slider maxPrice={items.maxPrice} minPrice={items.minPrice} />
         </Paper>
         <Accordion

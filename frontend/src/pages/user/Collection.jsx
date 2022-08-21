@@ -128,7 +128,7 @@ const Collection = () => {
         >
           <Typography component='h6'>Price</Typography>
           <Divider />
-          <Slider />
+          <Slider maxPrice={items.maxPrice} minPrice={items.minPrice} />
         </Paper>
         <Accordion
           filter={filters}
@@ -153,8 +153,8 @@ const Collection = () => {
         </Box>
         {isLoading && <Spinner />}
         <Grid container spacing={2}>
-          {items[0] &&
-            items.map((item) => (
+          {items.items &&
+            items.items.map((item) => (
               <Grid item xs={3} key={item._id}>
                 <Card>
                   <Link to={`/item/${item._id}`}>
@@ -165,11 +165,8 @@ const Collection = () => {
                       alt={item.title}
                     />
                     <CardContent>
-                      <Typography gutterBottom variant='h5' component='div'>
+                      <Typography gutterBottom variant='h6' component='div'>
                         {item.title}
-                      </Typography>
-                      <Typography variant='body2' color='text.secondary'>
-                        {item.description}
                       </Typography>
                       <Typography variant='h5' component='div'>
                         {`$${item.price}`}
@@ -178,7 +175,6 @@ const Collection = () => {
                   </Link>
                   <CardActions>
                     <Button size='small'>Add To Cart</Button>
-                    <Button size='small'>Learn More</Button>
                   </CardActions>
                 </Card>
               </Grid>
