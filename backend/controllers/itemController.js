@@ -67,6 +67,8 @@ const setItem = asyncHandler(async (req, res) => {
 const getItems = asyncHandler(async (req, res) => {
   const query = req.query;
 
+  // console.log(query);
+
   const limit = 16;
   const page = +query.page;
 
@@ -91,6 +93,15 @@ const getItems = asyncHandler(async (req, res) => {
     .limit(limit)
     .skip(startIndex)
     .exec();
+
+  if (query.maxPrice) {
+    const originalProducts = Object.values(products.items);
+
+    products.items = originalProducts.filter(
+      (product) =>
+        product.price <= query.maxPrice && product.price >= query.minPrice
+    );
+  }
 
   if (endIndex < (await Item.countDocuments().exec())) {
     products.next = {
@@ -117,6 +128,9 @@ const getItems = asyncHandler(async (req, res) => {
 
   products.maxPrice = maxPrice[0].price;
   products.minPrice = minPrice[0].price;
+
+  // products.maxPrice = query.maxPrice ? query.maxPrice : maxPrice[0].price;
+  // products.minPrice = query.minPrice ? query.minPrice : minPrice[0].price;
 
   res.status(200).json(products);
 });

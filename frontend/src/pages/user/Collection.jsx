@@ -50,7 +50,7 @@ const Collection = () => {
     (state) => state.items
   );
 
-  if (items.items?.length) items.items.map((item) => console.log(item.price));
+  // if (items.items?.length) items.items.map((item) => console.log(item.price));
 
   const params = {
     price: sortOrder,
