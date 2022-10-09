@@ -31,6 +31,7 @@ import Spinner from '../../components/UI/Spinner';
 import filters from '../../filters/filters.json';
 import { useState } from 'react';
 import Pagination from '@mui/material/Pagination';
+import { truncateString } from '../user/Collection';
 
 const Collection = () => {
   const navigate = useNavigate();
@@ -197,13 +198,12 @@ const Collection = () => {
                         alt={item.title}
                       />
                     )}
-
                     <CardContent>
                       <Typography gutterBottom variant='h5' component='div'>
-                        {item.title}
+                        {truncateString(item.title, 20)}
                       </Typography>
                       <Typography variant='body2' color='text.secondary'>
-                        {item.description}
+                        {truncateString(item.description, 32)}
                       </Typography>
                       <Typography variant='h5' component='div'>
                         ${item.price}

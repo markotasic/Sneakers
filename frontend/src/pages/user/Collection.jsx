@@ -30,6 +30,13 @@ import AirForce1 from '../../images/air-force-1.jpg';
 import { useEffect, useState } from 'react';
 import filters from '../../filters/filters.json';
 
+export const truncateString = (stringValue, checkValue) => {
+  if (stringValue !== undefined && stringValue.length > checkValue)
+    stringValue = stringValue.substr(0, checkValue - 2) + '...';
+
+  return stringValue;
+};
+
 const Collection = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -42,6 +49,8 @@ const Collection = () => {
   const { items, isLoading, isError, message } = useSelector(
     (state) => state.items
   );
+
+  if (items.items?.length) items.items.map((item) => console.log(item.price));
 
   const params = {
     price: sortOrder,
@@ -111,12 +120,7 @@ const Collection = () => {
   };
 
   //____________________________OUTSOURCE____________________//
-  const truncateString = (stringValue, checkValue) => {
-    if (stringValue !== undefined && stringValue.length > checkValue)
-      stringValue = stringValue.substr(0, checkValue - 2) + '...';
 
-    return stringValue;
-  };
   //_________________________________________________________//
 
   return (
@@ -140,7 +144,11 @@ const Collection = () => {
         >
           <Typography component='h6'>Price</Typography>
           <Divider />
-          <Slider maxPrice={items.maxPrice} minPrice={items.minPrice} />
+          <Slider
+            arg={params}
+            maxPrice={items.maxPrice}
+            minPrice={items.minPrice}
+          />
         </Paper>
         <Accordion
           filter={filters}

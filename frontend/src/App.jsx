@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useEffect } from 'react';
-import { Routes, Navigate, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 
 // MUI Components
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -130,14 +130,9 @@ const App = () => {
             <Container maxWidth='xl'>
               <Nav mode={<ToggleMode />} logout={logoutUser} />
               <Routes>
+                <Route path='/login' element={<Login />} />
+                <Route path='/register' element={<Register />} />
                 {routes}
-                {!user && (
-                  <>
-                    <Route path='/login' element={<Login />} />
-                    <Route path='/register' element={<Register />} />
-                  </>
-                )}
-                {/* <Route exact={true} path='*' element={<Navigate to='/' />} /> */}
               </Routes>
             </Container>
           </Grid>

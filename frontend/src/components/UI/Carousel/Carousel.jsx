@@ -61,15 +61,12 @@ function Carousel(props) {
         thumbs={{ swiper: thumbsSwiper }}
         modules={[FreeMode, Navigation, Thumbs, EffectCoverflow]}
       >
-        {items.imagePaths && (
-          <SwiperSlide key={Math.random()}>
-            <Image
-              src={`http://localhost:5000/${items.imagePaths[0]}`}
-              alt={items.title}
-            />
-            ;
-          </SwiperSlide>
-        )}
+        {items.imagePaths &&
+          items.imagePaths.map((item) => (
+            <SwiperSlide key={Math.random()}>
+              <Image src={`http://localhost:5000/${item}`} alt={items.title} />
+            </SwiperSlide>
+          ))}
       </Swiper>
       <Swiper
         onSwiper={setThumbsSwiper}
