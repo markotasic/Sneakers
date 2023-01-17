@@ -21,6 +21,4 @@ password: test123456789
 
 The project is still not finished planning to add:
 1) Cart
-2) Image upload
-3) Product filtering
-4) Checkout, About, Contact pages.
+2) Checkout, About, Contact pages.
